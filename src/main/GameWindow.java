@@ -7,7 +7,7 @@ public class GameWindow {
 
     private JFrame frame;
     public static int width = 1280;
-    public static  int height = 720;
+    public static int height = 720;
 
     // Создание игрового окна
     public GameWindow(GamePanel gamePanel) {

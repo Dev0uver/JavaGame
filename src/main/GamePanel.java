@@ -16,9 +16,9 @@ public class GamePanel extends JPanel {
 
     // Переменные для теста движения (!Убрать позже)
     private float moveX = 0;
-    private float dirX = 3f;
+    private float dirX = 2f;
     private float moveY = 0;
-    private float dirY = 3f;
+    private float dirY = 2f;
 
     // Конструктор класса
     public GamePanel() {

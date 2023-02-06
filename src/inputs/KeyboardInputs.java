@@ -12,7 +12,9 @@ public class KeyboardInputs implements KeyListener {
     private GamePanel gamePanel; // Экземпляр контейнера для вызова методов
 
     public KeyboardInputs(GamePanel gamePanel) {
+
         this.gamePanel = gamePanel;
+
     }
 
     @Override
@@ -22,11 +24,13 @@ public class KeyboardInputs implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+
         switch (e.getKeyCode()) {
             // Смещение на 5 пикселей влево
             case KeyEvent.VK_A -> gamePanel.ChangeXDelta(-5);
             // Смещение на 5 пикселей вправо
             case KeyEvent.VK_D -> gamePanel.ChangeXDelta(5);
+
         }
     }
 

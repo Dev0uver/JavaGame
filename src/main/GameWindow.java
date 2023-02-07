@@ -1,6 +1,7 @@
 package main;
 
 import javax.swing.JFrame;
+import java.awt.*;
 
 // Класс игрового окна
 public class GameWindow {
@@ -12,6 +13,10 @@ public class GameWindow {
     // Создание игрового окна
     public GameWindow(GamePanel gamePanel) {
 
+        //GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        //DisplayMode newMode = new DisplayMode(width, height, 32, 60);
+        //device.setDisplayMode(newMode);
+
         frame = new JFrame("Space Invaders");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -19,6 +24,7 @@ public class GameWindow {
         frame.setResizable(true);
         frame.setSize(width, height);
         frame.setLocationRelativeTo(null);
+
 
         frame.add(gamePanel);
 

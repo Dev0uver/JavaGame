@@ -16,9 +16,9 @@ public class GamePanel extends JPanel {
 
     // Переменные для теста движения (!Убрать позже)
     private float moveX = 0;
-    private float dirX = 3f;
+    private float dirX = 1f;
     private float moveY = 0;
-    private float dirY = 3f;
+    private float dirY = 1f;
 
     // Конструктор класса
     public GamePanel() {
@@ -50,11 +50,11 @@ public class GamePanel extends JPanel {
         // Движущийся сам по себе квадрантик (!Убрать позже)
         graphics.fillRect( (int) moveX, (int) moveY, 50, 50);
 
-        /*
+
         graphics.setColor(Color.orange);
-        graphics.drawLine(1280, 360, 0, 360);
-        graphics.drawLine(640, 0, 640, 720);
-        */
+        graphics.drawLine(0, 0, GameWindow.width, GameWindow.height);
+        //graphics.drawLine(640, 0, 640, 720);
+
     }
 
 
@@ -62,14 +62,16 @@ public class GamePanel extends JPanel {
     private void MoveRect() {
 
         moveX += dirX;
-        if (moveX > GameWindow.width || moveX < 0) {
+
+        if (moveX + 50 >= GameWindow.width  || moveX < 0) {
 
             dirX *= -1;
 
         }
 
         moveY += dirY;
-        if (moveY > GameWindow.height || moveY < 0) {
+        System.out.println(moveY);
+        if (moveY + 50 >= GameWindow.height || moveY < 0) {
 
             dirY *= -1;
 

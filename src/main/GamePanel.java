@@ -19,7 +19,7 @@ public class GamePanel extends JPanel {
     private float dirY = 2f;
 
     // начальные координаты игрока
-    private float rectX = (float) ((GameWindow.width / 2) - rectSize / 2); //  ((GameWindow.width / 2) - 50) + (100 / 2)
+    private float rectX = (float) ((GameWindow.width / 2) - rectSize / 2);
     private final float rectY = (float) (GameWindow.height - 150);
 
     // скорость перемещения
@@ -27,7 +27,6 @@ public class GamePanel extends JPanel {
 
     // Объекты
     private final List<Bullet> bulletList = new ArrayList<Bullet>();
-//    private Bullet[] bullets = new Bullet();
 
 
     public void AddBullet () {

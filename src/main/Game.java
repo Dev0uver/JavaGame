@@ -14,6 +14,7 @@ public class Game implements Runnable {
         gameWindow = new GameWindow(gamePanel); // Инициализация объекта окна
         gamePanel.setFocusable(true); // Позволяет "захватить" экран
         gamePanel.requestFocus(); // Запрашивает захват экрана для ввода
+        //gamePanel.setBounds(0, 0, GameWindow.width, GameWindow.height);
         StartGameThread();
 
     }

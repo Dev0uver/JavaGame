@@ -2,6 +2,7 @@ package inputs;
 
 import main.GamePanel;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -30,6 +31,7 @@ public class KeyboardInputs implements KeyListener {
             // Смещение на 5 пикселей вправо
             case KeyEvent.VK_D -> gamePanel.setVelX(10f);
 
+            case  KeyEvent.VK_SPACE -> gamePanel.AddBullet();
         }
     }
 

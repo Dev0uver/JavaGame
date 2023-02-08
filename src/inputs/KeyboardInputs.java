@@ -1,6 +1,5 @@
 package inputs;
 
-import main.Game;
 import main.GamePanel;
 
 import java.awt.event.KeyEvent;
@@ -27,15 +26,21 @@ public class KeyboardInputs implements KeyListener {
 
         switch (e.getKeyCode()) {
             // Смещение на 5 пикселей влево
-            case KeyEvent.VK_A -> gamePanel.ChangeXDelta(-5);
+            case KeyEvent.VK_A -> gamePanel.setVelX(-10f);
             // Смещение на 5 пикселей вправо
-            case KeyEvent.VK_D -> gamePanel.ChangeXDelta(5);
+            case KeyEvent.VK_D -> gamePanel.setVelX(10f);
 
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+        switch (e.getKeyCode()) {
+            // Смещение на 5 пикселей влево
+            case KeyEvent.VK_A -> gamePanel.setVelX(0);
+            // Смещение на 5 пикселей вправо
+            case KeyEvent.VK_D -> gamePanel.setVelX(0);
 
+        }
     }
 }

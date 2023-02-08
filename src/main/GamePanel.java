@@ -4,8 +4,7 @@ import inputs.KeyboardInputs;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+
 
 import javax.swing.*;
 
@@ -16,9 +15,23 @@ public class GamePanel extends JPanel {
 
     // Переменные для теста движения (!Убрать позже)
     private float moveX = 0;
-    private float dirX = 2f;
+    private float dirX = 5f;
     private float moveY = 0;
-    private float dirY = 2f;
+    private float dirY = 5f;
+
+    // начальные координаты игрока
+    private float rectX = (float) ((GameWindow.width / 2) - 50);
+    private float rectY = (float) (GameWindow.height - 150);
+
+    // скорость перемещения
+    private float velX;
+
+    // set для velX
+    public void setVelX(float velX) {
+
+        this.velX = velX;
+
+    }
 
     // Конструктор класса
     public GamePanel() {
@@ -27,10 +40,10 @@ public class GamePanel extends JPanel {
 
     }
 
-    // Изменение координаты x
-    public void ChangeXDelta(int value) {
+    // Изменение координаты x игрока
+    public void MovePlayer() {
 
-        this.xDelta += value;
+        rectX += velX;
 
     }
 
@@ -43,13 +56,13 @@ public class GamePanel extends JPanel {
         // graphics.drawRect(500, 500, 100, 100);
 
         // Квадрантик
-        graphics.fillRect(((GameWindow.width / 2) - 50) + xDelta, (GameWindow.height - 150), 100, 100);
+        graphics.fillRect( (int) rectX, (int) rectY, 100, 100);
+        MovePlayer();
 
         graphics.setColor(Color.green);
-        MoveRect();
         // Движущийся сам по себе квадрантик (!Убрать позже)
         graphics.fillRect( (int) moveX, (int) moveY, 50, 50);
-
+        MoveRect();
         /*
         graphics.setColor(Color.orange);
         graphics.drawLine(1280, 360, 0, 360);

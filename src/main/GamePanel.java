@@ -2,23 +2,48 @@ package main;
 
 import inputs.KeyboardInputs;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
 
 import javax.swing.*;
 
 // Класс контейнера элементов
 public class GamePanel extends JPanel {
-
-    private int xDelta;
-
     // Переменные для теста движения (!Убрать позже)
+    private final int rectSize = 100;
     private float moveX = 0;
-    private float dirX = 1f;
     private float moveY = 0;
-    private float dirY = 1f;
+    private float dirX = 2f;
+    private float dirY = 2f;
+
+    // начальные координаты игрока
+    private float rectX = (float) ((GameWindow.width / 2) - rectSize / 2);
+    private final float rectY = (float) (GameWindow.height - 150);
+
+    // скорость перемещения
+    private float velX;
+
+    // Объекты
+    private final List<Bullet> bulletList = new ArrayList<Bullet>();
+
+
+    public void AddBullet () {
+        Bullet bullet = new Bullet();
+
+        bullet.x = (rectX + (rectSize / 2)) - (bullet.bulletWidth / 2);
+        bullet.y = rectY;
+
+        bulletList.add(bullet);
+    }
+
+    // set для velX
+    public void setVelX(float velX) {
+
+        this.velX = velX;
+
+    }
 
     // Конструктор класса
     public GamePanel() {
@@ -27,10 +52,10 @@ public class GamePanel extends JPanel {
 
     }
 
-    // Изменение координаты x
-    public void ChangeXDelta(int value) {
+    // Изменение координаты x игрока
+    public void MovePlayer() {
 
-        this.xDelta += value;
+        rectX += velX;
 
     }
 
@@ -40,21 +65,27 @@ public class GamePanel extends JPanel {
         // Метод очистки окна и отрисовки новых объектов
         super.paintComponent(graphics);
 
-        // graphics.drawRect(500, 500, 100, 100);
+        if (bulletList != null){
+            synchronized (bulletList) {
+                for (Bullet b : bulletList){
+                    // Отрисовка
+                    graphics.setColor(Color.red);
+                    graphics.fillOval((int) b.x, (int) b.y - 30, (int) b.bulletWidth, (int)b.bulletHeight);
+                }
+                MoveBullet();
+            }
+
+        }
 
         // Квадрантик
-        graphics.fillRect(((GameWindow.width / 2) - 50) + xDelta, (GameWindow.height - 150), 100, 100);
+        graphics.setColor(Color.black);
+        graphics.fillRect( (int) rectX, (int) rectY, rectSize, rectSize);
+        MovePlayer();
 
-        graphics.setColor(Color.green);
-        MoveRect();
         // Движущийся сам по себе квадрантик (!Убрать позже)
+        graphics.setColor(Color.green);
         graphics.fillRect( (int) moveX, (int) moveY, 50, 50);
-
-
-        graphics.setColor(Color.orange);
-        graphics.drawLine(0, 0, GameWindow.width, GameWindow.height);
-        //graphics.drawLine(640, 0, 640, 720);
-
+        MoveRect();
     }
 
 
@@ -62,18 +93,28 @@ public class GamePanel extends JPanel {
     private void MoveRect() {
 
         moveX += dirX;
-
-        if (moveX + 50 >= GameWindow.width  || moveX < 0) {
+        if (moveX > GameWindow.width || moveX < 0) {
 
             dirX *= -1;
 
         }
 
         moveY += dirY;
-        if (moveY + 50 >= GameWindow.height || moveY < 0) {
+        if (moveY > GameWindow.height || moveY < 0) {
 
             dirY *= -1;
 
+        }
+    }
+
+    private void MoveBullet() {
+        synchronized (bulletList) {
+            for (int i = 0; i < bulletList.size(); i++){
+                bulletList.get(i).y -= 8f;
+                if (bulletList.get(i).y <= 0 - bulletList.get(i).bulletHeight){
+                    bulletList.remove(bulletList.get(i));
+                }
+            }
         }
     }
 }

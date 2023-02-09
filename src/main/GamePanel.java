@@ -70,7 +70,6 @@ public class GamePanel extends JPanel {
         }
 
         moveY += dirY;
-        System.out.println(moveY);
         if (moveY + 50 >= GameWindow.height || moveY < 0) {
 
             dirY *= -1;

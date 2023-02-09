@@ -1,6 +1,6 @@
 package main;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 import java.awt.*;
 
 // Класс игрового окна
@@ -24,7 +24,6 @@ public class GameWindow {
         frame.setResizable(true);
         frame.setSize(width, height);
         frame.setLocationRelativeTo(null);
-
 
         frame.add(gamePanel);
 

@@ -1,5 +1,7 @@
 package main;
 
+import javax.swing.*;
+
 // Класс игры
 public class Game implements Runnable {
 

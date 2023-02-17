@@ -42,17 +42,17 @@ public class GamePanel extends JPanel {
         bulletList.add(bullet);
     }
 
-    public void AddEnemy (int count) {
-
-//        width = 0;
+    public void AddEnemy (int count, int row) {
+        int sector = 1200 / row;
         height = 0;
 
         for (int i = 0; i < count; i++)
         {
+            int numOfSector = (i + 1) % row;
             Enemy enemy = new Enemy();
 
-            enemy.x_position = (((1280 / 5) * ((i + 1) % 5))) + ((1280 / 15)) ;
-            enemy.y_position =  ((i / 5) * 100)+ 50;
+            enemy.x_position = (sector * numOfSector) ;
+            enemy.y_position =  (i / row) * (enemy.height + 10);
             height += 10;
             enemyList.add(enemy);
         }
@@ -87,7 +87,7 @@ public class GamePanel extends JPanel {
         super.paintComponent(graphics);
 
         if (enemyList.size() == 0) {
-            AddEnemy(5);
+            AddEnemy(33, 11);
         } else {
             for (Enemy e : enemyList) {
                 graphics.fillRect((int) e.x_position, (int) e.y_position, (int) e.width, (int) e.height);
@@ -157,7 +157,7 @@ public class GamePanel extends JPanel {
         synchronized (enemyList) {
             for (int i = 0; i < enemyList.size(); i++){
 
-                if (enemyList.get(i).x_position >= 1280 - enemyList.get(i).width) {
+                if (enemyList.get(i).x_position >= 1265 - enemyList.get(i).width) {
                     flag = false;
                     for (int g = 0; g < enemyList.size(); g++) {
                         enemyList.get(g).y_position += 25;

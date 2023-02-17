@@ -24,21 +24,21 @@ public class KeyboardInputs implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-//        System.out.println("keyPressed!");
+        System.out.println("Hello!");
         int pressedKey = e.getKeyCode();
 
 
 
         if (!isPressed(pressedKey)) {
             keyChain.add(pressedKey);
-//            System.out.println(keyChain);
+            System.out.println(keyChain);
         }
 
         if (isPressed(KeyEvent.VK_SPACE)) {
             if (System.currentTimeMillis() - lastCheck >= 300) {
                     gamePanel.AddBullet();
                     lastCheck = System.currentTimeMillis();
-            }
+                }
         }
 
         if (keyChain.contains(KeyEvent.VK_A)) {
@@ -69,7 +69,7 @@ public class KeyboardInputs implements KeyListener {
 
             keyChain.remove(keyChain.indexOf(releasedKey));
 
-//            System.out.println(keyChain);
+            System.out.println(keyChain);
         }
     }
 }

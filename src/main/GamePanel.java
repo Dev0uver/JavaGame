@@ -11,9 +11,21 @@ import javax.swing.*;
 
 // Класс контейнера элементов
 public class GamePanel extends JPanel {
-    public int width;
-    public int height;
+    // Для движения врагов
+    boolean down = false;
     boolean flag = true;
+    // Для управления врагами !
+    float enemy_speed = 2f;
+    int jump_down = 30;
+    int left_mark = 0;
+    int right_mark = 1280 - 100 - 15;
+    int remove_line = 400;
+    // Количество врагов на поле
+    int count = 18;
+    // Количество врагов в 1 строке
+    int row = 5;
+
+
     // Переменные для теста движения (!Убрать позже)
     private final int rectSize = 100;
     private float moveX = 0;
@@ -36,7 +48,7 @@ public class GamePanel extends JPanel {
     public void AddBullet () {
         Bullet bullet = new Bullet();
 
-        bullet.x = (rectX + (rectSize / 2)) - (bullet.bulletWidth / 2);
+        bullet.x = (rectX + rectSize / 2) - (bullet.bulletWidth / 2);
         bullet.y = rectY;
 
         bulletList.add(bullet);
@@ -86,7 +98,7 @@ public class GamePanel extends JPanel {
         super.paintComponent(graphics);
 
         if (enemyList.size() == 0) {
-            AddEnemy(13, 5);
+            AddEnemy(count, row);
         } else {
             for (Enemy e : enemyList) {
                 graphics.fillRect((int) e.x_position, (int) e.y_position, (int) e.width, (int) e.height);
@@ -150,33 +162,38 @@ public class GamePanel extends JPanel {
     }
 
     private void MoveEnemy() {
-        synchronized (enemyList) {
-            boolean down = false;
-            for (int i = 0; i < enemyList.size(); i++){
-
-                if (enemyList.get(i).x_position >= 1267 - enemyList.get(i).width) {
-                    flag = false;
-                    down = true;
-                }
-                if (enemyList.get(i).x_position <= 0) {
-                    flag = true;
-                    down = true;
-                }
-                if (enemyList.get(i).y_position >= 400) {
-                    enemyList.remove(enemyList.get(i));
-                }
+        // !! Управление врагами происходит из переменных описанных выше !!
+        down = false;
+        for (int i = 0; i < enemyList.size(); i++){
+            // Проверка достижения правого края
+            if (enemyList.get(i).x_position >= right_mark) {
+                // Означает что надо двигать впараво
+                flag = false;
+                // Означает что надо двигать вниз
+                down = true;
             }
-            if (down) {
-                for (Enemy enemy : enemyList) {
-                    enemy.y_position += 20;
-                }
+            // Проверка достижения левого края
+            if (enemyList.get(i).x_position <= left_mark) {
+                flag = true;
+                down = true;
             }
+            // Проверка не вышли ли враги за нижнюю границу
+            if (enemyList.get(i).y_position >= remove_line) {
+                enemyList.remove(enemyList.get(i));
+            }
+        }
+        // Перемещение вниз при достижении края
+        if (down) {
             for (Enemy enemy : enemyList) {
-                if (flag) {
-                    enemy.x_position += 3f;
-                } else {
-                    enemy.x_position -= 3f;
-                }
+                enemy.y_position += jump_down;
+            }
+        }
+        // Движение вправо или влево
+        for (Enemy enemy : enemyList) {
+            if (flag) {
+                enemy.x_position += enemy_speed;
+            } else {
+                enemy.x_position -= enemy_speed;
             }
         }
     }

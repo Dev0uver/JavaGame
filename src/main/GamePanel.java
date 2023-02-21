@@ -43,17 +43,16 @@ public class GamePanel extends JPanel {
     }
 
     public void AddEnemy (int count, int row) {
-        int sector = 1200 / row;
-        height = 0;
+        int sector = 120;
 
         for (int i = 0; i < count; i++)
         {
             int numOfSector = (i + 1) % row;
             Enemy enemy = new Enemy();
 
-            enemy.x_position = (sector * numOfSector) ;
+            enemy.x_position = (sector * numOfSector);
             enemy.y_position =  (i / row) * (enemy.height + 10);
-            height += 10;
+
             enemyList.add(enemy);
         }
     }
@@ -87,7 +86,7 @@ public class GamePanel extends JPanel {
         super.paintComponent(graphics);
 
         if (enemyList.size() == 0) {
-            AddEnemy(33, 11);
+            AddEnemy(13, 5);
         } else {
             for (Enemy e : enemyList) {
                 graphics.fillRect((int) e.x_position, (int) e.y_position, (int) e.width, (int) e.height);
@@ -115,12 +114,9 @@ public class GamePanel extends JPanel {
         MovePlayer();
 
         // Движущийся сам по себе квадрантик (!Убрать позже)
-        graphics.setColor(Color.green);
-        graphics.fillRect( (int) moveX, (int) moveY, 50, 50);
-        MoveRect();
-
-        graphics.drawLine(0, 5, 1280, 5);
-        graphics.drawLine(5, 0, 5, 720);
+//        graphics.setColor(Color.green);
+//        graphics.fillRect( (int) moveX, (int) moveY, 50, 50);
+//        MoveRect();
     }
 
 
@@ -153,28 +149,33 @@ public class GamePanel extends JPanel {
         }
     }
 
-    private void MoveEnemy() { //working
+    private void MoveEnemy() {
         synchronized (enemyList) {
+            boolean down = false;
             for (int i = 0; i < enemyList.size(); i++){
 
-                if (enemyList.get(i).x_position >= 1265 - enemyList.get(i).width) {
+                if (enemyList.get(i).x_position >= 1267 - enemyList.get(i).width) {
                     flag = false;
-                    for (int g = 0; g < enemyList.size(); g++) {
-                        enemyList.get(g).y_position += 25;
-                    }
+                    down = true;
                 }
                 if (enemyList.get(i).x_position <= 0) {
                     flag = true;
-                    for (int g = 0; g < enemyList.size(); g++) {
-                        enemyList.get(g).y_position += 25;
-                    }
+                    down = true;
+                }
+                if (enemyList.get(i).y_position >= 400) {
+                    enemyList.remove(enemyList.get(i));
                 }
             }
-            for (int i = 0; i < enemyList.size(); i++) {
+            if (down) {
+                for (Enemy enemy : enemyList) {
+                    enemy.y_position += 20;
+                }
+            }
+            for (Enemy enemy : enemyList) {
                 if (flag) {
-                    enemyList.get(i).x_position += 1f;
+                    enemy.x_position += 3f;
                 } else {
-                    enemyList.get(i).x_position -= 1f;
+                    enemy.x_position -= 3f;
                 }
             }
         }

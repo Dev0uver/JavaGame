@@ -24,14 +24,12 @@ public class KeyboardInputs implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        System.out.println("Hello!");
         int pressedKey = e.getKeyCode();
 
 
 
         if (!isPressed(pressedKey)) {
             keyChain.add(pressedKey);
-            System.out.println(keyChain);
         }
 
         if (isPressed(KeyEvent.VK_SPACE)) {
@@ -68,8 +66,6 @@ public class KeyboardInputs implements KeyListener {
             }
 
             keyChain.remove(keyChain.indexOf(releasedKey));
-
-            System.out.println(keyChain);
         }
     }
 }

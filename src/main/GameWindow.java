@@ -19,7 +19,7 @@ public class GameWindow {
 
         frame = new JFrame("Space Invaders");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+//        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setUndecorated(false);
         frame.setResizable(true);
         frame.setSize(width, height);

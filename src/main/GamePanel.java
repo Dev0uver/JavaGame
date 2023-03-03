@@ -18,37 +18,37 @@ public class GamePanel extends JPanel {
     float enemy_speed = 2f;
     int jump_down = 30;
     int left_mark = 0;
-    int right_mark = 1280 - 100 - 15;
+    int right_mark = 1280 - 100;
     int remove_line = 400;
     // Количество врагов на поле
-    int count = 18;
+    int count = 30;
     // Количество врагов в 1 строке
-    int row = 5;
+    int row = 10;
 
+    // Для управления героем
+    int leftMark = 0;
+    int rightMark = GameWindow.width;
 
-    // Переменные для теста движения (!Убрать позже)
-    private final int rectSize = 100;
-    private float moveX = 0;
-    private float moveY = 0;
-    private float dirX = 2f;
-    private float dirY = 2f;
+    int hero_witdh = 80;
+    int hero_height = 100;
+
 
     // начальные координаты игрока
-    private float rectX = (float) ((GameWindow.width / 2) - rectSize / 2);
+    private float rectX = (float) ((GameWindow.width / 2) - hero_witdh / 2);
     private final float rectY = (float) (GameWindow.height - 150);
 
     // скорость перемещения
     private float velX;
 
     // Объекты
-    private final List<Bullet> bulletList = new ArrayList<Bullet>();
-    private final List<Enemy> enemyList = new ArrayList<Enemy>();
+    private final List<Bullet> bulletList = new ArrayList<>();
+    private final List<Enemy> enemyList = new ArrayList<>();
 
 
     public void AddBullet () {
         Bullet bullet = new Bullet();
 
-        bullet.x = (rectX + rectSize / 2) - (bullet.bulletWidth / 2);
+        bullet.x = (rectX + hero_witdh / 2) - (bullet.bulletWidth / 2);
         bullet.y = rectY;
 
         bulletList.add(bullet);
@@ -86,9 +86,8 @@ public class GamePanel extends JPanel {
 
     // Изменение координаты x игрока
     public void MovePlayer() {
-
-        rectX += velX;
-
+        if (leftMark <= rectX + velX && rectX + velX <= rightMark - hero_witdh)
+            rectX += velX;
     }
 
     // Объект и метод для рисования (!Заменить на спрайты)
@@ -101,7 +100,7 @@ public class GamePanel extends JPanel {
             AddEnemy(count, row);
         } else {
             for (Enemy e : enemyList) {
-                graphics.fillRect((int) e.x_position, (int) e.y_position, (int) e.width, (int) e.height);
+                graphics.fillRect((int) e.x_position, (int) e.y_position, e.width, e.height);
             }
             MoveEnemy();
         }
@@ -120,36 +119,11 @@ public class GamePanel extends JPanel {
 
         }
 
-        // Квадрантик
+        // Герой
         graphics.setColor(Color.black);
-        graphics.fillRect( (int) rectX, (int) rectY, rectSize, rectSize);
+        graphics.fillRect( (int) rectX, (int) rectY, hero_witdh, hero_height);
         MovePlayer();
-
-        // Движущийся сам по себе квадрантик (!Убрать позже)
-//        graphics.setColor(Color.green);
-//        graphics.fillRect( (int) moveX, (int) moveY, 50, 50);
-//        MoveRect();
     }
-
-
-    // Метод проверки цикла и движения (!Убрать позже)
-    private void MoveRect() {
-
-        moveX += dirX;
-        if (moveX > GameWindow.width || moveX < 0) {
-
-            dirX *= -1;
-
-        }
-
-        moveY += dirY;
-        if (moveY > GameWindow.height || moveY < 0) {
-
-            dirY *= -1;
-
-        }
-    }
-
     private void MoveBullet() {
         synchronized (bulletList) {
             for (int i = 0; i < bulletList.size(); i++){

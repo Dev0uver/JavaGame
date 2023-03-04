@@ -17,7 +17,9 @@ public class GamePanel extends JPanel {
     // Для управления врагами !
     float enemySpeed = 2f;
     int jumpDown = 30;
-    int removeLine = 400;
+    int playerWidth = 80;
+    int playerHeight = 100;
+    int removeLine = GameWindow.height - playerHeight - 120;
     // Количество врагов на поле
     int count = 30;
     // Количество врагов в 1 строке
@@ -27,13 +29,12 @@ public class GamePanel extends JPanel {
     int leftMark = 0;
     int rightMark = GameWindow.width;
 
-    int playerWidth = 80;
-    int playerHeight = 100;
+
 
 
     // начальные координаты игрока
     private float rectX = (float) ((GameWindow.width / 2) - playerWidth / 2);
-    private final float rectY = (float) (GameWindow.height - 150);
+    private final float rectY = (float) (GameWindow.height - 120);
 
     // скорость перемещения
     private float velX;

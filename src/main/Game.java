@@ -1,13 +1,14 @@
 package main;
 
-import main.GameWindow;
+import java.awt.*;
+
 // Класс игры
 public class Game implements Runnable {
 
     private GameWindow gameWindow;
     private GamePanel gamePanel;
     private Thread gameThread;
-    private final int fps_set = 60;
+    private final int fpsSet = 60;
 
     public Game() {
 
@@ -15,9 +16,10 @@ public class Game implements Runnable {
         //gameWindow = new GameWindow(gamePanel); // Инициализация объекта окна
         gamePanel.setFocusable(true); // Позволяет "захватить" экран
         gamePanel.requestFocus(); // Запрашивает захват экрана для ввода
+        //gamePanel.setPreferredSize(new Dimension(1280, 720));
         //gamePanel.setBounds(0, 0, GameWindow.width, GameWindow.height);
-        gameWindow = new GameWindow();
-        gameWindow.run();
+        gameWindow = new GameWindow(gamePanel);
+        run();
         StartGameThread();
 
     }
@@ -33,7 +35,7 @@ public class Game implements Runnable {
 
     public void run() {
 
-        double timePerFrame = 1000000000.0 / fps_set;
+        double timePerFrame = 1000000000.0 / fpsSet;
         long lastFrame = System.nanoTime();
         long now = System.nanoTime();
 

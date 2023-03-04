@@ -3,6 +3,6 @@ package main;
 public class Enemy {
     public int height = 50;
     public int width = 100;
-    public float x_position;
-    public float y_position;
+    public float xPosition;
+    public float yPosition;
 }

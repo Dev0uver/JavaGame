@@ -1,6 +1,7 @@
 package inputs;
 
 import main.GamePanel;
+import main.GameWindow;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -26,7 +27,9 @@ public class KeyboardInputs implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int pressedKey = e.getKeyCode();
 
-
+        if (pressedKey == KeyEvent.VK_Q) {
+            System.exit(0);
+        }
 
         if (!isPressed(pressedKey)) {
             keyChain.add(pressedKey);

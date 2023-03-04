@@ -7,8 +7,12 @@ import java.awt.*;
 public class GameWindow {
 
     private JFrame frame;
-    public static int width = 1280;
-    public static int height = 720;
+
+    public static Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+    public static int width = (int)size.getWidth();
+    public static int height = (int)size.getHeight();
+
+
 
     // Создание игрового окна
     public GameWindow(GamePanel gamePanel) {
@@ -19,10 +23,13 @@ public class GameWindow {
 
         frame = new JFrame("Space Invaders");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setUndecorated(false);
-        frame.setResizable(true);
+
+        frame.setUndecorated(true);
+        frame.setResizable(false);
+        //frame.getContentPane().add(gamePanel);
+        //frame.pack();
         frame.setSize(width, height);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setLocationRelativeTo(null);
 
 

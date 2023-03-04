@@ -34,8 +34,8 @@ public class GamePanel extends JPanel {
     private float dirY = 2f;
 
     // начальные координаты игрока
-    private float rectX = (float) ((GameWindow.width / 2) - rectSize / 2);
-    private final float rectY = (float) (GameWindow.height - 150);
+    //private float rectX = (float) ((GameWindow.width / 2) - rectSize / 2);
+    //private final float rectY = (float) (GameWindow.height - 150);
 
     // скорость перемещения
     private float velX;
@@ -48,8 +48,8 @@ public class GamePanel extends JPanel {
     public void AddBullet () {
         Bullet bullet = new Bullet();
 
-        bullet.x = (rectX + rectSize / 2) - (bullet.bulletWidth / 2);
-        bullet.y = rectY;
+        //bullet.x = (rectX + rectSize / 2) - (bullet.bulletWidth / 2);
+        //bullet.y = rectY;
 
         bulletList.add(bullet);
     }
@@ -87,7 +87,7 @@ public class GamePanel extends JPanel {
     // Изменение координаты x игрока
     public void MovePlayer() {
 
-        rectX += velX;
+        //rectX += velX;
 
     }
 
@@ -122,7 +122,7 @@ public class GamePanel extends JPanel {
 
         // Квадрантик
         graphics.setColor(Color.black);
-        graphics.fillRect( (int) rectX, (int) rectY, rectSize, rectSize);
+        //graphics.fillRect( (int) rectX, (int) rectY, rectSize, rectSize);
         MovePlayer();
 
         // Движущийся сам по себе квадрантик (!Убрать позже)
@@ -136,18 +136,18 @@ public class GamePanel extends JPanel {
     private void MoveRect() {
 
         moveX += dirX;
-        if (moveX > GameWindow.width || moveX < 0) {
+        //if (moveX > GameWindow.width || moveX < 0) {
 
-            dirX *= -1;
+           //dirX *= -1;
 
-        }
+        //}
 
         moveY += dirY;
-        if (moveY > GameWindow.height || moveY < 0) {
+        //if (moveY > GameWindow.height || moveY < 0) {
 
             dirY *= -1;
 
-        }
+        //}
     }
 
     private void MoveBullet() {

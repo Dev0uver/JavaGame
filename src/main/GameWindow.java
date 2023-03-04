@@ -6,8 +6,6 @@ import java.awt.*;
 // Класс игрового окна
 public class GameWindow {
 
-    private JFrame frame;
-
     public static Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
     public static int width = (int)size.getWidth();
     public static int height = (int)size.getHeight();
@@ -21,7 +19,7 @@ public class GameWindow {
         //DisplayMode newMode = new DisplayMode(width, height, 32, 60);
         //device.setDisplayMode(newMode);
 
-        frame = new JFrame("Space Invaders");
+        JFrame frame = new JFrame("Space Invaders");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         frame.setUndecorated(true);

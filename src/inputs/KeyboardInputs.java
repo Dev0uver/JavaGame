@@ -1,7 +1,6 @@
 package inputs;
 
 import main.GamePanel;
-import main.GameWindow;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -68,7 +67,7 @@ public class KeyboardInputs implements KeyListener {
                 gamePanel.setVelX(0);
             }
 
-            keyChain.remove(keyChain.indexOf(releasedKey));
+            keyChain.remove((Integer) releasedKey);
         }
     }
 }

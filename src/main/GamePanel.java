@@ -117,12 +117,6 @@ public class GamePanel extends JPanel {
 
         }
 
-        graphics.setColor(Color.yellow);
-        graphics.fillOval(500, 500, 50, 100);
-        graphics.setColor(Color.red);
-        graphics.drawLine(500, 500, 600, 500);
-
-
         // Герой
         graphics.setColor(Color.black);
         graphics.fillRect( (int) rectX, (int) rectY, playerWidth, playerHeight);

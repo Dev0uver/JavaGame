@@ -42,7 +42,7 @@ public class GamePanel extends JPanel {
     // Объекты
     private final List<Bullet> bulletList = new ArrayList<>();
     private final List<Enemy> enemyList = new ArrayList<>();
-
+    private Audio audio = new Audio();
 
     public void AddBullet () {
         Bullet bullet = new Bullet();
@@ -51,6 +51,7 @@ public class GamePanel extends JPanel {
         bullet.y = rectY;
 
         bulletList.add(bullet);
+        audio.shot();
     }
 
     public void AddEnemy (int count, int row) {
@@ -78,7 +79,6 @@ public class GamePanel extends JPanel {
 
     // Конструктор класса
     public GamePanel() {
-
         addKeyListener(new KeyboardInputs(this));
 
     }
@@ -161,6 +161,7 @@ public class GamePanel extends JPanel {
                             && bulletY - bulletHeight <= enemyY + enemyHeight ) {
                         enemyList.remove(i);
                         bulletList.remove(j);
+                        audio.kill();
                     }
                 }
             }

@@ -1,5 +1,6 @@
 package main;
 
+import audio.Audio;
 import entities.Bullet;
 import entities.Enemy;
 import entities.Player;
@@ -29,11 +30,13 @@ public class GamePanel extends JPanel {
     private final List<Bullet> bulletList = new ArrayList<>();
     private final List<Enemy> enemyList = new ArrayList<>();
 
+    //private Audio audio = new Audio();
 
     public void CreateBullet() {
 
         Bullet bullet = new Bullet(player.rectX, player.rectY, player.playerWidth);
         bulletList.add(bullet);
+        //audio.shot();
     }
 
     public void AddEnemy (int count, int row) {
@@ -137,6 +140,7 @@ public class GamePanel extends JPanel {
                             && bulletY - bulletHeight <= enemyY + enemyHeight ) {
                         enemyList.remove(j);
                         bulletList.remove(i);
+                        //audio.kill();
                     }
                 }
             }

@@ -38,14 +38,9 @@ public class GamePanel extends JPanel {
 
         int sector = 120;
 
-        for (int i = 0; i < count; i++)
-        {
-            int numOfSector = (i + 1) % row;
-            Enemy enemy = new Enemy();
+        for (int number = 0; number < count; number++) {
 
-            enemy.xPosition = (sector * numOfSector);
-            enemy.yPosition =  (i / row) * (enemy.height + 10);
-
+            Enemy enemy = new Enemy(sector, number, row);
             enemyList.add(enemy);
         }
     }

@@ -69,7 +69,6 @@ public class GamePanel extends JPanel {
         else {
             for (Enemy enemy : enemyList) {
                 enemy.PaintEnemy(graphics);
-
             }
             MoveEnemy();
         }

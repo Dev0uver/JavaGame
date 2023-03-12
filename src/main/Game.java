@@ -1,7 +1,5 @@
 package main;
 
-import java.awt.*;
-
 // Класс игры
 public class Game implements Runnable {
 
@@ -10,11 +8,8 @@ public class Game implements Runnable {
     public Game() {
 
         gamePanel = new GamePanel(); // Инициализация Контейнера
-        //gameWindow = new GameWindow(gamePanel); // Инициализация объекта окна
         gamePanel.setFocusable(true); // Позволяет "захватить" экран
         gamePanel.requestFocus(); // Запрашивает захват экрана для ввода
-        //gamePanel.setPreferredSize(new Dimension(1280, 720));
-        //gamePanel.setBounds(0, 0, GameWindow.width, GameWindow.height);
         GameWindow gameWindow = new GameWindow(gamePanel);
         run();
         StartGameThread();

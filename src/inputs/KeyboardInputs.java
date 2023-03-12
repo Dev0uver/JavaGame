@@ -36,17 +36,17 @@ public class KeyboardInputs implements KeyListener {
 
         if (isPressed(KeyEvent.VK_SPACE)) {
             if (System.currentTimeMillis() - lastCheck >= 300) {
-                    gamePanel.AddBullet();
+                    gamePanel.CreateBullet();
                     lastCheck = System.currentTimeMillis();
                 }
         }
 
         if (keyChain.contains(KeyEvent.VK_A)) {
-            gamePanel.setVelX(-10f);
+            gamePanel.player.setVelX(-10f);
         }
 
         if (keyChain.contains(KeyEvent.VK_D)) {
-            gamePanel.setVelX(10f);
+            gamePanel.player.setVelX(10f);
         }
     }
 
@@ -64,7 +64,8 @@ public class KeyboardInputs implements KeyListener {
         int releasedKey = e.getKeyCode();
         if (isPressed(releasedKey)) {
             if (releasedKey == KeyEvent.VK_A || releasedKey == KeyEvent.VK_D){
-                gamePanel.setVelX(0);
+                gamePanel.player.setVelX(0);
+
             }
 
             keyChain.remove((Integer) releasedKey);

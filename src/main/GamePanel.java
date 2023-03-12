@@ -1,5 +1,8 @@
 package main;
 
+import entities.Bullet;
+import entities.Enemy;
+import entities.Player;
 import inputs.KeyboardInputs;
 
 import java.awt.*;
@@ -11,49 +14,30 @@ import javax.swing.*;
 
 // Класс контейнера элементов
 public class GamePanel extends JPanel {
-    // Для движения врагов
-    //boolean down = false;
-    boolean flag = true;
-    // Для управления врагами !
-    float enemySpeed = 2f;
-    int jumpDown = 30;
-    int playerWidth = 80;
-    int playerHeight = 100;
-    int removeLine = GameWindow.height - playerHeight - 120;
+
+    public Player player = new Player();
+
     // Количество врагов на поле
-    int count = 30;
+    private int count = 30;
     // Количество врагов в 1 строке
-    int row = 10;
+    private int row = 10;
 
-    // Для управления героем
-    int leftMark = 0;
-    int rightMark = GameWindow.width;
-
-
-
-
-    // начальные координаты игрока
-    private float rectX = (float) ((GameWindow.width / 2) - playerWidth / 2);
-    private final float rectY = (float) (GameWindow.height - 120);
-
-    // скорость перемещения
-    private float velX;
+    // Для движения врагов
+    private boolean direction = true;
 
     // Объекты
     private final List<Bullet> bulletList = new ArrayList<>();
     private final List<Enemy> enemyList = new ArrayList<>();
 
 
-    public void AddBullet () {
-        Bullet bullet = new Bullet();
+    public void CreateBullet() {
 
-        bullet.x = (rectX + playerWidth / 2) - (bullet.width / 2);
-        bullet.y = rectY;
-
+        Bullet bullet = new Bullet(player.rectX, player.rectY, player.playerWidth);
         bulletList.add(bullet);
     }
 
     public void AddEnemy (int count, int row) {
+
         int sector = 120;
 
         for (int i = 0; i < count; i++)
@@ -69,25 +53,12 @@ public class GamePanel extends JPanel {
     }
 
 
-    // set для velX
-    public void setVelX(float velX) {
-
-        this.velX = velX;
-
-    }
-
     // Конструктор класса
     public GamePanel() {
 
         addKeyListener(new KeyboardInputs(this));
-
     }
 
-    // Изменение координаты x игрока
-    public void MovePlayer() {
-        if (leftMark <= rectX + velX && rectX + velX <= rightMark - playerWidth)
-            rectX += velX;
-    }
 
     // Объект и метод для рисования (!Заменить на спрайты)
     public void paintComponent(Graphics graphics) {
@@ -97,38 +68,44 @@ public class GamePanel extends JPanel {
 
         if (enemyList.size() == 0) {
             AddEnemy(count, row);
-        } else {
+        }
+        else {
             for (Enemy enemy : enemyList) {
-                graphics.fillRect((int) enemy.xPosition, (int) enemy.yPosition, enemy.width, enemy.height);
+                enemy.PaintEnemy(graphics);
+
             }
             MoveEnemy();
         }
 
+        if (bulletList != null) {
 
-        graphics.setColor(Color.red);
-        if (bulletList != null){
             synchronized (bulletList) {
-                for (Bullet bullet : bulletList){
-                    // Отрисовка
-                    graphics.fillOval((int) bullet.x, (int) bullet.y - 30, (int) bullet.width, (int)bullet.height);
-                }
-                MoveBullet();
-                CheckCollision();
-            }
 
+                for (Bullet bullet : bulletList) {
+                    // Отрисовка
+                    bullet.PaintBullet(graphics);
+                    bullet.MoveBullet();
+                }
+                CheckTopReach();
+                CheckEnemyCollision();
+            }
         }
 
-        // Герой
-        graphics.setColor(Color.black);
-        graphics.fillRect( (int) rectX, (int) rectY, playerWidth, playerHeight);
-        MovePlayer();
+        // Отрисовка и движение игрока
+        player.PaintPlayer(graphics);
+        player.MovePlayer();
     }
-    private void MoveBullet() {
+
+
+    private void CheckTopReach() {
+
         synchronized (bulletList) {
-            for (int i = 0; i < bulletList.size(); i++){
-                bulletList.get(i).y -= 8f;
-                if (bulletList.get(i).y <= 0 - bulletList.get(i).height){
-                    bulletList.remove(bulletList.get(i));
+
+            for (int i = 0; i < bulletList.size(); i++) {
+
+                if (bulletList.get(i).y <= -bulletList.get(i).height) {
+
+                    bulletList.remove(i);
                 }
             }
         }
@@ -136,71 +113,70 @@ public class GamePanel extends JPanel {
 
 
     // Коллизия
-    private void CheckCollision() {
+    private void CheckEnemyCollision() {
         if (bulletList != null && enemyList != null) {
-            for (int i = 0; i < enemyList.size(); i ++) {
+            for (int i = 0; i < bulletList.size(); i++) {
 
-                // позиция и размеры пришельца
-                float enemyX = enemyList.get(i).xPosition;
-                float enemyY = enemyList.get(i).yPosition;
-                int enemyWidth = enemyList.get(i).width;
-                int enemyHeight = enemyList.get(i).height;
+                // позиция и размеры снаряда
+                float bulletX = bulletList.get(i).x;
+                float bulletY = bulletList.get(i).y;
+                int bulletWidth = bulletList.get(i).width;
+                int bulletHeight = bulletList.get(i).height;
 
-                for (int j = 0; j < bulletList.size(); j++) {
-
-                    // позиция и размеры снаряда
-                    float bulletX = bulletList.get(j).x;
-                    float bulletY = bulletList.get(j).y;
-                    float bulletWidth = bulletList.get(j).width;
-                    float bulletHeight = bulletList.get(j).height;
+                for (int j = 0; j < enemyList.size(); j ++) {
+                    // позиция и размеры пришельца
+                    float enemyX = enemyList.get(j).xPosition;
+                    float enemyY = enemyList.get(j).yPosition;
+                    int enemyWidth = enemyList.get(j).width;
+                    int enemyHeight = enemyList.get(j).height;
 
                     // проверка столкновения снаряда и пришельца и их удаление в случае подтверждения
                     if ( bulletX + bulletWidth >= enemyX
                             && bulletX <= enemyX + enemyWidth
                             && bulletY >= enemyY
                             && bulletY - bulletHeight <= enemyY + enemyHeight ) {
-                        enemyList.remove(i);
-                        bulletList.remove(j);
+                        enemyList.remove(j);
+                        bulletList.remove(i);
                     }
                 }
             }
         }
     }
 
-
     private void MoveEnemy() {
         // !! Управление врагами происходит из переменных описанных выше !!
         boolean down = false;
         for (int i = 0; i < enemyList.size(); i++){
             // Проверка достижения правого края
-            if (enemyList.get(i).xPosition + enemyList.get(i).width >= rightMark) {
+            if (enemyList.get(i).xPosition + enemyList.get(i).width >= GameWindow.width) {
                 // Означает что надо двигать впараво
-                flag = false;
+                direction = false;
                 // Означает что надо двигать вниз
                 down = true;
             }
             // Проверка достижения левого края
-            if (enemyList.get(i).xPosition <= leftMark) {
-                flag = true;
+            if (enemyList.get(i).xPosition <= 0) {
+                direction = true;
                 down = true;
             }
             // Проверка не вышли ли враги за нижнюю границу
-            if (enemyList.get(i).yPosition >= removeLine) {
+            if (enemyList.get(i).yPosition >= GameWindow.height - player.playerHeight - 120) {
                 enemyList.remove(enemyList.get(i));
             }
         }
         // Перемещение вниз при достижении края
         if (down) {
             for (Enemy enemy : enemyList) {
-                enemy.yPosition += jumpDown;
+                enemy.yPosition += enemy.jumpDown;
             }
         }
         // Движение вправо или влево
         for (Enemy enemy : enemyList) {
-            if (flag) {
-                enemy.xPosition += enemySpeed;
-            } else {
-                enemy.xPosition -= enemySpeed;
+            if (direction) {
+                enemy.xPosition += enemy.speed;
+            }
+            else {
+                enemy.xPosition -= enemy.speed;
             }
         }
     }

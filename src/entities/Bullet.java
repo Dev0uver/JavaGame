@@ -3,10 +3,10 @@ package entities;
 import java.awt.*;
 
 public class Bullet {
-    private final int xrage = 10;
+    private final int xRange = 10;
     public float x;
     public float y;
-    public int height = (int) 2.5f * xrage, width = xrage;
+    public int height = (int) 2.5f * xRange, width = xRange;
 
 
     public Bullet(float playerX, float playerY, int playerWidth) {

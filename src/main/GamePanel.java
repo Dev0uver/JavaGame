@@ -18,11 +18,6 @@ public class GamePanel extends JPanel {
 
     public Player player = new Player();
 
-    // Количество врагов на поле
-    private int count = 30;
-    // Количество врагов в 1 строке
-    private int row = 10;
-
     // Для движения врагов
     private boolean direction = true;
 
@@ -70,6 +65,10 @@ public class GamePanel extends JPanel {
         super.paintComponent(graphics);
 
         if (enemyList.size() == 0) {
+            // Количество врагов в 1 строке
+            int row = 10;
+            // Количество врагов на поле
+            int count = 30;
             AddEnemy(count, row);
         }
         else {

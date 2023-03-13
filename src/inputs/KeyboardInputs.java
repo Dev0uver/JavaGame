@@ -11,6 +11,9 @@ import java.util.List;
 public class KeyboardInputs implements KeyListener {
     private final GamePanel gamePanel; // Экземпляр контейнера для вызова методов
     private long lastCheck;
+
+    // все нажатые кнопки (в данный момент)
+    public static final List<Integer> keyChain = new ArrayList<>();
     public KeyboardInputs(GamePanel gamePanel) {
 
         this.gamePanel = gamePanel;
@@ -49,10 +52,6 @@ public class KeyboardInputs implements KeyListener {
             gamePanel.player.setVelX(10f);
         }
     }
-
-
-    // все нажатые кнопки (в данный момент)
-    public static final List<Integer> keyChain = new ArrayList<>();
 
     // true, если кнопка с кодом keyCode нажата
     public static boolean isPressed(int keyCode) {

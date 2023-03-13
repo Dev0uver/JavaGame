@@ -9,9 +9,8 @@ public class Game implements Runnable {
 
     public Game() {
 
-        //Audio audio = new Audio();
-        //audio.sound = "C:/Users/atyag/Downloads/Dark_Souls_3_OST_-_Main_Menu_Theme_Higher_Pitch_68243142.wav";
-        //audio.soundtrack();
+        Audio audio = new Audio();
+        audio.soundtrack();
 
         gamePanel = new GamePanel(); // Инициализация Контейнера
         gamePanel.setFocusable(true); // Позволяет "захватить" экран

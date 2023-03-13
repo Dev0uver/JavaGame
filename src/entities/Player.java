@@ -6,7 +6,6 @@ import java.awt.*;
 
 public class Player {
 
-
     public int playerWidth = 80;
     public int playerHeight = 100;
 

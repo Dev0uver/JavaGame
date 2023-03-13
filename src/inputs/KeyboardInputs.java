@@ -38,7 +38,7 @@ public class KeyboardInputs implements KeyListener {
             if (System.currentTimeMillis() - lastCheck >= 300) {
                     gamePanel.CreateBullet();
                     lastCheck = System.currentTimeMillis();
-                }
+            }
         }
 
         if (keyChain.contains(KeyEvent.VK_A)) {

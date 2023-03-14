@@ -11,6 +11,9 @@ import java.util.List;
 public class KeyboardInputs implements KeyListener {
     private final GamePanel gamePanel; // Экземпляр контейнера для вызова методов
     private long lastCheck;
+
+    // все нажатые кнопки (в данный момент)
+    public static final List<Integer> keyChain = new ArrayList<>();
     public KeyboardInputs(GamePanel gamePanel) {
 
         this.gamePanel = gamePanel;
@@ -24,35 +27,31 @@ public class KeyboardInputs implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        System.out.println("Hello!");
         int pressedKey = e.getKeyCode();
 
-
+        if (pressedKey == KeyEvent.VK_Q) {
+            System.exit(0);
+        }
 
         if (!isPressed(pressedKey)) {
             keyChain.add(pressedKey);
-            System.out.println(keyChain);
         }
 
         if (isPressed(KeyEvent.VK_SPACE)) {
             if (System.currentTimeMillis() - lastCheck >= 300) {
-                    gamePanel.AddBullet();
+                    gamePanel.CreateBullet();
                     lastCheck = System.currentTimeMillis();
-                }
+            }
         }
 
         if (keyChain.contains(KeyEvent.VK_A)) {
-            gamePanel.setVelX(-10f);
+            gamePanel.player.setVelX(-10f);
         }
 
         if (keyChain.contains(KeyEvent.VK_D)) {
-            gamePanel.setVelX(10f);
+            gamePanel.player.setVelX(10f);
         }
     }
-
-
-    // все нажатые кнопки (в данный момент)
-    public static final List<Integer> keyChain = new ArrayList<>();
 
     // true, если кнопка с кодом keyCode нажата
     public static boolean isPressed(int keyCode) {
@@ -64,12 +63,11 @@ public class KeyboardInputs implements KeyListener {
         int releasedKey = e.getKeyCode();
         if (isPressed(releasedKey)) {
             if (releasedKey == KeyEvent.VK_A || releasedKey == KeyEvent.VK_D){
-                gamePanel.setVelX(0);
+                gamePanel.player.setVelX(0);
+
             }
 
-            keyChain.remove(keyChain.indexOf(releasedKey));
-
-            System.out.println(keyChain);
+            keyChain.remove((Integer) releasedKey);
         }
     }
 }

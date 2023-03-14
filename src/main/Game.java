@@ -1,22 +1,22 @@
 package main;
 
-import javax.swing.*;
+import audio.Audio;
 
 // Класс игры
 public class Game implements Runnable {
 
-    private GameWindow gameWindow;
-    private GamePanel gamePanel;
-    private Thread gameThread;
-    private final int fps_set = 60;
+    private final GamePanel gamePanel;
 
     public Game() {
 
+        Audio audio = new Audio();
+        audio.soundtrack();
+
         gamePanel = new GamePanel(); // Инициализация Контейнера
-        gameWindow = new GameWindow(gamePanel); // Инициализация объекта окна
         gamePanel.setFocusable(true); // Позволяет "захватить" экран
         gamePanel.requestFocus(); // Запрашивает захват экрана для ввода
-        //gamePanel.setBounds(0, 0, GameWindow.width, GameWindow.height);
+        GameWindow gameWindow = new GameWindow(gamePanel);
+        run();
         StartGameThread();
 
     }
@@ -24,7 +24,7 @@ public class Game implements Runnable {
 
     private void StartGameThread() {
 
-        gameThread = new Thread(this);
+        Thread gameThread = new Thread(this);
         gameThread.start();
 
     }
@@ -32,7 +32,8 @@ public class Game implements Runnable {
 
     public void run() {
 
-        double timePerFrame = 1000000000.0 / fps_set;
+        int fpsSet = 60;
+        double timePerFrame = 1000000000.0 / fpsSet;
         long lastFrame = System.nanoTime();
         long now = System.nanoTime();
 

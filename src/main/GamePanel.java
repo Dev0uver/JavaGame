@@ -1,5 +1,9 @@
 package main;
 
+import audio.Audio;
+import entities.Bullet;
+import entities.Enemy;
+import entities.Player;
 import inputs.KeyboardInputs;
 
 import java.awt.*;
@@ -11,53 +15,43 @@ import javax.swing.*;
 
 // Класс контейнера элементов
 public class GamePanel extends JPanel {
-    // Переменные для теста движения (!Убрать позже)
-    private final int rectSize = 100;
-    private float moveX = 0;
-    private float moveY = 0;
-    private float dirX = 2f;
-    private float dirY = 2f;
 
-    // начальные координаты игрока
-    private float rectX = (float) ((GameWindow.width / 2) - rectSize / 2);
-    private final float rectY = (float) (GameWindow.height - 150);
+    public Player player = new Player();
 
-    // скорость перемещения
-    private float velX;
+    // Для движения врагов
+    private boolean direction = true;
 
     // Объекты
-    private final List<Bullet> bulletList = new ArrayList<Bullet>();
+    private final List<Bullet> bulletList = new ArrayList<>();
+    private final List<Enemy> enemyList = new ArrayList<>();
 
+    private Audio audio = new Audio();
 
-    public void AddBullet () {
-        Bullet bullet = new Bullet();
+    public void CreateBullet() {
 
-        bullet.x = (rectX + (rectSize / 2)) - (bullet.bulletWidth / 2);
-        bullet.y = rectY;
-
+        Bullet bullet = new Bullet(player.rectX, player.rectY, player.playerWidth);
         bulletList.add(bullet);
+        audio.shot();
     }
 
-    // set для velX
-    public void setVelX(float velX) {
+    public void AddEnemy (int count, int row) {
 
-        this.velX = velX;
+        int sector = 120;
 
+        for (int number = 0; number < count; number++) {
+
+            Enemy enemy = new Enemy(sector, number, row);
+            enemyList.add(enemy);
+        }
     }
+
 
     // Конструктор класса
     public GamePanel() {
 
         addKeyListener(new KeyboardInputs(this));
-
     }
 
-    // Изменение координаты x игрока
-    public void MovePlayer() {
-
-        rectX += velX;
-
-    }
 
     // Объект и метод для рисования (!Заменить на спрайты)
     public void paintComponent(Graphics graphics) {
@@ -65,55 +59,121 @@ public class GamePanel extends JPanel {
         // Метод очистки окна и отрисовки новых объектов
         super.paintComponent(graphics);
 
-        if (bulletList != null){
-            synchronized (bulletList) {
-                for (Bullet b : bulletList){
-                    // Отрисовка
-                    graphics.setColor(Color.red);
-                    graphics.fillOval((int) b.x, (int) b.y - 30, (int) b.bulletWidth, (int)b.bulletHeight);
-                }
-                MoveBullet();
+        if (enemyList.size() == 0) {
+            // Количество врагов в 1 строке
+            int row = 10;
+            // Количество врагов на поле
+            int count = 30;
+            AddEnemy(count, row);
+        }
+        else {
+            for (Enemy enemy : enemyList) {
+                enemy.PaintEnemy(graphics);
             }
-
+            MoveEnemy();
         }
 
-        // Квадрантик
-        graphics.setColor(Color.black);
-        graphics.fillRect( (int) rectX, (int) rectY, rectSize, rectSize);
-        MovePlayer();
+        if (bulletList != null) {
 
-        // Движущийся сам по себе квадрантик (!Убрать позже)
-        graphics.setColor(Color.green);
-        graphics.fillRect( (int) moveX, (int) moveY, 50, 50);
-        MoveRect();
-    }
+            synchronized (bulletList) {
 
-
-    // Метод проверки цикла и движения (!Убрать позже)
-    private void MoveRect() {
-
-        moveX += dirX;
-        if (moveX > GameWindow.width || moveX < 0) {
-
-            dirX *= -1;
-
-        }
-
-        moveY += dirY;
-        if (moveY > GameWindow.height || moveY < 0) {
-
-            dirY *= -1;
-
-        }
-    }
-
-    private void MoveBullet() {
-        synchronized (bulletList) {
-            for (int i = 0; i < bulletList.size(); i++){
-                bulletList.get(i).y -= 8f;
-                if (bulletList.get(i).y <= 0 - bulletList.get(i).bulletHeight){
-                    bulletList.remove(bulletList.get(i));
+                for (Bullet bullet : bulletList) {
+                    // Отрисовка
+                    bullet.PaintBullet(graphics);
+                    bullet.MoveBullet();
                 }
+                CheckTopReach();
+                CheckEnemyCollision();
+            }
+        }
+
+        // Отрисовка и движение игрока
+        player.PaintPlayer(graphics);
+        player.MovePlayer();
+    }
+
+
+    private void CheckTopReach() {
+
+        synchronized (bulletList) {
+
+            for (int i = 0; i < bulletList.size(); i++) {
+
+                if (bulletList.get(i).y <= -bulletList.get(i).height) {
+
+                    bulletList.remove(i);
+                }
+            }
+        }
+    }
+
+
+    // Коллизия
+    private void CheckEnemyCollision() {
+        if (bulletList != null && enemyList != null) {
+            for (int i = 0; i < bulletList.size(); i++) {
+
+                // позиция и размеры снаряда
+                float bulletX = bulletList.get(i).x;
+                float bulletY = bulletList.get(i).y;
+                int bulletWidth = bulletList.get(i).width;
+                int bulletHeight = bulletList.get(i).height;
+
+                for (int j = 0; j < enemyList.size(); j ++) {
+                    // позиция и размеры пришельца
+                    float enemyX = enemyList.get(j).xPosition;
+                    float enemyY = enemyList.get(j).yPosition;
+                    int enemyWidth = enemyList.get(j).width;
+                    int enemyHeight = enemyList.get(j).height;
+
+                    // проверка столкновения снаряда и пришельца и их удаление в случае подтверждения
+                    if ( bulletX + bulletWidth >= enemyX
+                            && bulletX <= enemyX + enemyWidth
+                            && bulletY >= enemyY
+                            && bulletY - bulletHeight <= enemyY + enemyHeight ) {
+                        enemyList.remove(j);
+                        bulletList.remove(i);
+                        audio.kill();
+                    }
+                }
+            }
+        }
+    }
+
+    private void MoveEnemy() {
+        // !! Управление врагами происходит из переменных описанных выше !!
+        boolean down = false;
+        for (int i = 0; i < enemyList.size(); i++){
+            // Проверка достижения правого края
+            if (enemyList.get(i).xPosition + enemyList.get(i).width >= GameWindow.width) {
+                // Означает что надо двигать впараво
+                direction = false;
+                // Означает что надо двигать вниз
+                down = true;
+            }
+            // Проверка достижения левого края
+            if (enemyList.get(i).xPosition <= 0) {
+                direction = true;
+                down = true;
+            }
+            // Проверка не вышли ли враги за нижнюю границу
+            if (enemyList.get(i).yPosition >= GameWindow.height - player.playerHeight - 120) {
+                enemyList.remove(enemyList.get(i));
+            }
+        }
+        // Перемещение вниз при достижении края
+        if (down) {
+            for (Enemy enemy : enemyList) {
+                enemy.yPosition += enemy.jumpDown;
+            }
+        }
+        // Движение вправо или влево
+        for (Enemy enemy : enemyList) {
+            if (direction) {
+                enemy.xPosition += enemy.speed;
+            }
+            else {
+                enemy.xPosition -= enemy.speed;
             }
         }
     }

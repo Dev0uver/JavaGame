@@ -7,6 +7,7 @@ public class Game implements Runnable {
 
     private final GamePanel gamePanel;
 
+
     public Game() {
 
         Audio audio = new Audio();
@@ -16,10 +17,18 @@ public class Game implements Runnable {
         gamePanel.setFocusable(true); // Позволяет "захватить" экран
         gamePanel.requestFocus(); // Запрашивает захват экрана для ввода
         GameWindow gameWindow = new GameWindow(gamePanel);
+
         run();
-        StartGameThread();
+
+
+        //StartGameThread();
+
+
+
 
     }
+
+
 
 
     private void StartGameThread() {

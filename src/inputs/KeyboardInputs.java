@@ -1,6 +1,7 @@
 package inputs;
 
 import main.GamePanel;
+import main.Menu;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -10,7 +11,9 @@ import java.util.List;
 // Класс обрабочика нажатий
 public class KeyboardInputs implements KeyListener {
     private final GamePanel gamePanel; // Экземпляр контейнера для вызова методов
+
     private long lastCheck;
+
 
     // все нажатые кнопки (в данный момент)
     public static final List<Integer> keyChain = new ArrayList<>();
@@ -39,8 +42,8 @@ public class KeyboardInputs implements KeyListener {
 
         if (isPressed(KeyEvent.VK_SPACE)) {
             if (System.currentTimeMillis() - lastCheck >= 300) {
-                    gamePanel.CreateBullet();
-                    lastCheck = System.currentTimeMillis();
+                gamePanel.CreateBullet();
+                lastCheck = System.currentTimeMillis();
             }
         }
 
@@ -50,6 +53,9 @@ public class KeyboardInputs implements KeyListener {
 
         if (keyChain.contains(KeyEvent.VK_D)) {
             gamePanel.player.setVelX(10f);
+        }
+        if (pressedKey == KeyEvent.VK_D) {
+           gamePanel.pause();
         }
     }
 
@@ -70,4 +76,5 @@ public class KeyboardInputs implements KeyListener {
             keyChain.remove((Integer) releasedKey);
         }
     }
+
 }

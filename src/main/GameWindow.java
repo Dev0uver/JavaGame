@@ -12,6 +12,8 @@ public class GameWindow {
 
 
 
+
+
     // Создание игрового окна
     public GameWindow(GamePanel gamePanel) {
 

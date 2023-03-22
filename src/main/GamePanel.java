@@ -5,10 +5,9 @@ import entities.Bullet;
 import entities.Enemy;
 import entities.Player;
 import inputs.KeyboardInputs;
+import buttons.*;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,25 +22,24 @@ public class GamePanel extends JPanel {
     // Для движения врагов
     private boolean direction = true;
 
+    public boolean pauseFlag = true; // флаг установки на паузу
+
     // Объекты
     private final List<Bullet> bulletList = new ArrayList<>();
     private final List<Enemy> enemyList = new ArrayList<>();
 
-    // Создание меню
-    private Menu menu = new Menu();
-    //
-    private Audio audio = new Audio();
+    public List<buttons> buttonsList = new ArrayList<>(); // массив кнопок
+
+    private final Audio audio = new Audio();
 
 
 
-    public void pause(){
-        menu.mainMenu(this);
+    public void pause() { // установка флага паузы
+        pauseFlag = true;
+    }
 
-
-        }
 
     public void CreateBullet() {
-        pause();
 
         Bullet bullet = new Bullet(player.rectX, player.rectY, player.playerWidth);
         bulletList.add(bullet);
@@ -63,8 +61,6 @@ public class GamePanel extends JPanel {
 
     // Конструктор класса
     public GamePanel() {
-        pause(); // кнопка
-
         addKeyListener(new KeyboardInputs(this));
     }
 
@@ -106,6 +102,7 @@ public class GamePanel extends JPanel {
         // Отрисовка и движение игрока
         player.PaintPlayer(graphics);
         player.MovePlayer();
+
     }
 
 

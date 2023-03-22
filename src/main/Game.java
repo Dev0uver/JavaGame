@@ -18,10 +18,10 @@ public class Game implements Runnable {
         gamePanel.requestFocus(); // Запрашивает захват экрана для ввода
         GameWindow gameWindow = new GameWindow(gamePanel);
 
-        run();
+        //run();
 
-
-        //StartGameThread();
+        // запуск потока игры
+        StartGameThread();
 
 
 
@@ -54,9 +54,29 @@ public class Game implements Runnable {
             now = System.nanoTime();
             if (now - lastFrame >= timePerFrame) {
 
+                // приостановка потока gameThread
+                synchronized (gamePanel) {
+                    if (gamePanel.pauseFlag) {
+                        Thread menu = new Thread(new Menu(gamePanel)); // запуск потока Menu
+                        menu.start();
+                        synchronized (gamePanel) { // синхронизация потоков
+                            try {
+                                gamePanel.wait(); // установка потока в ожидание
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+
+                            gamePanel.buttonsList.clear(); // очистка списка кнопок
+                        }
+                    }
+                }
+
                 gamePanel.repaint();
-                lastFrame = now;
-                frames++;
+
+
+                    lastFrame = now;
+                    frames++;
+
 
             }
 

@@ -1,7 +1,6 @@
 package inputs;
 
 import main.GamePanel;
-import main.Menu;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -54,7 +53,7 @@ public class KeyboardInputs implements KeyListener {
         if (keyChain.contains(KeyEvent.VK_D)) {
             gamePanel.player.setVelX(10f);
         }
-        if (pressedKey == KeyEvent.VK_D) {
+        if (pressedKey == KeyEvent.VK_ESCAPE) {
            gamePanel.pause();
         }
     }

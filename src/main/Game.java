@@ -18,13 +18,13 @@ public class Game implements Runnable {
         gamePanel.requestFocus(); // Запрашивает захват экрана для ввода
         GameWindow gameWindow = new GameWindow(gamePanel);
 
+        //Thread menu = new Thread(new Menu(gamePanel)); // запуск потока Menu
+        //menu.start();
         //run();
 
         // запуск потока игры
         StartGameThread();
-
-
-
+        gamePanel.pause();
 
     }
 
@@ -83,7 +83,7 @@ public class Game implements Runnable {
             if (System.currentTimeMillis() - lastCheck >= 1000) {
 
                 lastCheck = System.currentTimeMillis();
-//                System.out.println("FPS: " + frames);
+                //System.out.println("FPS: " + frames);
                 frames = 0;
 
             }

@@ -18,7 +18,7 @@ public class Enemy {
         int numOfSector = (number + 1) % row;
 
         xPosition = (sector * numOfSector);
-        yPosition =  (number / row) * (height + 10);
+        yPosition =  (number / row) * (height + 10) + 100;
     }
 
     public void PaintEnemy(Graphics graphics) {

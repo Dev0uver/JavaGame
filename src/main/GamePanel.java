@@ -1,5 +1,6 @@
 package main;
 
+import GUI.Score;
 import audio.Audio;
 import entities.Bullet;
 import entities.Enemy;
@@ -8,6 +9,7 @@ import inputs.KeyboardInputs;
 import buttons.*;
 
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,13 +30,16 @@ public class GamePanel extends JPanel {
     private final List<Bullet> bulletList = new ArrayList<>();
     private final List<Enemy> enemyList = new ArrayList<>();
 
-    public List<buttons> buttonsList = new ArrayList<>(); // массив кнопок
+    public List<Buttons> buttonsList = new ArrayList<>(); // массив кнопок
 
     private final Audio audio = new Audio();
+
+    private final Score score = new Score();
 
 
 
     public void pause() { // установка флага паузы
+
         pauseFlag = true;
     }
 
@@ -61,6 +66,7 @@ public class GamePanel extends JPanel {
 
     // Конструктор класса
     public GamePanel() {
+
         addKeyListener(new KeyboardInputs(this));
     }
 
@@ -72,6 +78,11 @@ public class GamePanel extends JPanel {
         super.paintComponent(graphics);
 
         if (enemyList.size() == 0) {
+            try {
+                Score.saveHighScore();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             // Количество врагов в 1 строке
             int row = 10;
             // Количество врагов на поле
@@ -82,7 +93,11 @@ public class GamePanel extends JPanel {
             for (Enemy enemy : enemyList) {
                 enemy.PaintEnemy(graphics);
             }
-            MoveEnemy();
+            try {
+                MoveEnemy();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         if (bulletList != null) {
@@ -103,6 +118,8 @@ public class GamePanel extends JPanel {
         player.PaintPlayer(graphics);
         player.MovePlayer();
 
+        score.PaintScore(graphics);
+        Score.PaintHighScore(graphics);
     }
 
 
@@ -147,13 +164,14 @@ public class GamePanel extends JPanel {
                         enemyList.remove(j);
                         bulletList.remove(i);
                         audio.kill();
+                        Score.score++;
                     }
                 }
             }
         }
     }
 
-    private void MoveEnemy() {
+    private void MoveEnemy() throws IOException {
         // !! Управление врагами происходит из переменных описанных выше !!
         boolean down = false;
         for (int i = 0; i < enemyList.size(); i++){
@@ -172,6 +190,8 @@ public class GamePanel extends JPanel {
             // Проверка не вышли ли враги за нижнюю границу
             if (enemyList.get(i).yPosition >= GameWindow.height - player.playerHeight - 120) {
                 enemyList.remove(enemyList.get(i));
+                Score.score = 0;
+                Score.saveHighScore();
             }
         }
         // Перемещение вниз при достижении края

@@ -52,16 +52,16 @@ public class Menu implements Runnable {
 //
 //                    Component[] components = gamePanel.getComponents();
 
-        Dimension size = Toolkit.getDefaultToolkit().getScreenSize(); // получение размеров окна
-        int xPos = (int) size.getWidth() / 2;
-        int yPos = (int) size.getHeight() / 2;
+        // получение размеров окна
+        int xPos = (int) GameWindow.size.getWidth() / 2;
+        int yPos = (int) GameWindow.size.getHeight() / 2;
         try {
             Thread.sleep(10);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        buttons play = new playButton(xPos, yPos, gamePanel); // создание кнопки "Играть"
-        buttons exit = new exitButton(xPos, yPos + 70, gamePanel); // создание кнопки "Выход"
+        Buttons play = new PlayButton(xPos, yPos, gamePanel); // создание кнопки "Играть"
+        Buttons exit = new ExitButton(xPos, yPos + 70, gamePanel); // создание кнопки "Выход"
         gamePanel.buttonsList.add(play);
         gamePanel.buttonsList.add(exit);
         play.paintButton(gamePanel.getGraphics()); // отрисовка кнопок
@@ -71,12 +71,8 @@ public class Menu implements Runnable {
 
 
     public Menu(GamePanel gamePanel){
+
         this.gamePanel = gamePanel;
-
-
     }
-
-
-
 }
 

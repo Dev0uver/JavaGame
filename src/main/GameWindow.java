@@ -1,11 +1,12 @@
 package main;
 
-import buttons.buttons;
+import buttons.Buttons;
 
 import javax.swing.JFrame;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 
 // Класс игрового окна
 public class GameWindow {
@@ -34,6 +35,10 @@ public class GameWindow {
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setLocationRelativeTo(null);
 
+
+
+        frame.add(gamePanel);
+
         frame.addMouseListener(new MouseAdapter() { // добавление слушателя
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -41,15 +46,17 @@ public class GameWindow {
                 int x =  e.getX(); // получение координат нажатия
                 int y =  e.getY();
                 if (gamePanel.buttonsList != null){ // проверка на попадание по кнопке
-                        for (buttons button: gamePanel.buttonsList){
+                    for (Buttons button: gamePanel.buttonsList){
+                        try {
                             button.onHit(x,y);
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
                     }
                 }
             }
 
         });
-
-        frame.add(gamePanel);
 
         frame.setVisible(true);
 

@@ -3,8 +3,9 @@ package buttons;
 import main.GamePanel;
 
 import java.awt.*;
+import java.io.IOException;
 
-public abstract class buttons {
+public abstract class Buttons {
     public final GamePanel gamePanel;
     public Font font = new Font("Courier", Font.BOLD, 40); // объявление шрифта
     public int xPosition; // позиция кнопки на экране
@@ -12,10 +13,11 @@ public abstract class buttons {
     public int width = 250; // размеры кнопки
     public int height = 50;
 
-    public abstract void paintButton(Graphics g);
+    public abstract void paintButton(Graphics graphics);
 
-    public abstract void onHit(int x, int y);
-    public buttons(int xPosition, int yPosition, GamePanel gamePanel){
+    public abstract void onHit(int x, int y) throws IOException;
+    public Buttons(int xPosition, int yPosition, GamePanel gamePanel) {
+
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.gamePanel = gamePanel;

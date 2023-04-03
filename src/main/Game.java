@@ -1,6 +1,9 @@
 package main;
 
+import GUI.Score;
 import audio.Audio;
+
+import java.io.FileNotFoundException;
 
 // Класс игры
 public class Game implements Runnable {
@@ -49,6 +52,12 @@ public class Game implements Runnable {
         int frames = 0;
         long lastCheck = System.currentTimeMillis();
 
+        try {
+            Score.InitScore();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
         while (true) {
 
             now = System.nanoTime();
@@ -73,10 +82,8 @@ public class Game implements Runnable {
 
                 gamePanel.repaint();
 
-
                     lastFrame = now;
                     frames++;
-
 
             }
 

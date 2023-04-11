@@ -149,7 +149,7 @@ public class GamePanel extends JPanel {
                 int bulletWidth = bulletList.get(i).width;
                 int bulletHeight = bulletList.get(i).height;
 
-                for (int j = 0; j < enemyList.size(); j ++) {
+                for (int j = 0; j < enemyList.size(); j++) {
                     // позиция и размеры пришельца
                     float enemyX = enemyList.get(j).xPosition;
                     float enemyY = enemyList.get(j).yPosition;

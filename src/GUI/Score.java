@@ -38,26 +38,22 @@ public class Score {
             data = reader.nextLine();
         }
 
-        assert data != null;
-        highScore = Long.parseLong(data);
+        if (data != null) {
+            highScore = Long.parseLong(data);
+        }
 
         reader.close();
     }
 
     public void PaintScore(Graphics graphics) {
+        graphics.setFont(font);
 
-        Font resetFont = graphics.getFont();
-        //graphics.drawLine(100, 100, 150, 150);
-        //graphics.setFont(font);
-
-        graphics.drawString("Score: " + String.valueOf(score), xPosition - 50, 40);
-        graphics.setFont(resetFont);
-        //graphics.drawString("Score: ", xPosition - 35, yPosition + 30);
+        graphics.drawString("Score: " + score, xPosition - 50, 40);
     }
 
     public static void PaintHighScore(Graphics graphics) {
-        //graphics.setFont(font);
-        graphics.drawString("HighScore: " + String.valueOf(highScore), (int) (GameWindow.size.getWidth() / 2), 40);
+        graphics.setFont(font);
+        graphics.drawString("HighScore: " + highScore, (int) (GameWindow.size.getWidth() / 2), 40);
     }
 
     public static void saveHighScore() throws IOException {

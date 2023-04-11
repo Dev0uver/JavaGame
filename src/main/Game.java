@@ -13,8 +13,6 @@ public class Game implements Runnable {
 
     public Game() {
 
-        Audio audio = new Audio();
-        audio.soundtrack();
 
         gamePanel = new GamePanel(); // Инициализация Контейнера
         gamePanel.setFocusable(true); // Позволяет "захватить" экран
@@ -24,6 +22,19 @@ public class Game implements Runnable {
         //Thread menu = new Thread(new Menu(gamePanel)); // запуск потока Menu
         //menu.start();
         //run();
+
+        Audio audio = new Audio();
+        audio.soundtrack();
+        Score score = new Score();
+
+        try {
+            Score.InitScore();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        score.PaintScore(gamePanel.getGraphics());
+        Score.PaintHighScore(gamePanel.getGraphics());
 
         // запуск потока игры
         StartGameThread();
@@ -52,11 +63,6 @@ public class Game implements Runnable {
         int frames = 0;
         long lastCheck = System.currentTimeMillis();
 
-        try {
-            Score.InitScore();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
 
         while (true) {
 

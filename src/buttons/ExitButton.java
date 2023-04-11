@@ -9,7 +9,7 @@ import java.io.IOException;
 public class ExitButton extends Buttons {
 
     public void onHit(int x, int y) throws IOException {
-        if (((xPosition <= x) & (x <= xPosition + width)) & ((yPosition <= y) & (y <= yPosition + height))) {
+        if (((xPosition - width / 2 <= x) & (x <= xPosition + width)) & ((yPosition <= y) & (y <= yPosition + height))) {
             Score.saveHighScore();
             System.exit(0);
         }

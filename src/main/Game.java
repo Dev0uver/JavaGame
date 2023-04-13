@@ -43,8 +43,6 @@ public class Game implements Runnable {
     }
 
 
-
-
     private void StartGameThread() {
 
         Thread gameThread = new Thread(this);
@@ -56,20 +54,35 @@ public class Game implements Runnable {
     public void run() {
 
         int fpsSet = 60;
+        int upsSet = 200;
         double timePerFrame = 1000000000.0 / fpsSet;
-        long lastFrame = System.nanoTime();
-        long now = System.nanoTime();
+        double timePerUpdate = 1000000000.0 / upsSet;
+
+        long previousTime = System.nanoTime();
 
         int frames = 0;
+        int updates = 0;
         long lastCheck = System.currentTimeMillis();
+
+        double deltaUpd = 0;
+        double deltaFps = 0;
 
 
         while (true) {
 
-            now = System.nanoTime();
-            if (now - lastFrame >= timePerFrame) {
+            long currentTime = System.nanoTime();
 
-                // приостановка потока gameThread
+            deltaUpd += (currentTime - previousTime) / timePerUpdate;
+            deltaFps += (currentTime - previousTime) / timePerFrame;
+            previousTime = currentTime;
+
+            if (deltaUpd >= 1) {
+                //update();
+                updates++;
+                deltaUpd--;
+            }
+
+            if (deltaFps >= 1) {
                 synchronized (gamePanel) {
                     if (gamePanel.pauseFlag) {
                         Thread menu = new Thread(new Menu(gamePanel)); // запуск потока Menu
@@ -85,20 +98,18 @@ public class Game implements Runnable {
                         }
                     }
                 }
-
                 gamePanel.repaint();
-
-                    lastFrame = now;
-                    frames++;
-
+                frames++;
+                deltaFps--;
             }
+
 
             if (System.currentTimeMillis() - lastCheck >= 1000) {
 
                 lastCheck = System.currentTimeMillis();
-                //System.out.println("FPS: " + frames);
+                System.out.println("FPS: " + frames + " | " + "Updates: " + updates);
                 frames = 0;
-
+                updates = 0;
             }
         }
     }

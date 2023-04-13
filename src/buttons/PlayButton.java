@@ -17,7 +17,7 @@ public class PlayButton extends Buttons {
 
     @Override
     public void onHit(int x, int y) {
-        if (((xPosition - width / 2 <= x) & (x <=xPosition + width)) & ((yPosition <= y) & (y <= yPosition + height))){
+        if (((xPosition - width / 2 <= x) & (x <= xPosition - width / 2 + width)) & ((yPosition <= y) & (y <= yPosition + height))){
             synchronized (gamePanel) {
                 gamePanel.notify(); // снятие потока с ожидания
             }

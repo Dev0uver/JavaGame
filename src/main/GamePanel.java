@@ -9,17 +9,22 @@ import inputs.KeyboardInputs;
 import buttons.*;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 // Класс контейнера элементов
 public class GamePanel extends JPanel {
 
     public Player player = new Player();
+
+    private BufferedImage backgroundSprite;
 
     // Для движения врагов
     private boolean direction = true;
@@ -36,7 +41,7 @@ public class GamePanel extends JPanel {
 
     private final Score score = new Score();
 
-
+    //private final Background background = new Background();
 
     public void pause() { // установка флага паузы
 
@@ -48,7 +53,7 @@ public class GamePanel extends JPanel {
 
         Bullet bullet = new Bullet(player.rectX, player.rectY, player.playerWidth);
         bulletList.add(bullet);
-        audio.shot();
+        //audio.shot();
     }
 
     public void AddEnemy (int count, int row) {
@@ -63,11 +68,16 @@ public class GamePanel extends JPanel {
     }
 
 
-
     // Конструктор класса
     public GamePanel() {
 
+        setPanelSize();
         addKeyListener(new KeyboardInputs(this));
+    }
+
+    private void setPanelSize() {
+
+        setPreferredSize(GameWindow.size);
     }
 
 
@@ -76,6 +86,8 @@ public class GamePanel extends JPanel {
 
         // Метод очистки окна и отрисовки новых объектов
         super.paintComponent(graphics);
+
+        PaintBackground(graphics);
 
         if (enemyList.size() == 0) {
             try {
@@ -122,6 +134,20 @@ public class GamePanel extends JPanel {
         Score.PaintHighScore(graphics);
     }
 
+    public void PaintBackground(Graphics graphics) {
+
+        InputStream inputStream = getClass().getResourceAsStream("/Assets/Sprites/background.png");
+        try {
+            if (inputStream != null) {
+                backgroundSprite = ImageIO.read(inputStream);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        graphics.drawImage(backgroundSprite, 0, 0, 1920, 1080, null);
+    }
+
 
     private void CheckTopReach() {
 
@@ -163,7 +189,7 @@ public class GamePanel extends JPanel {
                             && bulletY - bulletHeight <= enemyY + enemyHeight ) {
                         enemyList.remove(j);
                         bulletList.remove(i);
-                        audio.kill();
+                        //audio.kill();
                         Score.score++;
                     }
                 }
@@ -176,7 +202,7 @@ public class GamePanel extends JPanel {
         boolean down = false;
         for (int i = 0; i < enemyList.size(); i++){
             // Проверка достижения правого края
-            if (enemyList.get(i).xPosition + enemyList.get(i).width >= GameWindow.width) {
+            if (enemyList.get(i).xPosition + enemyList.get(i).width >= GameWindow.size.getWidth()) {
                 // Означает что надо двигать впараво
                 direction = false;
                 // Означает что надо двигать вниз
@@ -188,7 +214,7 @@ public class GamePanel extends JPanel {
                 down = true;
             }
             // Проверка не вышли ли враги за нижнюю границу
-            if (enemyList.get(i).yPosition >= GameWindow.height - player.playerHeight - 120) {
+            if (enemyList.get(i).yPosition >= GameWindow.size.getHeight() - player.playerHeight - 120) {
                 enemyList.remove(enemyList.get(i));
                 Score.score = 0;
                 Score.saveHighScore();

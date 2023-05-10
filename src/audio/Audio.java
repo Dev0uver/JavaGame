@@ -6,9 +6,9 @@ import java.io.IOException;
 import javax.sound.sampled.*;
 
 public class Audio {
-    public String sound = "Assets//Audio//1-01-Dark-Souls-III.wav"; // путь к файлу с фоновой музыкой
-    private String shot = "Assets/Audio/HAN02.wav"; // путь к файлу со звуком выстрела
-    private String kill = "Assets/Audio/r2d2_scream_converted.wav"; // путь к файлу со звуком смерти пришельца
+    public String sound = "src/Assets/Audio/1-01-Dark-Souls-III.wav"; // путь к файлу с фоновой музыкой
+    private String shot = "src/Assets/Audio/HAN02.wav"; // путь к файлу со звуком выстрела
+    private String kill = "src/Assets/Audio/r2d2_scream_converted.wav"; // путь к файлу со звуком смерти пришельца
     private Clip clip;
     public void soundtrack() {
 

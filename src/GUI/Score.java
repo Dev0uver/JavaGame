@@ -15,7 +15,7 @@ public class Score {
 
     public static long score = 0;
 
-    public static final Path relativePath = Paths.get("Assets/HighScore.txt");
+    public static final Path relativePath = Paths.get("src/Assets/HighScore.txt");
     public static final File scoreFile = new File(relativePath.toUri());
     private static long highScore;
 
@@ -47,13 +47,14 @@ public class Score {
 
     public void PaintScore(Graphics graphics) {
         graphics.setFont(font);
-
+        graphics.setColor(Color.WHITE);
         graphics.drawString("Score: " + score, xPosition - 50, 40);
     }
 
     public static void PaintHighScore(Graphics graphics) {
         graphics.setFont(font);
-        graphics.drawString("HighScore: " + highScore, (int) (GameWindow.size.getWidth() / 2), 40);
+        graphics.setColor(Color.WHITE);
+        graphics.drawString("HighScore: " + highScore, (int) (GameWindow.size.getWidth() / 2) - 100, 40);
     }
 
     public static void saveHighScore() throws IOException {

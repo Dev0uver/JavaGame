@@ -12,17 +12,14 @@ import java.io.IOException;
 public class GameWindow {
 
     public static Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-    public static int width = (int)size.getWidth();
-    public static int height = (int)size.getHeight();
+    public static int width = size.width;
+    public static int height = size.height;
 
 
 
     // Создание игрового окна
     public GameWindow(GamePanel gamePanel) {
 
-        //GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        //DisplayMode newMode = new DisplayMode(width, height, 32, 60);
-        //device.setDisplayMode(newMode);
 
         JFrame frame = new JFrame("Space Invaders");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -30,11 +27,9 @@ public class GameWindow {
         frame.setUndecorated(true);
         frame.setResizable(false);
         //frame.getContentPane().add(gamePanel);
-        //frame.pack();
-        frame.setSize(width, height);
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setLocationRelativeTo(null);
 
+        //frame.setSize(width, height);
+        //frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
 
         frame.add(gamePanel);
@@ -48,7 +43,7 @@ public class GameWindow {
                 if (gamePanel.buttonsList != null){ // проверка на попадание по кнопке
                     for (Buttons button: gamePanel.buttonsList){
                         try {
-                            button.onHit(x,y);
+                            button.onHit(x, y);
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }
@@ -58,6 +53,8 @@ public class GameWindow {
 
         });
 
+        frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
     }

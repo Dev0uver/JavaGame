@@ -15,7 +15,6 @@ public class ExitButton extends Buttons {
         }
     }
 
-
     public void paintButton(Graphics graphics) { // отрисовка кнопки
         graphics.setColor(Color.lightGray);
         graphics.fillRect(xPosition - width / 2, yPosition, width, height);

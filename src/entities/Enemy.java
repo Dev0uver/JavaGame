@@ -1,11 +1,17 @@
 package entities;
 
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class Enemy {
-    public int height = 50;
-    public int width = 100;
+    public int height;
+    public int width;
+
+    private BufferedImage enemySprite;
     public float xPosition;
     public float yPosition;
 
@@ -15,6 +21,11 @@ public class Enemy {
 
     public Enemy(int sector, int number, int row) {
 
+        ImportSprite();
+
+        width = enemySprite.getWidth();
+        height = enemySprite.getHeight();
+
         int numOfSector = (number + 1) % row;
 
         xPosition = (sector * numOfSector);
@@ -23,7 +34,19 @@ public class Enemy {
 
     public void PaintEnemy(Graphics graphics) {
 
-        graphics.setColor(Color.red);
-        graphics.fillRect((int) xPosition, (int) yPosition, width, height);
+        graphics.drawImage(enemySprite, (int) xPosition, (int) yPosition,null);
+    }
+
+    private void ImportSprite() {
+
+        InputStream inputStream = getClass().getResourceAsStream("/Assets/Sprites/Enemy.png");
+        try {
+            if (inputStream != null) {
+                enemySprite = ImageIO.read(inputStream);
+            }
+        }
+        catch (IOException e) {
+            throw new RuntimeException();
+        }
     }
 }

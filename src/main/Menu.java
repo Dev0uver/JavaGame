@@ -55,11 +55,7 @@ public class Menu implements Runnable {
         // получение размеров окна
         int xPos = (int) GameWindow.size.getWidth() / 2;
         int yPos = (int) GameWindow.size.getHeight() / 2;
-        try {
-            Thread.sleep(10);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+
         Buttons play = new PlayButton(xPos, yPos, gamePanel); // создание кнопки "Играть"
         Buttons exit = new ExitButton(xPos, yPos + 70, gamePanel); // создание кнопки "Выход"
         gamePanel.buttonsList.add(play);

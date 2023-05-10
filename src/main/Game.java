@@ -11,14 +11,13 @@ public class Game implements Runnable {
     private final GamePanel gamePanel;
 
 
-    public Game() {
+    public Game() throws InterruptedException {
 
 
         gamePanel = new GamePanel(); // Инициализация Контейнера
         gamePanel.setFocusable(true); // Позволяет "захватить" экран
         gamePanel.requestFocus(); // Запрашивает захват экрана для ввода
         GameWindow gameWindow = new GameWindow(gamePanel);
-
         //Thread menu = new Thread(new Menu(gamePanel)); // запуск потока Menu
         //menu.start();
         //run();
@@ -35,10 +34,11 @@ public class Game implements Runnable {
 
         score.PaintScore(gamePanel.getGraphics());
         Score.PaintHighScore(gamePanel.getGraphics());
+        gamePanel.repaint();
 
         // запуск потока игры
         StartGameThread();
-        gamePanel.pause();
+        Thread.sleep(Long.MAX_VALUE);
 
     }
 

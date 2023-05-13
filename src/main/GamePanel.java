@@ -1,6 +1,6 @@
 package main;
 
-import GUI.Score;
+import  GUI.Score;
 import audio.Audio;
 import entities.Bullet;
 import entities.Enemy;
@@ -11,7 +11,6 @@ import buttons.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,11 +36,7 @@ public class GamePanel extends JPanel {
 
     public List<Buttons> buttonsList = new ArrayList<>(); // массив кнопок
 
-    private final Audio audio = new Audio();
-
     private final Score score = new Score();
-
-    //private final Background background = new Background();
 
     public void pause() { // установка флага паузы
 
@@ -53,7 +48,7 @@ public class GamePanel extends JPanel {
 
         Bullet bullet = new Bullet(player.rectX, player.rectY, Player.playerWidth);
         bulletList.add(bullet);
-        audio.shot();
+        Audio.Shot();
     }
 
     public void AddEnemy (int count, int row) {
@@ -173,10 +168,11 @@ public class GamePanel extends JPanel {
                             && bulletX <= enemyX + Enemy.width
                             && bulletY >= enemyY
                             && bulletY - Bullet.height <= enemyY + Enemy.height ) {
+
+                        enemyList.get(j).Death();
                         enemyList.remove(j);
                         bulletList.remove(i);
-                        audio.kill();
-                        Score.score++;
+
                     }
                 }
             }

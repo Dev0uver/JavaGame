@@ -1,11 +1,8 @@
 package entities;
 
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 
 public class Bullet {
 
@@ -28,7 +25,6 @@ public class Bullet {
 
     public void PaintBullet(Graphics graphics) {
 
-        //graphics.setColor(Color.green);
         graphics.drawImage(bulletSprite, (int) x,(int) y - 30, null);
     }
     public void MoveBullet() {

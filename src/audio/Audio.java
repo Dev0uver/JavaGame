@@ -9,7 +9,7 @@ public class Audio {
     private static Clip clip;
 
     public static File soundtrack = new File("src/Assets/Audio/1-01-Dark-Souls-III.wav");
-    public static File shotSound = new File("src/Assets/Audio/HAN02.wav");;
+    public static File shotSound = new File("src/Assets/Audio/HAN02.wav");
     public static File deathSound = new File("src/Assets/Audio/r2d2_scream_converted.wav");
 
 

@@ -20,8 +20,7 @@ public class Game implements Runnable {
         gamePanel.requestFocus(); // Запрашивает захват экрана для ввода
         GameWindow gameWindow = new GameWindow(gamePanel);
 
-        Audio audio = new Audio();
-        audio.Soundtrack();
+        Audio.Soundtrack();
         Score score = new Score();
 
         try {

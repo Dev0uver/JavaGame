@@ -9,15 +9,14 @@ import java.io.InputStream;
 
 public class Bullet {
 
-    private BufferedImage bulletSprite;
+    public static BufferedImage bulletSprite;
     public float x;
     public float y;
-    public int height, width ;
+    public static int height;
+    public static int width;
 
 
     public Bullet(float playerX, float playerY, int playerWidth) {
-
-        ImportSprite();
 
         width = bulletSprite.getWidth();
         height = bulletSprite.getHeight();
@@ -26,17 +25,6 @@ public class Bullet {
         y = playerY;
     }
 
-    private void ImportSprite() {
-
-        InputStream inputStream = getClass().getResourceAsStream("/Assets/Sprites/Bullet.png");
-        try {
-            if (inputStream != null) {
-                bulletSprite = ImageIO.read(inputStream);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public void PaintBullet(Graphics graphics) {
 

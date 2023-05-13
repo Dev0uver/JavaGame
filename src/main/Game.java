@@ -13,13 +13,14 @@ public class Game implements Runnable {
 
     public Game() throws InterruptedException {
 
+        Initializator.Initialization();
 
         gamePanel = new GamePanel(); // Инициализация Контейнера
         gamePanel.setFocusable(true); // Позволяет "захватить" экран
         gamePanel.requestFocus(); // Запрашивает захват экрана для ввода
         GameWindow gameWindow = new GameWindow(gamePanel);
-        //Thread menu = new Thread(new Menu(gamePanel)); // запуск потока Menu
-        //menu.start();
+//        Thread menu = new Thread(new Menu(gamePanel)); // запуск потока Menu
+//        menu.start();
         //run();
 
         Audio audio = new Audio();
@@ -34,6 +35,7 @@ public class Game implements Runnable {
 
         score.PaintScore(gamePanel.getGraphics());
         Score.PaintHighScore(gamePanel.getGraphics());
+
         gamePanel.repaint();
 
         // запуск потока игры
@@ -67,7 +69,6 @@ public class Game implements Runnable {
         double deltaUpd = 0;
         double deltaFps = 0;
 
-
         while (true) {
 
             long currentTime = System.nanoTime();
@@ -87,6 +88,7 @@ public class Game implements Runnable {
                     if (gamePanel.pauseFlag) {
                         Thread menu = new Thread(new Menu(gamePanel)); // запуск потока Menu
                         menu.start();
+
                         synchronized (gamePanel) { // синхронизация потоков
                             try {
                                 gamePanel.wait(); // установка потока в ожидание

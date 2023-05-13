@@ -70,5 +70,6 @@ public class Menu implements Runnable {
 
         this.gamePanel = gamePanel;
     }
+
 }
 

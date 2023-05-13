@@ -11,14 +11,10 @@ import java.io.InputStream;
 
 public class Player {
 
-    public int playerWidth;
-    public int playerHeight;
+    public static int playerWidth;
+    public static int playerHeight;
 
-    private BufferedImage playerSprite;
-
-    //public static setSprite() {
-
-    //}
+    public static BufferedImage playerSprite;
 
     // начальные координаты игрока
 
@@ -31,6 +27,7 @@ public class Player {
     public void PaintPlayer(Graphics graphics) {
 
         graphics.drawImage(playerSprite, (int) rectX, (int) rectY, null);
+
     }
 
     // Изменение координаты x игрока
@@ -50,25 +47,11 @@ public class Player {
 
     public Player() {
 
-        ImportSprite();
-
         playerWidth = playerSprite.getWidth();
         playerHeight = playerSprite.getHeight();
 
         rectX = (float) ((GameWindow.size.getWidth() / 2) - playerWidth / 2);
         rectY = (float) (GameWindow.size.getHeight() - 200);
-    }
-
-    private void ImportSprite() {
-
-        InputStream inputStream = getClass().getResourceAsStream("/Assets/Sprites/Player.png");
-        try {
-            if (inputStream != null) {
-                playerSprite = ImageIO.read(inputStream);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
 }

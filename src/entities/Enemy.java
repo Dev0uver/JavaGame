@@ -8,10 +8,10 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class Enemy {
-    public int height;
-    public int width;
+    public static int height;
+    public static int width;
 
-    private BufferedImage enemySprite;
+    public static BufferedImage enemySprite;
     public float xPosition;
     public float yPosition;
 
@@ -20,8 +20,6 @@ public class Enemy {
     public int jumpDown = 30;
 
     public Enemy(int sector, int number, int row) {
-
-        ImportSprite();
 
         width = enemySprite.getWidth();
         height = enemySprite.getHeight();
@@ -37,16 +35,4 @@ public class Enemy {
         graphics.drawImage(enemySprite, (int) xPosition, (int) yPosition,null);
     }
 
-    private void ImportSprite() {
-
-        InputStream inputStream = getClass().getResourceAsStream("/Assets/Sprites/Enemy.png");
-        try {
-            if (inputStream != null) {
-                enemySprite = ImageIO.read(inputStream);
-            }
-        }
-        catch (IOException e) {
-            throw new RuntimeException();
-        }
-    }
 }

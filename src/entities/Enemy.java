@@ -1,11 +1,11 @@
 package entities;
 
 
-import javax.imageio.ImageIO;
+import GUI.Score;
+import audio.Audio;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
+
 
 public class Enemy {
     public static int height;
@@ -35,4 +35,9 @@ public class Enemy {
         graphics.drawImage(enemySprite, (int) xPosition, (int) yPosition,null);
     }
 
+    public void Death() {
+
+        Audio.Death();
+        Score.score++;
+    }
 }

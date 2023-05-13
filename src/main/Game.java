@@ -13,18 +13,14 @@ public class Game implements Runnable {
 
     public Game() throws InterruptedException {
 
-        Initializator.Initialization();
+        Initializer.Initialization();
 
         gamePanel = new GamePanel(); // Инициализация Контейнера
         gamePanel.setFocusable(true); // Позволяет "захватить" экран
         gamePanel.requestFocus(); // Запрашивает захват экрана для ввода
         GameWindow gameWindow = new GameWindow(gamePanel);
-//        Thread menu = new Thread(new Menu(gamePanel)); // запуск потока Menu
-//        menu.start();
-        //run();
 
-        Audio audio = new Audio();
-        audio.soundtrack();
+        Audio.Soundtrack();
         Score score = new Score();
 
         try {
@@ -89,12 +85,10 @@ public class Game implements Runnable {
                         Thread menu = new Thread(new Menu(gamePanel)); // запуск потока Menu
                         menu.start();
 
-                        synchronized (gamePanel) { // синхронизация потоков
                             try {
                                 gamePanel.wait(); // установка потока в ожидание
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
-                            }
 
                             gamePanel.buttonsList.clear(); // очистка списка кнопок
                         }

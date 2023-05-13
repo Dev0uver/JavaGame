@@ -6,89 +6,59 @@ import java.io.IOException;
 import javax.sound.sampled.*;
 
 public class Audio {
-    public String sound = "src/Assets/Audio/1-01-Dark-Souls-III.wav"; // путь к файлу с фоновой музыкой
-    private String shot = "src/Assets/Audio/HAN02.wav"; // путь к файлу со звуком выстрела
-    private String kill = "src/Assets/Audio/r2d2_scream_converted.wav"; // путь к файлу со звуком смерти пришельца
-    private Clip clip;
-    public void soundtrack() {
+    private static Clip clip;
 
-        File sound = new File(this.sound);
-        AudioInputStream tr = null; // поток аудиовывода
-        try {
-            tr = AudioSystem.getAudioInputStream(sound);
-        }
-        catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        }
-        catch(IOException e) {
-            e.printStackTrace();
-        }
+    public static File soundtrack = new File("src/Assets/Audio/1-01-Dark-Souls-III.wav");
+    public static File shotSound = new File("src/Assets/Audio/HAN02.wav");
+    public static File deathSound = new File("src/Assets/Audio/r2d2_scream_converted.wav");
+
+
+    public static void Soundtrack() {
+
         try {
             clip = AudioSystem.getClip();
-            clip.open(tr);
-            //clip.setFramePosition(0);
+            clip.open(AudioSystem.getAudioInputStream(soundtrack));
             clip.start(); // запуск потока
             clip.loop(Clip.LOOP_CONTINUOUSLY); // зацикливание потока
         }
-        catch (LineUnavailableException e) {
+        catch (LineUnavailableException | IOException e) {
             e.printStackTrace();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public void shot() {
-
-        File shot = new File(this.shot);
-        AudioInputStream tr1 = null; // поток аудиовывода
-        try {
-            tr1 = AudioSystem.getAudioInputStream(shot);
         }
         catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        }
-        catch(IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            clip = AudioSystem.getClip();
-            clip.open(tr1);
-            //clip.setFramePosition(0);
-            clip.start(); // запуск потока
-        }
-        catch (LineUnavailableException e) {
-            e.printStackTrace();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
-    public void kill(){
-        File kill = new File(this.kill);
-        AudioInputStream tr2 = null; // поток аудиовывода
-        try {
-            tr2 = AudioSystem.getAudioInputStream(kill);
-        }
-        catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        }
-        catch(IOException e) {
-            e.printStackTrace();
-        }
+
+    public static void Shot() {
+
+
         try {
             clip = AudioSystem.getClip();
-            clip.open(tr2);
-            //clip.setFramePosition(0);
+            clip.open(AudioSystem.getAudioInputStream(shotSound));
             clip.start(); // запуск потока
         }
-        catch (LineUnavailableException e) {
+        catch (LineUnavailableException | IOException e) {
             e.printStackTrace();
         }
-        catch (IOException e) {
+        catch (UnsupportedAudioFileException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public static void Death() {
+
+        try {
+            clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(deathSound));
+            clip.start(); // запуск потока
+        }
+        catch (LineUnavailableException | IOException e) {
             e.printStackTrace();
+        }
+        catch (UnsupportedAudioFileException e) {
+            throw new RuntimeException(e);
         }
     }
 

@@ -1,16 +1,21 @@
 package main;
 
+
 import entities.Bullet;
 import entities.Enemy;
 import entities.Player;
-
 import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class Initializator {
+public class Initializer {
 
     public static void Initialization() {
+
+        InitSprites();
+    }
+
+    private static void InitSprites() {
 
         InputStream inputStream = GamePanel.class.getResourceAsStream("/Assets/Sprites/background.png");
         try {

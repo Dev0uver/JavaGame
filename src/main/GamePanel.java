@@ -51,9 +51,9 @@ public class GamePanel extends JPanel {
 
     public void CreateBullet() {
 
-        Bullet bullet = new Bullet(player.rectX, player.rectY, player.playerWidth);
+        Bullet bullet = new Bullet(player.rectX, player.rectY, Player.playerWidth);
         bulletList.add(bullet);
-        //audio.shot();
+        audio.shot();
     }
 
     public void AddEnemy (int count, int row) {
@@ -90,11 +90,6 @@ public class GamePanel extends JPanel {
         PaintBackground(graphics);
 
         if (enemyList.size() == 0) {
-            try {
-                Score.saveHighScore();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
             // Количество врагов в 1 строке
             int row = 10;
             // Количество врагов на поле
@@ -136,15 +131,6 @@ public class GamePanel extends JPanel {
 
     public void PaintBackground(Graphics graphics) {
 
-        InputStream inputStream = getClass().getResourceAsStream("/Assets/Sprites/background.png");
-        try {
-            if (inputStream != null) {
-                backgroundSprite = ImageIO.read(inputStream);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
         graphics.drawImage(backgroundSprite, 0, 0, 1920, 1080, null);
     }
 
@@ -155,7 +141,7 @@ public class GamePanel extends JPanel {
 
             for (int i = 0; i < bulletList.size(); i++) {
 
-                if (bulletList.get(i).y <= -bulletList.get(i).height) {
+                if (bulletList.get(i).y <= -Bullet.height) {
 
                     bulletList.remove(i);
                 }
@@ -172,24 +158,24 @@ public class GamePanel extends JPanel {
                 // позиция и размеры снаряда
                 float bulletX = bulletList.get(i).x;
                 float bulletY = bulletList.get(i).y;
-                int bulletWidth = bulletList.get(i).width;
-                int bulletHeight = bulletList.get(i).height;
+//                int bulletWidth = Bullet.width;
+//                int bulletHeight = Bullet.height;
 
                 for (int j = 0; j < enemyList.size(); j++) {
                     // позиция и размеры пришельца
                     float enemyX = enemyList.get(j).xPosition;
                     float enemyY = enemyList.get(j).yPosition;
-                    int enemyWidth = enemyList.get(j).width;
-                    int enemyHeight = enemyList.get(j).height;
+//                    int enemyWidth = Enemy.width;
+//                    int enemyHeight = Enemy.height;
 
                     // проверка столкновения снаряда и пришельца и их удаление в случае подтверждения
-                    if ( bulletX + bulletWidth >= enemyX
-                            && bulletX <= enemyX + enemyWidth
+                    if ( bulletX + Bullet.width >= enemyX
+                            && bulletX <= enemyX + Enemy.width
                             && bulletY >= enemyY
-                            && bulletY - bulletHeight <= enemyY + enemyHeight ) {
+                            && bulletY - Bullet.height <= enemyY + Enemy.height ) {
                         enemyList.remove(j);
                         bulletList.remove(i);
-                        //audio.kill();
+                        audio.kill();
                         Score.score++;
                     }
                 }
@@ -202,7 +188,7 @@ public class GamePanel extends JPanel {
         boolean down = false;
         for (int i = 0; i < enemyList.size(); i++){
             // Проверка достижения правого края
-            if (enemyList.get(i).xPosition + enemyList.get(i).width >= GameWindow.size.getWidth()) {
+            if (enemyList.get(i).xPosition + Enemy.width >= GameWindow.size.getWidth()) {
                 // Означает что надо двигать впараво
                 direction = false;
                 // Означает что надо двигать вниз
@@ -214,7 +200,7 @@ public class GamePanel extends JPanel {
                 down = true;
             }
             // Проверка не вышли ли враги за нижнюю границу
-            if (enemyList.get(i).yPosition >= GameWindow.size.getHeight() - player.playerHeight - 120) {
+            if (enemyList.get(i).yPosition >= GameWindow.size.getHeight() - Player.playerHeight - 120) {
                 enemyList.remove(enemyList.get(i));
                 Score.score = 0;
                 Score.saveHighScore();

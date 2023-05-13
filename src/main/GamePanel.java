@@ -53,7 +53,7 @@ public class GamePanel extends JPanel {
 
         Bullet bullet = new Bullet(player.rectX, player.rectY, Player.playerWidth);
         bulletList.add(bullet);
-        audio.shot();
+        audio.Shot();
     }
 
     public void AddEnemy (int count, int row) {
@@ -175,7 +175,7 @@ public class GamePanel extends JPanel {
                             && bulletY - Bullet.height <= enemyY + Enemy.height ) {
                         enemyList.remove(j);
                         bulletList.remove(i);
-                        audio.kill();
+                        audio.Death();
                         Score.score++;
                     }
                 }

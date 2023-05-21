@@ -6,17 +6,16 @@ import javax.swing.JFrame;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.io.IOException;
 
 // Класс игрового окна
 public class GameWindow {
 
     public static Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-    public static int width = size.width;
-    public static int height = size.height;
 
-
-
+    
     // Создание игрового окна
     public GameWindow(GamePanel gamePanel) {
 
@@ -26,11 +25,6 @@ public class GameWindow {
 
         frame.setUndecorated(true);
         frame.setResizable(false);
-        //frame.getContentPane().add(gamePanel);
-
-        //frame.setSize(width, height);
-        //frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
 
         frame.add(gamePanel);
 
@@ -50,13 +44,21 @@ public class GameWindow {
                     }
                 }
             }
-
         });
 
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        frame.addWindowFocusListener(new WindowFocusListener() {
+            @Override
+            public void windowGainedFocus(WindowEvent e) {
 
+            }
+
+            @Override
+            public void windowLostFocus(WindowEvent e) {
+                gamePanel.GetGame().WindowFocusLost();
+            }
+        });
     }
-
 }

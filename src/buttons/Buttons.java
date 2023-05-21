@@ -13,7 +13,7 @@ public abstract class Buttons {
     public int width = 250; // размеры кнопки
     public int height = 50;
 
-    public abstract void paintButton(Graphics graphics);
+    public abstract void RenderButton(Graphics graphics);
 
     public abstract void onHit(int x, int y) throws IOException;
     public Buttons(int xPosition, int yPosition, GamePanel gamePanel) {

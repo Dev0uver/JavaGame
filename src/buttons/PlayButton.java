@@ -7,7 +7,7 @@ import java.awt.*;
 public class PlayButton extends Buttons {
 
     @Override
-    public void paintButton(Graphics graphics) { // отрисовка кнопки
+    public void RenderButton(Graphics graphics) { // отрисовка кнопки
         graphics.setColor(Color.lightGray);
         graphics.fillRect(xPosition - width / 2, yPosition, width, height);
         graphics.setColor(Color.BLACK);

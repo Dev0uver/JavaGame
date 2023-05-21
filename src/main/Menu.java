@@ -1,6 +1,5 @@
 package main;
 
-import java.awt.*;
 import buttons.*;
 
 
@@ -60,8 +59,8 @@ public class Menu implements Runnable {
         Buttons exit = new ExitButton(xPos, yPos + 70, gamePanel); // создание кнопки "Выход"
         gamePanel.buttonsList.add(play);
         gamePanel.buttonsList.add(exit);
-        play.paintButton(gamePanel.getGraphics()); // отрисовка кнопок
-        exit.paintButton(gamePanel.getGraphics());
+        play.RenderButton(gamePanel.getGraphics()); // отрисовка кнопок
+        exit.RenderButton(gamePanel.getGraphics());
 
     }
 

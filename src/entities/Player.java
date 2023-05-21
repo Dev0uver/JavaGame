@@ -5,49 +5,80 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 
-public class Player {
+public class Player extends Entity {
 
     public static int playerWidth;
     public static int playerHeight;
+
+    public boolean left, right, shooting;
 
     public static BufferedImage playerSprite;
 
     // начальные координаты игрока
 
-    public float rectX;
-    public final float rectY;
+    public long lastCheck;
 
-    // скорость перемещения игрока
-    private float velX;
+    public Player(float x, float y) {
 
-    public void PaintPlayer(Graphics graphics) {
-
-        graphics.drawImage(playerSprite, (int) rectX, (int) rectY, null);
-
-    }
-
-    // Изменение координаты x игрока
-    public void MovePlayer() {
-
-        if (0 <= rectX + velX && rectX + velX <= GameWindow.size.getWidth() - playerWidth) {
-
-            rectX += velX;
-        }
-
-    }
-    // set для velX
-    public void setVelX(float velX) {
-
-        this.velX = velX;
-    }
-
-    public Player() {
+        super(x, y);
 
         playerWidth = playerSprite.getWidth();
         playerHeight = playerSprite.getHeight();
-
-        rectX = (float) ((GameWindow.size.getWidth() / 2) - playerWidth / 2);
-        rectY = (float) (GameWindow.size.getHeight() - 200);
     }
 
+    public void Render(Graphics graphics) {
+
+        graphics.drawImage(playerSprite, (int) x, (int) y, null);
+    }
+
+    // Изменение координаты x игрок
+    public void UpdatePos() {
+
+        float velX = 3f;
+        if (left && !right && x > 0) {
+            x -= velX;
+        }
+        else if (right && !left && (x + playerWidth) <= GameWindow.size.getWidth()) {
+            x += velX;
+        }
+
+    }
+
+    public void ResetDirBooleans() {
+        left = false;
+        right = false;
+        shooting = false;
+    }
+
+    public boolean IsLeft() {
+        return left;
+    }
+
+    public void SetLeft(boolean left) {
+        this.left = left;
+    }
+
+    public boolean IsRight() {
+        return right;
+    }
+
+    public void SetRight(boolean right) {
+        this.right = right;
+    }
+
+    public boolean IsShooting() {
+        return shooting;
+    }
+
+    public void SetShooting(boolean shooting) {
+        this.shooting = shooting;
+    }
+
+    public float GetPosX() {
+        return x;
+    }
+
+    public float GetPosY() {
+        return y;
+    }
 }

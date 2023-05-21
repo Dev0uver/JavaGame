@@ -7,37 +7,63 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 
-public class Enemy {
+public class Enemy extends Entity {
     public static int height;
     public static int width;
 
     public static BufferedImage enemySprite;
-    public float xPosition;
-    public float yPosition;
 
-    public float speed = 2f;
+    public float speed = 1f;
 
-    public int jumpDown = 30;
+    public int jumpDown = 15;
 
-    public Enemy(int sector, int number, int row) {
+    public static boolean direction = true;
+
+    public Enemy(float x, float y) {
+
+        super(x, y);
 
         width = enemySprite.getWidth();
         height = enemySprite.getHeight();
 
-        int numOfSector = (number + 1) % row;
-
-        xPosition = (sector * numOfSector);
-        yPosition =  (number / row) * (height + 10) + 100;
     }
 
-    public void PaintEnemy(Graphics graphics) {
+    public void Render(Graphics graphics) {
 
-        graphics.drawImage(enemySprite, (int) xPosition, (int) yPosition,null);
+        graphics.drawImage(enemySprite, (int) x, (int) y,null);
     }
 
-    public void Death() {
+    public void JumpDown() {
+        y += jumpDown;
+    }
+
+    public void Move() {
+        if (direction) {
+            x += speed;
+        }
+        else {
+            x -= speed;
+        }
+    }
+
+    public void Death(Score score) {
 
         Audio.Death();
-        Score.score++;
+        score.score++;
+    }
+
+    public float GetPosX() {
+        return x;
+    }
+    public void SetPosX(float x) {
+        this.x = x;
+    }
+
+    public float GetPosY() {
+        return y;
+    }
+
+    public void SetPosY(float y) {
+        this.y = y;
     }
 }

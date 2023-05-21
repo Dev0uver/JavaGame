@@ -13,17 +13,17 @@ import java.util.Scanner;
 
 public class Score {
 
-    public static long score = 0;
+    public long score = 0;
 
-    public static final Path relativePath = Paths.get("src/Assets/HighScore.txt");
-    public static final File scoreFile = new File(relativePath.toUri());
+    private static final Path relativePath = Paths.get("src/Assets/HighScore.txt");
+    private final File scoreFile = new File(relativePath.toUri());
     private static long highScore;
 
-    public static Font font = new Font("Courier", Font.BOLD, 30); // объявление шрифта
+    private static final Font font = new Font("Courier", Font.BOLD, 30); // объявление шрифта
 
     private final int xPosition = (int) GameWindow.size.getWidth() - 150;
 
-    public static void InitScore() throws FileNotFoundException {
+    public void InitScore() throws FileNotFoundException {
         if (!scoreFile.exists()) {
             try {
                 boolean fileCreated = scoreFile.createNewFile();
@@ -45,19 +45,19 @@ public class Score {
         reader.close();
     }
 
-    public void PaintScore(Graphics graphics) {
+    public void RenderScore(Graphics graphics) {
         graphics.setFont(font);
         graphics.setColor(Color.WHITE);
         graphics.drawString("Score: " + score, xPosition - 50, 40);
     }
 
-    public static void PaintHighScore(Graphics graphics) {
+    public void RenderHighScore(Graphics graphics) {
         graphics.setFont(font);
         graphics.setColor(Color.WHITE);
         graphics.drawString("HighScore: " + highScore, (int) (GameWindow.size.getWidth() / 2) - 100, 40);
     }
 
-    public static void saveHighScore() throws IOException {
+    public void SaveHighScore() throws IOException {
         if (score > highScore) {
             highScore = score;
             try (FileWriter writer = new FileWriter(scoreFile, false)) {

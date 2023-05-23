@@ -3,23 +3,55 @@ package audio;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.*;
 import javax.sound.sampled.*;
+import java.util.Random;
 
-public class Audio {
+public class Audio{
     private static Clip clip;
 
-    public static File soundtrack = new File("src/Assets/Audio/1-01-Dark-Souls-III.wav");
-    public static File shotSound = new File("src/Assets/Audio/HAN02.wav");
-    public static File deathSound = new File("src/Assets/Audio/r2d2_scream_converted.wav");
+    private static String prevSound;
+
+    private static Random random = new Random();
+    private static List<String> soundtracks = Arrays.asList(new File("src/Assets/Audio/Soundtrack").list());
+    private static List<String> shotSounds = Arrays.asList(new File("src/Assets/Audio/ShotSounds").list());
+    private static List<String> deathSounds = Arrays.asList(new File("src/Assets/Audio/DeathSounds").list());
+    public static File soundtrack;
+    public static File shotSound;
+    public static File deathSound;
+
+    //обработчик
+    private static LineListener listener = new LineListener() {
+        @Override
+        public void update(LineEvent event) {
+            if (LineEvent.Type.STOP == event.getType()){
+                Soundtrack();
+            }
+        }
+    };
+
+
+    //метод генерации случайного саундтрека
 
 
     public static void Soundtrack() {
+            int index = 0;
 
         try {
+            Collections.shuffle(soundtracks);
+            if ((prevSound == soundtracks.get(index)) & (soundtracks.size() > 1)){
+                index++;
+            }
+            prevSound = soundtracks.get(index);
+            soundtrack  = new File("src/Assets/Audio/Soundtrack/" + soundtracks.get(index));
             clip = AudioSystem.getClip();
-            clip.open(AudioSystem.getAudioInputStream(soundtrack));
+            AudioInputStream input = AudioSystem.getAudioInputStream(soundtrack);
+            //подключение обработчика событий
+            clip.addLineListener(listener);
+            clip.open(input);
             clip.start(); // запуск потока
-            clip.loop(Clip.LOOP_CONTINUOUSLY); // зацикливание потока
+
+
         }
         catch (LineUnavailableException | IOException e) {
             e.printStackTrace();
@@ -32,8 +64,10 @@ public class Audio {
 
     public static void Shot() {
 
+        Collections.shuffle(shotSounds);
 
         try {
+            shotSound = new File("src/Assets/Audio/ShotSounds/" + shotSounds.get(0));
             clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(shotSound));
             clip.start(); // запуск потока
@@ -49,7 +83,10 @@ public class Audio {
 
     public static void Death() {
 
+        Collections.shuffle(deathSounds);
+
         try {
+            deathSound = new File("src/Assets/Audio/DeathSounds/" + deathSounds.get(0));
             clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(deathSound));
             clip.start(); // запуск потока
@@ -61,5 +98,6 @@ public class Audio {
             throw new RuntimeException(e);
         }
     }
+
 
 }

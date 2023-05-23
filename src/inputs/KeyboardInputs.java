@@ -23,17 +23,19 @@ public class KeyboardInputs implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
 
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_A -> gamePanel.GetGame().GetPlayer().SetLeft(true);
-            case KeyEvent.VK_D -> gamePanel.GetGame().GetPlayer().SetRight(true);
-            case KeyEvent.VK_SPACE -> gamePanel.GetGame().GetPlayer().SetShooting(true);
-            case KeyEvent.VK_ESCAPE -> gamePanel.Pause();
-            case KeyEvent.VK_Q -> {
-                System.exit(0);
-                try {
-                    gamePanel.GetGame().GetScore().SaveHighScore();
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
+        if (gamePanel.flag) {
+            switch (e.getKeyCode()) {
+                case KeyEvent.VK_A -> gamePanel.GetGame().GetPlayer().SetLeft(true);
+                case KeyEvent.VK_D -> gamePanel.GetGame().GetPlayer().SetRight(true);
+                case KeyEvent.VK_SPACE -> gamePanel.GetGame().GetPlayer().SetShooting(true);
+                case KeyEvent.VK_ESCAPE -> gamePanel.Pause();
+                case KeyEvent.VK_Q -> {
+                    System.exit(0);
+                    try {
+                        gamePanel.GetGame().GetScore().SaveHighScore();
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
             }
         }

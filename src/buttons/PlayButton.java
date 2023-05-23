@@ -1,27 +1,30 @@
 package buttons;
 
+import buttons.Buttons;
 import main.GamePanel;
 
 import java.awt.*;
 
 public class PlayButton extends Buttons {
 
+
     @Override
     public void RenderButton(Graphics graphics) { // отрисовка кнопки
         graphics.setColor(Color.lightGray);
-        graphics.fillRect(xPosition - width / 2, yPosition, width, height);
+        graphics.fillRect( xPosition, yPosition, width, height);
         graphics.setColor(Color.BLACK);
         graphics.setFont(font); // установка шрифта
-        graphics.drawString("Play", xPosition - 35, yPosition + 40); // рисование надписи в кнопке
+        graphics.drawString("Play", xPosition + 80, yPosition + 40); // рисование надписи в кнопке
     }
 
     @Override
     public void onHit(int x, int y) {
-        if (((xPosition - width / 2 <= x) & (x <= xPosition - width / 2 + width)) & ((yPosition <= y) & (y <= yPosition + height))){
-            synchronized (gamePanel) {
-                gamePanel.notify(); // снятие потока с ожидания
-            }
+        if (((xPosition <=x) & (x <=xPosition + width)) & ((yPosition <= y) & (y <= yPosition + height))){
+
             gamePanel.pauseFlag = false; // снятие флага паузы
+            if (gamePanel.flag){
+                gamePanel.flag = true;
+            }
 
         }
     }

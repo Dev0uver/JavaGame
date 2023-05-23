@@ -13,6 +13,7 @@ public abstract class Buttons {
     public int width = 250; // размеры кнопки
     public int height = 50;
 
+
     public abstract void RenderButton(Graphics graphics);
 
     public abstract void onHit(int x, int y) throws IOException;

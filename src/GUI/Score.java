@@ -15,6 +15,8 @@ public class Score {
 
     public long score = 0;
 
+    public int wave = 1; // счетчик волн
+
     private static final Path relativePath = Paths.get("src/Assets/HighScore.txt");
     private final File scoreFile = new File(relativePath.toUri());
     private static long highScore;
@@ -49,6 +51,13 @@ public class Score {
         graphics.setFont(font);
         graphics.setColor(Color.WHITE);
         graphics.drawString("Score: " + score, xPosition - 50, 40);
+    }
+
+    // счетчик волн
+    public void RenderWave(Graphics graphics){
+        graphics.setFont(font);
+        graphics.setColor(Color.WHITE);
+        graphics.drawString("Wave: " + wave, 0, 40);
     }
 
     public void RenderHighScore(Graphics graphics) {

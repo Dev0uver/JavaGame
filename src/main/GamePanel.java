@@ -20,6 +20,8 @@ public class GamePanel extends JPanel {
 
     public boolean pauseFlag = true; // флаг установки на паузу
 
+    public boolean flag = false;
+
     public List<Buttons> buttonsList = new ArrayList<>(); // массив кнопок
 
     private final Score score = new Score();
@@ -29,13 +31,16 @@ public class GamePanel extends JPanel {
     //private final Background background = new Background();
 
     public void Pause() { // установка флага паузы
-
-        pauseFlag = true;
+        if (!pauseFlag) {
+            pauseFlag = true;
+        }
+        else{
+            pauseFlag = false;
+        }
     }
 
     // Конструктор класса
     public GamePanel(Game game) {
-
         this.game = game;
         setPanelSize();
         addKeyListener(new KeyboardInputs(this));
@@ -44,6 +49,7 @@ public class GamePanel extends JPanel {
     private void setPanelSize() {
 
         setPreferredSize(GameWindow.size);
+
     }
 
 
@@ -51,15 +57,13 @@ public class GamePanel extends JPanel {
     public void paintComponent(Graphics graphics) {
         // Метод очистки окна и отрисовки новых объектов
         super.paintComponent(graphics);
-
         PaintBackground(graphics);
-
         game.render(graphics);
     }
 
     public void PaintBackground(Graphics graphics) {
 
-        graphics.drawImage(backgroundSprite, 0, 0, 1920, 1080, null);
+        graphics.drawImage(backgroundSprite, 0, 0, GameWindow.size.width, GameWindow.size.height, null);
     }
 
     public Game GetGame() {

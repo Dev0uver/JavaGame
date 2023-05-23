@@ -22,6 +22,8 @@ public class Game implements Runnable {
 
     private final List<Enemy> enemyList = new ArrayList<>();
     private final List<Bullet> bulletList = new ArrayList<>();
+
+    private Menu menu;
     public Game() throws InterruptedException {
 
 
@@ -29,8 +31,16 @@ public class Game implements Runnable {
         gamePanel.setFocusable(true); // Позволяет "захватить" экран
         gamePanel.requestFocus(); // Запрашивает захват экрана для ввода
         GameWindow gameWindow = new GameWindow(gamePanel);
+        menu  = new Menu(gamePanel);
         Initializer.Initialization();
+
+        gamePanel.PaintBackground(gamePanel.getGraphics()); // отрисовка фона до меню
+
+        menu.MainMenu();
         initClasses();
+
+
+
         Audio.Soundtrack();
 
 
@@ -49,34 +59,39 @@ public class Game implements Runnable {
     }
 
     private void update() throws IOException {
-        player.UpdatePos();
-        if (player.shooting) {
-            Shot();
+        if (!gamePanel.pauseFlag) {
+            player.UpdatePos();
+            if (player.shooting) {
+                Shot();
+            }
+            MoveEnemy();
+            for (Bullet bullet : bulletList) {
+                bullet.MoveBullet();
+            }
+            CheckEnemyCollision();
+            CheckTopReach();
         }
-        MoveEnemy();
-        for (Bullet bullet : bulletList) {
-            bullet.MoveBullet();
-        }
-        CheckEnemyCollision();
-        CheckTopReach();
     }
 
     public void render(Graphics graphics) {
 
-        if (player != null) {
-            player.Render(graphics);
-        }
-        for (Enemy enemy : enemyList) {
-            enemy.Render(graphics);
-        }
-        for (Bullet bullet : bulletList) {
-            bullet.Render(graphics);
-        }
-        if (score != null) {
-            score.RenderScore(graphics);
-            score.RenderHighScore(graphics);
-        }
+            if (player != null) {
+                player.Render(graphics);
+            }
+            for (Enemy enemy : enemyList) {
+                enemy.Render(graphics);
+            }
+            for (Bullet bullet : bulletList) {
+                bullet.Render(graphics);
+            }
+            if (score != null) {
+                score.RenderScore(graphics);
+                score.RenderHighScore(graphics);
+                score.RenderWave(graphics);// счетчик волн
+            }
+
     }
+
 
     private void initClasses() {
 
@@ -128,10 +143,19 @@ public class Game implements Runnable {
         Audio.Shot();
     }
 
+    private void reset() throws IOException {
+        enemyList.clear();
+        bulletList.clear();
+        menu.Defeat();
+        initClasses();
+        gamePanel.pauseFlag = true;
+    }
+
     private void MoveEnemy() throws IOException {
         // !! Управление врагами происходит из переменных описанных выше !!
         boolean down = false;
-        for (int i = 0; i < enemyList.size(); i++){
+        if(enemyList.size() != 0){ // проверка, закончились ли враги
+        for (int i = 0; i < enemyList.size(); i++) {
             // Проверка достижения правого края
             if (enemyList.get(i).GetPosX() + Enemy.width >= GameWindow.size.getWidth()) {
                 // Означает что надо двигать впараво
@@ -146,11 +170,18 @@ public class Game implements Runnable {
             }
             // Проверка не вышли ли враги за нижнюю границу
             if (enemyList.get(i).GetPosY() >= player.GetPosY() - Player.playerSprite.getHeight()) {
-                enemyList.remove(enemyList.get(i));
-                score.score = 0;
                 score.SaveHighScore();
+                reset();
+
+
             }
         }
+        }
+        else{
+            initFleet();
+            score.wave++;
+        }
+
         // Перемещение вниз при достижении края
         if (down) {
             for (Enemy enemy : enemyList) {
@@ -242,24 +273,21 @@ public class Game implements Runnable {
             }
 
             if (deltaFps >= 1) {
-                synchronized (gamePanel) {
+
                     if (gamePanel.pauseFlag) {
-                        Thread menu = new Thread(new Menu(gamePanel)); // запуск потока Menu
-                        menu.start();
-
-                            try {
-                                gamePanel.wait(); // установка потока в ожидание
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-
-                            gamePanel.buttonsList.clear(); // очистка списка кнопок
-                        }
+                        menu.MainMenu();
                     }
-                }
-                gamePanel.repaint();
+                    else{
+                        gamePanel.buttonsList.clear(); // очистка списка кнопок
+                        gamePanel.repaint();
+                    }
+
+
+
                 frames++;
                 deltaFps--;
             }
+
 
 
             if (System.currentTimeMillis() - lastCheck >= 1000) {

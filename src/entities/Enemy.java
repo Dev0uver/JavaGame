@@ -48,7 +48,7 @@ public class Enemy extends Entity {
 
     public void Death(Score score) {
 
-        Audio.Death();
+        //Audio.Death();
         score.score++;
     }
 

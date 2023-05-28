@@ -39,6 +39,7 @@ public class GamePanel extends JPanel {
         }
     }
 
+
     // Конструктор класса
     public GamePanel(Game game) {
         this.game = game;

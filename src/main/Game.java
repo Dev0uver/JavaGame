@@ -24,6 +24,7 @@ public class Game implements Runnable {
     private final List<Bullet> bulletList = new ArrayList<>();
 
     private Menu menu;
+    private Audio audio;
     public Game() throws InterruptedException {
 
 
@@ -32,6 +33,7 @@ public class Game implements Runnable {
         gamePanel.requestFocus(); // Запрашивает захват экрана для ввода
         GameWindow gameWindow = new GameWindow(gamePanel);
         menu  = new Menu(gamePanel);
+        audio = new Audio();
         Initializer.Initialization();
 
         gamePanel.PaintBackground(gamePanel.getGraphics()); // отрисовка фона до меню
@@ -41,7 +43,7 @@ public class Game implements Runnable {
 
 
 
-        Audio.Soundtrack();
+        audio.Soundtrack();
 
 
 
@@ -49,6 +51,20 @@ public class Game implements Runnable {
         StartGameLoop();
         Thread.sleep(Long.MAX_VALUE);
 
+    }
+
+    public void IncrMusicValue(){
+        if(!(audio.musicVolumePer >= 1)){
+            audio.musicVolumePer += 10;
+            audio.SetMusicVolume();
+        }
+    }
+
+    public void ReduceMusicValue(){
+        if(!(audio.musicVolumePer <= 0)){
+            audio.musicVolumePer -= 10;
+            audio.SetMusicVolume();
+        }
     }
 
 
@@ -140,7 +156,7 @@ public class Game implements Runnable {
 
         Bullet bullet = new Bullet(player.GetPosX(), player.GetPosY());
         bulletList.add(bullet);
-        Audio.Shot();
+        audio.Shot();
     }
 
     private void reset() throws IOException {
@@ -231,7 +247,7 @@ public class Game implements Runnable {
                     enemyList.get(j).Death(score);
                     enemyList.remove(j);
                     bulletList.remove(i);
-                    //Audio.Death();
+                    audio.Death();
                 }
             }
         }

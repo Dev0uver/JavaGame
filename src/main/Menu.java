@@ -18,14 +18,17 @@ public class Menu {
         Graphics graphics = gamePanel.getGraphics();
         graphics.setFont(font);
         graphics.setColor(Color.white);
-        graphics.drawString("GameOver", xPos - 90, yPos - 70);
+        graphics.drawString("GameOver", xPos - 180, yPos - 70);
 
-        Buttons playAgain = new PlayAgain(xPos - 90, yPos, gamePanel); // создание кнопки "Играть"
-        Buttons exit = new ExitButton(xPos - 35, yPos + 70, gamePanel); // создание кнопки "Выход"
+//        Buttons incrVolume = new IncrVolume(xPos - 90, yPos, gamePanel);
+        Buttons playAgain = new PlayAgain(xPos, yPos, gamePanel); // создание кнопки "Играть"
+        Buttons exit = new ExitButton(xPos, yPos + 60, gamePanel); // создание кнопки "Выход"
         gamePanel.buttonsList.add(playAgain);
         gamePanel.buttonsList.add(exit);
+//        gamePanel.buttonsList.add(incrVolume);
         playAgain.RenderButton(gamePanel.getGraphics()); // отрисовка кнопок
         exit.RenderButton(gamePanel.getGraphics());
+//        incrVolume.RenderButton(gamePanel.getGraphics());
     }
 
 
@@ -40,14 +43,22 @@ public class Menu {
             Graphics graphics = gamePanel.getGraphics();
             graphics.setFont(font);
             graphics.setColor(Color.white);
-            graphics.drawString("Main menu", xPos - 90, yPos - 70);
+            graphics.drawString("Main menu", xPos - 180, yPos - 70);
 
-            Buttons play = new PlayButton(xPos - 35, yPos, gamePanel); // создание кнопки "Играть"
-            Buttons exit = new ExitButton(xPos - 35, yPos + 70, gamePanel); // создание кнопки "Выход"
+
+            Buttons play = new PlayButton(xPos, yPos, gamePanel); // создание кнопки "Играть"
+            Buttons exit = new ExitButton(xPos, yPos + 60, gamePanel); // создание кнопки "Выход"
             gamePanel.buttonsList.add(play);
             gamePanel.buttonsList.add(exit);
+
             play.RenderButton(gamePanel.getGraphics()); // отрисовка кнопок
             exit.RenderButton(gamePanel.getGraphics());
+
+//            Buttons incrVolume = new IncrVolume(xPos - 90, yPos, gamePanel);
+//            gamePanel.buttonsList.add(incrVolume);
+//            incrVolume.RenderButton(gamePanel.getGraphics());
+
+
         }
 
     }

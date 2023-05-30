@@ -10,7 +10,7 @@ public abstract class Buttons {
     public Font font = new Font("Courier", Font.BOLD, 40); // объявление шрифта
     public int xPosition; // позиция кнопки на экране
     public int yPosition;
-    public int width = 20; // размеры кнопки
+    public int width = 250; // размеры кнопки
     public int height = 50;
 
 

@@ -57,7 +57,7 @@ public class Score {
     public void RenderWave(Graphics graphics){
         graphics.setFont(font);
         graphics.setColor(Color.WHITE);
-        graphics.drawString("Wave: " + wave, 0, 40);
+        graphics.drawString("Wave: " + wave, xPosition - 250, 40);
     }
 
     public void RenderHighScore(Graphics graphics) {

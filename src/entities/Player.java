@@ -14,8 +14,6 @@ public class Player extends Entity {
 
     public static BufferedImage playerSprite;
 
-    // начальные координаты игрока
-
     public long lastCheck;
 
     public Player(float x, float y) {
@@ -81,4 +79,5 @@ public class Player extends Entity {
     public float GetPosY() {
         return y;
     }
+
 }

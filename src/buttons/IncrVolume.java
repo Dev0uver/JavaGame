@@ -1,16 +1,17 @@
 package buttons;
 
-import audio.Audio;
-import main.Game;
 import main.GamePanel;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class IncrVolume extends Buttons {
 
+    public static BufferedImage sprite;
 
-    int width = 50;
+    public static int width;
+    public static int height;
     @Override
     public void RenderButton(Graphics graphics) {
         graphics.setColor(Color.lightGray);

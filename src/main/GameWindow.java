@@ -35,7 +35,7 @@ public class GameWindow {
                 int x =  e.getX(); // получение координат нажатия
                 int y =  e.getY();
                 if (gamePanel.buttonsList != null){ // проверка на попадание по кнопке
-                    for (Buttons button: gamePanel.buttonsList){
+                    for (Buttons button: gamePanel.buttonsList.values()){
                         try {
                             button.onHit(x, y);
                         } catch (IOException ex) {

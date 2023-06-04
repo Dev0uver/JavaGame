@@ -1,13 +1,11 @@
 package main;
 
-import GUI.Score;
 import inputs.KeyboardInputs;
 import buttons.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 import javax.swing.*;
 
@@ -16,27 +14,18 @@ public class GamePanel extends JPanel {
 
     public static BufferedImage backgroundSprite;
 
-    // Для движения врагов
-
     public boolean pauseFlag = true; // флаг установки на паузу
 
     public boolean flag = false;
 
-    public List<Buttons> buttonsList = new ArrayList<>(); // массив кнопок
+    public HashMap<String, Buttons> buttonsList = new HashMap<>(); // массив кнопок
 
-    private final Score score = new Score();
+    private final Game game;
+    public boolean retryFlag = false;
 
-    private Game game;
-
-    //private final Background background = new Background();
 
     public void Pause() { // установка флага паузы
-        if (!pauseFlag) {
-            pauseFlag = true;
-        }
-        else{
-            pauseFlag = false;
-        }
+        pauseFlag = !pauseFlag;
     }
 
 
@@ -54,12 +43,12 @@ public class GamePanel extends JPanel {
     }
 
 
-    // Объект и метод для рисования (!Заменить на спрайты)
+    // Объект и метод для рисования
     public void paintComponent(Graphics graphics) {
         // Метод очистки окна и отрисовки новых объектов
         super.paintComponent(graphics);
         PaintBackground(graphics);
-        game.render(graphics);
+        game.Render(graphics);
     }
 
     public void PaintBackground(Graphics graphics) {

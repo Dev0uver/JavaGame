@@ -1,6 +1,9 @@
 package main;
 
 
+import buttons.ExitButton;
+import buttons.RetryButton;
+import buttons.PlayButton;
 import entities.Bullet;
 import entities.Enemy;
 import entities.Player;
@@ -12,10 +15,11 @@ public class Initializer {
 
     public static void Initialization() {
 
-        InitSprites();
+        InitEntitySprites();
+        InitButtonSprites();
     }
 
-    private static void InitSprites() {
+    private static void InitEntitySprites() {
 
         InputStream inputStream = GamePanel.class.getResourceAsStream("/Assets/Sprites/background.png");
         try {
@@ -53,5 +57,42 @@ public class Initializer {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+
+    private static void InitButtonSprites() {
+
+        InputStream inputStream = PlayButton.class.getResourceAsStream("/Assets/Sprites/Play.png");
+        try {
+            if (inputStream != null) {
+                PlayButton.sprite = ImageIO.read(inputStream);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        PlayButton.width = PlayButton.sprite.getWidth();
+        PlayButton.height = PlayButton.sprite.getHeight();
+
+        inputStream = ExitButton.class.getResourceAsStream("/Assets/Sprites/Exit.png");
+        try {
+            if (inputStream != null) {
+                ExitButton.sprite = ImageIO.read(inputStream);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        ExitButton.width = ExitButton.sprite.getWidth();
+        ExitButton.height = ExitButton.sprite.getHeight();
+
+        inputStream = ExitButton.class.getResourceAsStream("/Assets/Sprites/Retry.png");
+        try {
+            if (inputStream != null) {
+                RetryButton.sprite = ImageIO.read(inputStream);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        RetryButton.width = RetryButton.sprite.getWidth();
+        RetryButton.height = RetryButton.sprite.getHeight();
     }
 }

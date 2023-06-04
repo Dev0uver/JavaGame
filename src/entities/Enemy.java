@@ -2,7 +2,6 @@ package entities;
 
 
 import GUI.Score;
-import audio.Audio;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 

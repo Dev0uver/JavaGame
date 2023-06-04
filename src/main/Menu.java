@@ -10,52 +10,51 @@ public class Menu {
 
     Font font = new Font("Courier", Font.BOLD, 70);
 
+    private final int xPos = (int) GameWindow.size.getWidth() / 2;
+    private final int yPos = (int) GameWindow.size.getHeight() / 2;
 
-    public void Defeat(){
-        int xPos = (int) GameWindow.size.getWidth() / 2;
-        int yPos = (int) GameWindow.size.getHeight() / 2;
+    Buttons play, exit, retry;
+
+
+    public void InitButtons() {
+
+        play = new PlayButton(xPos - PlayButton.width / 2, yPos + PlayButton.height / 2, gamePanel);
+        exit = new ExitButton(xPos - ExitButton.width / 2, (int) (yPos + ExitButton.height * 1.5), gamePanel);
+        retry = new RetryButton(xPos - RetryButton.width / 2, yPos + RetryButton.height / 2, gamePanel);
+    }
+
+    public void Defeat() {
 
         Graphics graphics = gamePanel.getGraphics();
         graphics.setFont(font);
         graphics.setColor(Color.white);
         graphics.drawString("GameOver", xPos - 90, yPos - 70);
 
-        Buttons playAgain = new PlayAgain(xPos - 90, yPos, gamePanel); // создание кнопки "Играть"
-        Buttons exit = new ExitButton(xPos - 35, yPos + 70, gamePanel); // создание кнопки "Выход"
-        gamePanel.buttonsList.add(playAgain);
-        gamePanel.buttonsList.add(exit);
-        playAgain.RenderButton(gamePanel.getGraphics()); // отрисовка кнопок
-        exit.RenderButton(gamePanel.getGraphics());
+        gamePanel.buttonsList.put("exit", exit);
+        gamePanel.buttonsList.put("retry", retry);
+        gamePanel.buttonsList.get("retry").RenderButton(gamePanel.getGraphics()); // отрисовка кнопок
+        gamePanel.buttonsList.get("exit").RenderButton(gamePanel.getGraphics());
     }
 
 
 
     public void MainMenu() {
 
-        // получение размеров окна
-        if(gamePanel.buttonsList.size() == 0) {
-            int xPos = (int) GameWindow.size.getWidth() / 2;
-            int yPos = (int) GameWindow.size.getHeight() / 2;
+        Graphics graphics = gamePanel.getGraphics();
+        graphics.setFont(font);
+        graphics.setColor(Color.white);
+        graphics.drawString("Main menu", xPos - 90, yPos - 70);
 
-            Graphics graphics = gamePanel.getGraphics();
-            graphics.setFont(font);
-            graphics.setColor(Color.white);
-            graphics.drawString("Main menu", xPos - 90, yPos - 70);
-
-            Buttons play = new PlayButton(xPos - 35, yPos, gamePanel); // создание кнопки "Играть"
-            Buttons exit = new ExitButton(xPos - 35, yPos + 70, gamePanel); // создание кнопки "Выход"
-            gamePanel.buttonsList.add(play);
-            gamePanel.buttonsList.add(exit);
-            play.RenderButton(gamePanel.getGraphics()); // отрисовка кнопок
-            exit.RenderButton(gamePanel.getGraphics());
-        }
-
+        gamePanel.buttonsList.put("play", play);
+        gamePanel.buttonsList.put("exit", exit);
+        gamePanel.buttonsList.get("play").RenderButton(gamePanel.getGraphics()); // отрисовка кнопок
+        gamePanel.buttonsList.get("exit").RenderButton(gamePanel.getGraphics());
     }
 
 
-    public Menu(GamePanel gamePanel){
+    public Menu(GamePanel gamePanel) {
+
         this.gamePanel = gamePanel;
     }
-
 }
 

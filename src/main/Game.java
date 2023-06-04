@@ -18,15 +18,15 @@ public class Game implements Runnable {
     private final GamePanel gamePanel;
 
     private Player player;
+    private int playerLives = 3;
     private Score score;
 
     private final List<Enemy> enemyList = new ArrayList<>();
     private final List<Bullet> bulletList = new ArrayList<>();
 
-    private Menu menu;
-    private Audio audio;
+    private final Menu menu;
+    private final Audio audio;
     public Game() throws InterruptedException {
-
 
         gamePanel = new GamePanel(this); // Инициализация Контейнера
         gamePanel.setFocusable(true); // Позволяет "захватить" экран
@@ -37,15 +37,11 @@ public class Game implements Runnable {
         Initializer.Initialization();
 
         gamePanel.PaintBackground(gamePanel.getGraphics()); // отрисовка фона до меню
-
+        menu.InitButtons();
         menu.MainMenu();
-        initClasses();
-
-
+        InitClasses();
 
         audio.Soundtrack();
-
-
 
         // запуск потока игры
         StartGameLoop();
@@ -74,8 +70,8 @@ public class Game implements Runnable {
         gameThread.start();
     }
 
-    private void update() throws IOException {
-        if (!gamePanel.pauseFlag) {
+    private void Update() throws IOException {
+        if (!gamePanel.pauseFlag & !gamePanel.retryFlag) {
             player.UpdatePos();
             if (player.shooting) {
                 Shot();
@@ -89,10 +85,11 @@ public class Game implements Runnable {
         }
     }
 
-    public void render(Graphics graphics) {
+    public void Render(Graphics graphics) {
 
             if (player != null) {
                 player.Render(graphics);
+                RenderLives(graphics);
             }
             for (Enemy enemy : enemyList) {
                 enemy.Render(graphics);
@@ -105,11 +102,17 @@ public class Game implements Runnable {
                 score.RenderHighScore(graphics);
                 score.RenderWave(graphics);// счетчик волн
             }
+    }
 
+    private void RenderLives(Graphics graphics) {
+
+        for (int i = 0; i < playerLives; i++) {
+            graphics.drawImage(Player.playerSprite, i * 100, 0, null);
+        }
     }
 
 
-    private void initClasses() {
+    private void InitClasses() {
 
         player = new Player((float) ((GameWindow.size.getWidth() / 2) - Player.playerSprite.getWidth() / 2), (float) (GameWindow.size.getHeight() - 200));
         score = new Score();
@@ -119,10 +122,10 @@ public class Game implements Runnable {
             throw new RuntimeException(e);
         }
 
-        initFleet();
+        InitFleet();
     }
 
-    private void initFleet() {
+    private void InitFleet() {
 
         int availableSpaceX = (int) (GameWindow.size.getWidth() - (2 * Enemy.enemySprite.getWidth()));
         int amountX = availableSpaceX / (2 * Enemy.enemySprite.getHeight());
@@ -141,7 +144,7 @@ public class Game implements Runnable {
 
         Enemy enemy = new Enemy(0, 0);
         enemy.SetPosX(Enemy.enemySprite.getWidth() + 2 * Enemy.enemySprite.getWidth() * enemyNumber);
-        enemy.SetPosY(Enemy.enemySprite.getHeight() + 2 * Enemy.enemySprite.getHeight() * rowNumber);
+        enemy.SetPosY(Enemy.enemySprite.getHeight() + 2 * Enemy.enemySprite.getHeight() * rowNumber + Player.playerWidth / 2);
         return enemy;
     }
 
@@ -159,42 +162,58 @@ public class Game implements Runnable {
         audio.Shot();
     }
 
-    private void reset() throws IOException {
+    public void Reset() throws IOException {
+
         enemyList.clear();
         bulletList.clear();
-        menu.Defeat();
-        initClasses();
-        gamePanel.pauseFlag = true;
+        InitClasses();
+        playerLives = 3;
+    }
+
+    public void LiveLoss() {
+
+        enemyList.clear();
+        bulletList.clear();
+        InitFleet();
+        player = new Player((float) ((GameWindow.size.getWidth() / 2) - Player.playerSprite.getWidth() / 2), (float) (GameWindow.size.getHeight() - 200));
+        playerLives--;
     }
 
     private void MoveEnemy() throws IOException {
         // !! Управление врагами происходит из переменных описанных выше !!
         boolean down = false;
-        if(enemyList.size() != 0){ // проверка, закончились ли враги
-        for (int i = 0; i < enemyList.size(); i++) {
-            // Проверка достижения правого края
-            if (enemyList.get(i).GetPosX() + Enemy.width >= GameWindow.size.getWidth()) {
-                // Означает что надо двигать впараво
-                Enemy.direction = false;
-                // Означает что надо двигать вниз
-                down = true;
-            }
-            // Проверка достижения левого края
-            if (enemyList.get(i).GetPosX() <= 0) {
-                Enemy.direction = true;
-                down = true;
-            }
-            // Проверка не вышли ли враги за нижнюю границу
-            if (enemyList.get(i).GetPosY() >= player.GetPosY() - Player.playerSprite.getHeight()) {
-                score.SaveHighScore();
-                reset();
-
-
+        if(enemyList.size() != 0) { // проверка, закончились ли враги
+            for (int i = 0, enemyListSize = enemyList.size(); i < enemyListSize; i++) {
+                Enemy enemy = enemyList.get(i);
+                // Проверка достижения правого края
+                if (enemy.GetPosX() + Enemy.width >= GameWindow.size.getWidth()) {
+                    // Означает что надо двигать впараво
+                    Enemy.direction = false;
+                    // Означает что надо двигать вниз
+                    down = true;
+                }
+                // Проверка достижения левого края
+                if (enemy.GetPosX() <= 0) {
+                    Enemy.direction = true;
+                    down = true;
+                }
+                // Проверка не вышли ли враги за нижнюю границу
+                if (enemy.GetPosY() >= player.GetPosY() - Player.playerSprite.getHeight()) {
+                    score.SaveHighScore();
+                    if (playerLives == 0) {
+                        score.SaveHighScore();
+                        gamePanel.retryFlag = true;
+                    }
+                    else {
+                        LiveLoss();
+                    }
+                }
             }
         }
-        }
-        else{
-            initFleet();
+        else
+        {
+            bulletList.clear();
+            InitFleet();
             score.wave++;
         }
 
@@ -280,7 +299,7 @@ public class Game implements Runnable {
 
             if (deltaUpd >= 1) {
                 try {
-                    update();
+                    Update();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -293,18 +312,17 @@ public class Game implements Runnable {
                     if (gamePanel.pauseFlag) {
                         menu.MainMenu();
                     }
-                    else{
+                    else if (gamePanel.retryFlag) {
+                        menu.Defeat();
+                    }
+                    else {
                         gamePanel.buttonsList.clear(); // очистка списка кнопок
                         gamePanel.repaint();
                     }
 
-
-
                 frames++;
                 deltaFps--;
             }
-
-
 
             if (System.currentTimeMillis() - lastCheck >= 1000) {
 

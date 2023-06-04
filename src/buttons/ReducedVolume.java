@@ -1,14 +1,17 @@
 package buttons;
 
-import audio.Audio;
 import main.GamePanel;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class ReducedVolume extends Buttons{
 
-    int width = 50;
+    public static BufferedImage sprite;
+
+    public static int width;
+    public static int height;
 
     @Override
     public void RenderButton(Graphics graphics) {

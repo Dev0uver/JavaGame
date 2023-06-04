@@ -71,7 +71,7 @@ public class Game implements Runnable {
     }
 
     private void Update() throws IOException {
-        if (!gamePanel.pauseFlag & !gamePanel.retryFlag) {
+        if (!gamePanel.pauseFlag && !gamePanel.retryFlag) {
             player.UpdatePos();
             if (player.shooting) {
                 Shot();

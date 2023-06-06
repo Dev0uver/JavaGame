@@ -199,7 +199,6 @@ public class Game implements Runnable {
                 }
                 // Проверка не вышли ли враги за нижнюю границу
                 if (enemy.GetPosY() >= player.GetPosY() - Player.playerSprite.getHeight()) {
-                    score.SaveHighScore();
                     if (playerLives == 0) {
                         score.SaveHighScore();
                         gamePanel.retryFlag = true;

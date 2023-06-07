@@ -10,17 +10,18 @@ import javax.sound.sampled.*;
 import java.util.Random;
 
 public class Audio{
-    private Clip clip;
+    private Clip musicClip;
+    private Clip shotClip;
+    private Clip deathClip;
 
     private float max;
     private float min;
     public FloatControl musicVolume = null;
-    public FloatControl soundsVolume = null;
+    public FloatControl shotVolume = null;
+    public FloatControl deathVolume = null;
 
-    public int musicVolumePer = 50;
-    private int soundVolumePer = 50;
+    public int musicVolumePer = 70;
     private String prevSound;
-
     private List<String> soundtracks = Arrays.asList(new File("src/Assets/Audio/Soundtrack").list());
     private List<String> shotSounds = Arrays.asList(new File("src/Assets/Audio/ShotSounds").list());
     private List<String> deathSounds = Arrays.asList(new File("src/Assets/Audio/DeathSounds").list());
@@ -38,21 +39,17 @@ public class Audio{
         }
     };
 
-     // Регулировка громкости музыки
-    public void SetMusicVolume(){
+    public Audio() {
 
-        musicVolume.setValue((max - min) * (musicVolumePer / 100f) + min);
-        float a = musicVolume.getValue();
 
     }
-    // Регулировка громкости звуков
-    public void SetSoundsVolume(int action){
 
+    // Регулировка громкости музыки
+    public void SetMusicVolume(){
+        musicVolume.setValue((max - min) * (musicVolumePer / 100f) + min);
     }
 
     //метод генерации случайного саундтрека
-
-
     public void Soundtrack() {
             int index = 0;
 
@@ -63,21 +60,19 @@ public class Audio{
             }
             prevSound = soundtracks.get(index);
             soundtrack  = new File("src/Assets/Audio/Soundtrack/" + soundtracks.get(index));
-            clip = AudioSystem.getClip();
+            musicClip = AudioSystem.getClip();
             AudioInputStream input = AudioSystem.getAudioInputStream(soundtrack);
             //подключение обработчика событий
-            clip.addLineListener(listener);
-            clip.open(input);
+            musicClip.addLineListener(listener);
+            musicClip.open(input);
 
 
-            musicVolume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            musicVolume = (FloatControl) musicClip.getControl(FloatControl.Type.MASTER_GAIN);
             max = musicVolume.getMaximum();
             min = musicVolume.getMinimum();
+            SetMusicVolume();
 
-            //musicVolume.setValue((max + min) / 2);
-
-            //clip.setFramePosition(180000);
-            clip.start(); // запуск потока
+            musicClip.start(); // запуск потока
 
 
         }
@@ -96,9 +91,11 @@ public class Audio{
 
         try {
             shotSound = new File("src/Assets/Audio/ShotSounds/" + shotSounds.get(0));
-            clip = AudioSystem.getClip();
-            clip.open(AudioSystem.getAudioInputStream(shotSound));
-            clip.start(); // запуск потока
+            shotClip = AudioSystem.getClip();
+            shotClip.open(AudioSystem.getAudioInputStream(shotSound));
+            shotVolume = (FloatControl) shotClip.getControl(FloatControl.Type.MASTER_GAIN);
+            shotVolume.setValue((max - min) * (musicVolumePer / 100f) + min);
+            shotClip.start(); // запуск потока
         }
         catch (LineUnavailableException | IOException e) {
             e.printStackTrace();
@@ -115,9 +112,11 @@ public class Audio{
 
         try {
             deathSound = new File("src/Assets/Audio/DeathSounds/" + deathSounds.get(0));
-            clip = AudioSystem.getClip();
-            clip.open(AudioSystem.getAudioInputStream(deathSound));
-            clip.start(); // запуск потока
+            deathClip = AudioSystem.getClip();
+            deathClip.open(AudioSystem.getAudioInputStream(deathSound));
+            deathVolume = (FloatControl) deathClip.getControl(FloatControl.Type.MASTER_GAIN);
+            deathVolume.setValue((max - min) * (musicVolumePer / 100f) + min);
+            deathClip.start(); // запуск потока
         }
         catch (LineUnavailableException | IOException e) {
             e.printStackTrace();

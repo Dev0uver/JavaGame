@@ -21,12 +21,15 @@ public class GamePanel extends JPanel {
     public HashMap<String, Buttons> buttonsList = new HashMap<>(); // массив кнопок
 
     private final Game game;
+
+    public final Menu menu = new Menu(this);
     public boolean retryFlag = false;
 
 
     public void Pause() { // установка флага паузы
         pauseFlag = !pauseFlag;
     }
+
 
 
     // Конструктор класса
@@ -48,7 +51,10 @@ public class GamePanel extends JPanel {
         // Метод очистки окна и отрисовки новых объектов
         super.paintComponent(graphics);
         PaintBackground(graphics);
-        game.Render(graphics);
+        if (!pauseFlag) {
+            game.Render(graphics);
+        }
+
     }
 
     public void PaintBackground(Graphics graphics) {

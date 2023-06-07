@@ -1,9 +1,7 @@
 package main;
 
 
-import buttons.ExitButton;
-import buttons.RetryButton;
-import buttons.PlayButton;
+import buttons.*;
 import entities.Bullet;
 import entities.Enemy;
 import entities.Player;
@@ -94,5 +92,52 @@ public class Initializer {
         }
         RetryButton.width = RetryButton.sprite.getWidth();
         RetryButton.height = RetryButton.sprite.getHeight();
+
+
+
+        inputStream = SettingsButton.class.getResourceAsStream("/Assets/Sprites/Settings.png");
+        try {
+            if (inputStream != null) {
+                SettingsButton.sprite = ImageIO.read(inputStream);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        SettingsButton.width = SettingsButton.sprite.getWidth();
+        SettingsButton.height = SettingsButton.sprite.getHeight();
+
+        inputStream = IncrVolume.class.getResourceAsStream("/Assets/Sprites/Increase.png");
+        try {
+            if (inputStream != null) {
+                IncrVolume.sprite = ImageIO.read(inputStream);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        IncrVolume.width = IncrVolume.sprite.getWidth();
+        IncrVolume.height = IncrVolume.sprite.getHeight();
+
+        inputStream = ReducedVolume.class.getResourceAsStream("/Assets/Sprites/Reduce.png");
+        try {
+            if (inputStream != null) {
+                ReducedVolume.sprite = ImageIO.read(inputStream);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        ReducedVolume.width = ReducedVolume.sprite.getWidth();
+        ReducedVolume.height = ReducedVolume.sprite.getHeight();
+
+        inputStream = BackButton.class.getResourceAsStream("/Assets/Sprites/Back.png");
+        try {
+            if (inputStream != null) {
+                BackButton.sprite = ImageIO.read(inputStream);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        BackButton.width = BackButton.sprite.getWidth();
+        BackButton.height = BackButton.sprite.getHeight();
+
     }
 }

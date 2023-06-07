@@ -24,21 +24,22 @@ public class Game implements Runnable {
     private final List<Enemy> enemyList = new ArrayList<>();
     private final List<Bullet> bulletList = new ArrayList<>();
 
-    private final Menu menu;
+    //private final Menu menu;
     private final Audio audio;
+
     public Game() throws InterruptedException {
 
         gamePanel = new GamePanel(this); // Инициализация Контейнера
         gamePanel.setFocusable(true); // Позволяет "захватить" экран
         gamePanel.requestFocus(); // Запрашивает захват экрана для ввода
         GameWindow gameWindow = new GameWindow(gamePanel);
-        menu  = new Menu(gamePanel);
+        //menu  = new Menu(gamePanel);
         audio = new Audio();
         Initializer.Initialization();
 
         gamePanel.PaintBackground(gamePanel.getGraphics()); // отрисовка фона до меню
-        menu.InitButtons();
-        menu.MainMenu();
+        gamePanel.menu.InitButtons();
+        gamePanel.menu.MainMenu();
         InitClasses();
 
         audio.Soundtrack();
@@ -49,17 +50,24 @@ public class Game implements Runnable {
 
     }
 
+    public int GetVolumePer(){
+        return audio.musicVolumePer;
+    }
+
     public void IncrMusicValue(){
-        if(!(audio.musicVolumePer >= 1)){
-            audio.musicVolumePer += 10;
+        if(!(audio.musicVolumePer >= 100)){
+            audio.musicVolumePer += 1;
             audio.SetMusicVolume();
         }
     }
 
     public void ReduceMusicValue(){
         if(!(audio.musicVolumePer <= 0)){
-            audio.musicVolumePer -= 10;
+            audio.musicVolumePer -= 1;
             audio.SetMusicVolume();
+        }
+        else{
+            audio.musicVolumePer -= 0;
         }
     }
 
@@ -309,10 +317,10 @@ public class Game implements Runnable {
             if (deltaFps >= 1) {
 
                     if (gamePanel.pauseFlag) {
-                        menu.MainMenu();
+                        gamePanel.menu.MainMenu();
                     }
                     else if (gamePanel.retryFlag) {
-                        menu.Defeat();
+                        gamePanel.menu.Defeat();
                     }
                     else {
                         gamePanel.buttonsList.clear(); // очистка списка кнопок

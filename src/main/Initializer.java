@@ -17,6 +17,7 @@ public class Initializer {
         InitButtonSprites();
     }
 
+
     private static void InitEntitySprites() {
 
         InputStream inputStream = GamePanel.class.getResourceAsStream("/Assets/Sprites/background.png");
@@ -93,8 +94,6 @@ public class Initializer {
         RetryButton.width = RetryButton.sprite.getWidth();
         RetryButton.height = RetryButton.sprite.getHeight();
 
-
-
         inputStream = SettingsButton.class.getResourceAsStream("/Assets/Sprites/Settings.png");
         try {
             if (inputStream != null) {
@@ -106,16 +105,16 @@ public class Initializer {
         SettingsButton.width = SettingsButton.sprite.getWidth();
         SettingsButton.height = SettingsButton.sprite.getHeight();
 
-        inputStream = IncrVolume.class.getResourceAsStream("/Assets/Sprites/Increase.png");
+        inputStream = IncreaseVolume.class.getResourceAsStream("/Assets/Sprites/Increase.png");
         try {
             if (inputStream != null) {
-                IncrVolume.sprite = ImageIO.read(inputStream);
+                IncreaseVolume.sprite = ImageIO.read(inputStream);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        IncrVolume.width = IncrVolume.sprite.getWidth();
-        IncrVolume.height = IncrVolume.sprite.getHeight();
+        IncreaseVolume.width = IncreaseVolume.sprite.getWidth();
+        IncreaseVolume.height = IncreaseVolume.sprite.getHeight();
 
         inputStream = ReducedVolume.class.getResourceAsStream("/Assets/Sprites/Reduce.png");
         try {

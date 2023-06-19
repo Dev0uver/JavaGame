@@ -12,8 +12,6 @@ public class Enemy extends Entity {
 
     public static BufferedImage enemySprite;
 
-    public float speed = 1f;
-
     public int jumpDown = 15;
 
     public static boolean direction = true;
@@ -33,10 +31,12 @@ public class Enemy extends Entity {
     }
 
     public void JumpDown() {
+
         y += jumpDown;
     }
 
-    public void Move() {
+    public void Move(float speed) {
+
         if (direction) {
             x += speed;
         }

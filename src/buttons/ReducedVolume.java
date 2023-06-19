@@ -1,6 +1,8 @@
 package buttons;
 
+import main.Game;
 import main.GamePanel;
+import main.GameWindow;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -21,7 +23,10 @@ public class ReducedVolume extends Buttons{
     @Override
     public void onHit(int x, int y) throws IOException {
         if (((xPosition <= x) & (x <= xPosition + width)) & ((yPosition <= y) & (y <= yPosition + height))) {
+
+            GameWindow.pressed = true;
             gamePanel.GetGame().ReduceMusicValue();
+            gamePanel.paintComponent(gamePanel.getGraphics());
             gamePanel.menu.Settings();
         }
     }

@@ -24,21 +24,24 @@ public class Game implements Runnable {
     private final List<Enemy> enemyList = new ArrayList<>();
     private final List<Bullet> bulletList = new ArrayList<>();
 
-    //private final Menu menu;
     private final Audio audio;
+
+    private float enemySpeed = 1f;
+    private float playerSpeed = 3f;
 
     public Game() throws InterruptedException {
 
+        Initializer.Initialization();
         gamePanel = new GamePanel(this); // Инициализация Контейнера
         gamePanel.setFocusable(true); // Позволяет "захватить" экран
         gamePanel.requestFocus(); // Запрашивает захват экрана для ввода
         GameWindow gameWindow = new GameWindow(gamePanel);
         //menu  = new Menu(gamePanel);
         audio = new Audio();
-        Initializer.Initialization();
+        //Initializer.Initialization();
 
-        gamePanel.PaintBackground(gamePanel.getGraphics()); // отрисовка фона до меню
-        gamePanel.menu.InitButtons();
+        gamePanel.RenderBackground(gamePanel.getGraphics()); // отрисовка фона до меню
+        //gamePanel.menu.InitButtons();
         gamePanel.menu.MainMenu();
         InitClasses();
 
@@ -54,7 +57,8 @@ public class Game implements Runnable {
         return audio.musicVolumePer;
     }
 
-    public void IncrMusicValue(){
+    public void IncreaseMusicVolume(){
+
         if(!(audio.musicVolumePer >= 100)){
             audio.musicVolumePer += 1;
             audio.SetMusicVolume();
@@ -62,12 +66,10 @@ public class Game implements Runnable {
     }
 
     public void ReduceMusicValue(){
+
         if(!(audio.musicVolumePer <= 0)){
             audio.musicVolumePer -= 1;
             audio.SetMusicVolume();
-        }
-        else{
-            audio.musicVolumePer -= 0;
         }
     }
 
@@ -79,12 +81,15 @@ public class Game implements Runnable {
     }
 
     private void Update() throws IOException {
-        if (!gamePanel.pauseFlag && !gamePanel.retryFlag) {
-            player.UpdatePos();
+        if (!gamePanel.pauseFlag && !gamePanel.retryFlag && !gamePanel.settingsFlag) {
+            player.UpdatePos(playerSpeed);
+
             if (player.shooting) {
                 Shot();
             }
+
             MoveEnemy();
+
             for (Bullet bullet : bulletList) {
                 bullet.MoveBullet();
             }
@@ -99,12 +104,15 @@ public class Game implements Runnable {
                 player.Render(graphics);
                 RenderLives(graphics);
             }
+
             for (Enemy enemy : enemyList) {
                 enemy.Render(graphics);
             }
+
             for (Bullet bullet : bulletList) {
                 bullet.Render(graphics);
             }
+
             if (score != null) {
                 score.RenderScore(graphics);
                 score.RenderHighScore(graphics);
@@ -124,6 +132,7 @@ public class Game implements Runnable {
 
         player = new Player((float) ((GameWindow.size.getWidth() / 2) - Player.playerSprite.getWidth() / 2), (float) (GameWindow.size.getHeight() - 200));
         score = new Score();
+
         try {
             score.InitScore();
         } catch (FileNotFoundException e) {
@@ -158,7 +167,7 @@ public class Game implements Runnable {
 
     private void Shot() {
 
-        if (System.currentTimeMillis() - player.lastCheck >= 300) {
+        if (System.currentTimeMillis() - player.lastCheck >= 300 && bulletList.size() < 2) {
             CreateBullet();
             player.lastCheck = System.currentTimeMillis();
         }
@@ -170,12 +179,13 @@ public class Game implements Runnable {
         audio.Shot();
     }
 
-    public void Reset() throws IOException {
+    public void Reset() {
 
         enemyList.clear();
         bulletList.clear();
         InitClasses();
         playerLives = 3;
+        enemySpeed = 1f;
     }
 
     public void LiveLoss() {
@@ -185,10 +195,10 @@ public class Game implements Runnable {
         InitFleet();
         player = new Player((float) ((GameWindow.size.getWidth() / 2) - Player.playerSprite.getWidth() / 2), (float) (GameWindow.size.getHeight() - 200));
         playerLives--;
+        enemySpeed = 1f;
     }
 
     private void MoveEnemy() throws IOException {
-        // !! Управление врагами происходит из переменных описанных выше !!
         boolean down = false;
         if(enemyList.size() != 0) { // проверка, закончились ли враги
             for (int i = 0, enemyListSize = enemyList.size(); i < enemyListSize; i++) {
@@ -220,6 +230,7 @@ public class Game implements Runnable {
         else
         {
             bulletList.clear();
+            enemySpeed = 1f;
             InitFleet();
             score.wave++;
         }
@@ -232,7 +243,7 @@ public class Game implements Runnable {
         }
         // Движение вправо или влево
         for (Enemy enemy : enemyList) {
-            enemy.Move();
+            enemy.Move(enemySpeed);
         }
     }
 
@@ -266,13 +277,15 @@ public class Game implements Runnable {
                 float enemyY = enemyList.get(j).GetPosY();
 
                 // проверка столкновения снаряда и пришельца и их удаление в случае подтверждения
-                if ( bulletX + Bullet.width >= enemyX
-                        && bulletX <= enemyX + Enemy.width
+                if ( bulletX + Bullet.width >= enemyX + enemySpeed
+                        && bulletX <= enemyX + Enemy.width - enemySpeed
                         && bulletY >= enemyY
                         && bulletY - Bullet.height <= enemyY + Enemy.height ) {
                     enemyList.get(j).Death(score);
                     enemyList.remove(j);
                     bulletList.remove(i);
+                    enemySpeed += enemySpeed * 0.02f;
+                    playerSpeed += playerSpeed * 0.01f;
                     audio.Death();
                 }
             }
@@ -315,15 +328,18 @@ public class Game implements Runnable {
             }
 
             if (deltaFps >= 1) {
-
                     if (gamePanel.pauseFlag) {
+                        gamePanel.paintComponent(gamePanel.getGraphics());
                         gamePanel.menu.MainMenu();
                     }
                     else if (gamePanel.retryFlag) {
+                        gamePanel.paintComponent(gamePanel.getGraphics());
                         gamePanel.menu.Defeat();
                     }
+                    else if (gamePanel.settingsFlag) {
+                        gamePanel.menu.Settings();
+                    }
                     else {
-                        gamePanel.buttonsList.clear(); // очистка списка кнопок
                         gamePanel.repaint();
                     }
 

@@ -1,10 +1,12 @@
 package buttons;
 
 import main.GamePanel;
+import main.GameWindow;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class SettingsButton extends Buttons{
 
@@ -16,15 +18,25 @@ public class SettingsButton extends Buttons{
     @Override
     public void RenderButton(Graphics graphics) {
         graphics.drawImage(sprite, xPosition, yPosition, null);
-        //gamePanel.GetGame().menu.Settings();
     }
 
     @Override
     public void onHit(int x, int y) throws IOException {
         if (((xPosition <= x) & (x <= xPosition + width)) & ((yPosition <= y) & (y <= yPosition + height))) {
+
+            if (gamePanel.pauseFlag) {
+                gamePanel.previousFlag = 0;
+                gamePanel.pauseFlag = false;
+            }
+            else {
+                gamePanel.previousFlag = 1;
+                gamePanel.retryFlag = false;
+            }
+
+            gamePanel.settingsFlag = true;
+            GameWindow.pressed = true;
             gamePanel.paintComponent(gamePanel.getGraphics());
             gamePanel.menu.Settings();
-
         }
 
     }

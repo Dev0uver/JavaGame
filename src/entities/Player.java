@@ -30,14 +30,13 @@ public class Player extends Entity {
     }
 
     // Изменение координаты x игрок
-    public void UpdatePos() {
+    public void UpdatePos(float speed) {
 
-        float velX = 3f;
         if (left && !right && x > 0) {
-            x -= velX;
+            x -= speed;
         }
         else if (right && !left && (x + playerWidth) <= GameWindow.size.getWidth()) {
-            x += velX;
+            x += speed;
         }
 
     }

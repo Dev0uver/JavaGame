@@ -14,6 +14,7 @@ import java.io.IOException;
 public class GameWindow {
 
     public static Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+    public static boolean pressed = false;
 
     
     // Создание игрового окна
@@ -35,9 +36,13 @@ public class GameWindow {
                 int x =  e.getX(); // получение координат нажатия
                 int y =  e.getY();
                 if (gamePanel.buttonsList != null){ // проверка на попадание по кнопке
-                    for (Buttons button: gamePanel.buttonsList.values()){
+                    for (Buttons button: gamePanel.buttonsList){
                         try {
                             button.onHit(x, y);
+                            if (pressed) {
+                                pressed = false;
+                                break;
+                            }
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }

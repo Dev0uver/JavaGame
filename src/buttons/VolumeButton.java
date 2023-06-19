@@ -24,7 +24,7 @@ public class VolumeButton extends Buttons{
             gamePanel.menu.Settings();
         }
         else if(((xPosition + width * 0.78 <= x) & (x <= xPosition + width)) & ((yPosition <= y) & (y <= yPosition + height))){
-            gamePanel.GetGame().IncrMusicValue();
+            gamePanel.GetGame().IncreaseMusicVolume();
             gamePanel.menu.Settings();
         }
     }

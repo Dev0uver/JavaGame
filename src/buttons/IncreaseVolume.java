@@ -1,12 +1,13 @@
 package buttons;
 
 import main.GamePanel;
+import main.GameWindow;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public class IncrVolume extends Buttons {
+public class IncreaseVolume extends Buttons {
 
     public static BufferedImage sprite;
 
@@ -20,11 +21,14 @@ public class IncrVolume extends Buttons {
     @Override
     public void onHit(int x, int y) throws IOException {
         if (((xPosition <= x) & (x <= xPosition + width)) & ((yPosition <= y) & (y <= yPosition + height))) {
-            gamePanel.GetGame().IncrMusicValue();
+
+            GameWindow.pressed = true;
+            gamePanel.GetGame().IncreaseMusicVolume();
+            gamePanel.paintComponent(gamePanel.getGraphics());
             gamePanel.menu.Settings();
         }
     }
-    public IncrVolume(int xPosition, int yPosition, GamePanel gamePanel) {
+    public IncreaseVolume(int xPosition, int yPosition, GamePanel gamePanel) {
         super(xPosition, yPosition, gamePanel);
     }
 }

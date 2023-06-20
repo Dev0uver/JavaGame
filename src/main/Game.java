@@ -16,6 +16,9 @@ import java.util.List;
 public class Game implements Runnable {
 
     private final GamePanel gamePanel;
+    private final GameTimer gameTimer;
+
+    private final TimerBuffer timerBuffer;
 
     private Player player;
     private int playerLives = 3;
@@ -29,6 +32,9 @@ public class Game implements Runnable {
     private float enemySpeed = 1f;
     private float playerSpeed = 3f;
 
+    private GameState state = GameState.MENU;
+    private GameState prevState = null;
+
     public Game() throws InterruptedException {
 
         Initializer.Initialization();
@@ -36,6 +42,9 @@ public class Game implements Runnable {
         gamePanel.setFocusable(true); // Позволяет "захватить" экран
         gamePanel.requestFocus(); // Запрашивает захват экрана для ввода
         GameWindow gameWindow = new GameWindow(gamePanel);
+
+        timerBuffer = new TimerBuffer();
+        gameTimer = new GameTimer(timerBuffer);
         //menu  = new Menu(gamePanel);
         audio = new Audio();
         //Initializer.Initialization();
@@ -49,15 +58,16 @@ public class Game implements Runnable {
 
         // запуск потока игры
         StartGameLoop();
-        Thread.sleep(Long.MAX_VALUE);
+        //Thread.sleep(Long.MAX_VALUE);
 
     }
 
-    public int GetVolumePer(){
+    public int GetVolumePer() {
+
         return audio.musicVolumePer;
     }
 
-    public void IncreaseMusicVolume(){
+    public void IncreaseMusicVolume() {
 
         if(!(audio.musicVolumePer >= 100)){
             audio.musicVolumePer += 1;
@@ -65,7 +75,7 @@ public class Game implements Runnable {
         }
     }
 
-    public void ReduceMusicValue(){
+    public void ReduceMusicValue() {
 
         if(!(audio.musicVolumePer <= 0)){
             audio.musicVolumePer -= 1;
@@ -81,7 +91,8 @@ public class Game implements Runnable {
     }
 
     private void Update() throws IOException {
-        if (!gamePanel.pauseFlag && !gamePanel.retryFlag && !gamePanel.settingsFlag) {
+
+        if (state == GameState.PLAYING) {
             player.UpdatePos(playerSpeed);
 
             if (player.shooting) {
@@ -118,6 +129,7 @@ public class Game implements Runnable {
                 score.RenderHighScore(graphics);
                 score.RenderWave(graphics);// счетчик волн
             }
+            graphics.drawString(timerBuffer.GetFullTime(), (int) GameWindow.size.getWidth() - 400, 70);
     }
 
     private void RenderLives(Graphics graphics) {
@@ -172,6 +184,7 @@ public class Game implements Runnable {
             player.lastCheck = System.currentTimeMillis();
         }
     }
+
     public void CreateBullet() {
 
         Bullet bullet = new Bullet(player.GetPosX(), player.GetPosY());
@@ -199,6 +212,7 @@ public class Game implements Runnable {
     }
 
     private void MoveEnemy() throws IOException {
+
         boolean down = false;
         if(enemyList.size() != 0) { // проверка, закончились ли враги
             for (int i = 0, enemyListSize = enemyList.size(); i < enemyListSize; i++) {
@@ -219,7 +233,7 @@ public class Game implements Runnable {
                 if (enemy.GetPosY() >= player.GetPosY() - Player.playerSprite.getHeight()) {
                     if (playerLives == 0) {
                         score.SaveHighScore();
-                        gamePanel.retryFlag = true;
+                        state = GameState.GAMEOVER;
                     }
                     else {
                         LiveLoss();
@@ -281,7 +295,7 @@ public class Game implements Runnable {
                         && bulletX <= enemyX + Enemy.width - enemySpeed
                         && bulletY >= enemyY
                         && bulletY - Bullet.height <= enemyY + Enemy.height ) {
-                    enemyList.get(j).Death(score);
+                    score.score++;
                     enemyList.remove(j);
                     bulletList.remove(i);
                     enemySpeed += enemySpeed * 0.02f;
@@ -328,20 +342,23 @@ public class Game implements Runnable {
             }
 
             if (deltaFps >= 1) {
-                    if (gamePanel.pauseFlag) {
+
+                switch (state) {
+
+                    case MENU -> {
                         gamePanel.paintComponent(gamePanel.getGraphics());
                         gamePanel.menu.MainMenu();
                     }
-                    else if (gamePanel.retryFlag) {
+                    case SETTINGS -> {
                         gamePanel.paintComponent(gamePanel.getGraphics());
-                        gamePanel.menu.Defeat();
-                    }
-                    else if (gamePanel.settingsFlag) {
                         gamePanel.menu.Settings();
                     }
-                    else {
-                        gamePanel.repaint();
+                    case GAMEOVER -> {
+                        gamePanel.paintComponent(gamePanel.getGraphics());
+                        gamePanel.menu.GameOver();
                     }
+                    default -> gamePanel.repaint();
+                }
 
                 frames++;
                 deltaFps--;
@@ -350,7 +367,7 @@ public class Game implements Runnable {
             if (System.currentTimeMillis() - lastCheck >= 1000) {
 
                 lastCheck = System.currentTimeMillis();
-                System.out.println("FPS: " + frames + " | " + "Updates: " + updates);
+                //System.out.println("FPS: " + frames + " | " + "Updates: " + updates);
                 frames = 0;
                 updates = 0;
             }
@@ -360,12 +377,30 @@ public class Game implements Runnable {
     public void WindowFocusLost() {
         player.ResetDirBooleans();
     }
-
     public Player GetPlayer() {
         return player;
     }
-
     public Score GetScore() {
         return score;
+    }
+    public void SetState(GameState state) {
+
+        this.state = state;
+    }
+    public GameState GetState() {
+
+        return state;
+    }
+    public void SetPrevState(GameState state) {
+
+        this.prevState = state;
+    }
+    public GameState GetPrevState() {
+
+        return prevState;
+    }
+    public GameTimer GetGameTimer() {
+
+        return gameTimer;
     }
 }

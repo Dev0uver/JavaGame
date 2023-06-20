@@ -14,18 +14,16 @@ import java.util.Scanner;
 public class Score {
 
     public long score = 0;
-
     public int wave = 1; // счетчик волн
-
     private static final Path relativePath = Paths.get("src/Assets/HighScore.txt");
     private final File scoreFile = new File(relativePath.toUri());
     private static long highScore;
 
     private static final Font font = new Font("Courier", Font.BOLD, 30); // объявление шрифта
-
     private final int xPosition = (int) GameWindow.size.getWidth() - 150;
 
     public void InitScore() throws FileNotFoundException {
+
         if (!scoreFile.exists()) {
             try {
                 boolean fileCreated = scoreFile.createNewFile();
@@ -48,25 +46,29 @@ public class Score {
     }
 
     public void RenderScore(Graphics graphics) {
+
         graphics.setFont(font);
         graphics.setColor(Color.WHITE);
         graphics.drawString("Score: " + score, xPosition - 50, 40);
     }
 
     // счетчик волн
-    public void RenderWave(Graphics graphics){
+    public void RenderWave(Graphics graphics) {
+
         graphics.setFont(font);
         graphics.setColor(Color.WHITE);
         graphics.drawString("Wave: " + wave, xPosition - 250, 40);
     }
 
     public void RenderHighScore(Graphics graphics) {
+
         graphics.setFont(font);
         graphics.setColor(Color.WHITE);
         graphics.drawString("HighScore: " + highScore, (int) (GameWindow.size.getWidth() / 2) - 100, 40);
     }
 
     public void SaveHighScore() throws IOException {
+
         if (score > highScore) {
             highScore = score;
             try (FileWriter writer = new FileWriter(scoreFile, false)) {

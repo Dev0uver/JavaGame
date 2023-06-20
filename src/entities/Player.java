@@ -9,11 +9,9 @@ public class Player extends Entity {
 
     public static int playerWidth;
     public static int playerHeight;
-
     public boolean left, right, shooting;
 
     public static BufferedImage playerSprite;
-
     public long lastCheck;
 
     public Player(float x, float y) {
@@ -38,7 +36,6 @@ public class Player extends Entity {
         else if (right && !left && (x + playerWidth) <= GameWindow.size.getWidth()) {
             x += speed;
         }
-
     }
 
     public void ResetDirBooleans() {
@@ -46,35 +43,18 @@ public class Player extends Entity {
         right = false;
         shooting = false;
     }
-
-    public boolean IsLeft() {
-        return left;
-    }
-
     public void SetLeft(boolean left) {
         this.left = left;
     }
-
-    public boolean IsRight() {
-        return right;
-    }
-
     public void SetRight(boolean right) {
         this.right = right;
     }
-
-    public boolean IsShooting() {
-        return shooting;
-    }
-
     public void SetShooting(boolean shooting) {
         this.shooting = shooting;
     }
-
     public float GetPosX() {
         return x;
     }
-
     public float GetPosY() {
         return y;
     }

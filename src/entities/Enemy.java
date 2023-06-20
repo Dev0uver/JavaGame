@@ -22,7 +22,6 @@ public class Enemy extends Entity {
 
         width = enemySprite.getWidth();
         height = enemySprite.getHeight();
-
     }
 
     public void Render(Graphics graphics) {
@@ -43,12 +42,6 @@ public class Enemy extends Entity {
         else {
             x -= speed;
         }
-    }
-
-    public void Death(Score score) {
-
-        //Audio.Death();
-        score.score++;
     }
 
     public float GetPosX() {

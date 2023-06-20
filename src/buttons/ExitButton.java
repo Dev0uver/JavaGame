@@ -14,6 +14,7 @@ public class ExitButton extends Buttons {
     public static int height;
 
     public void onHit(int x, int y) throws IOException {
+
         if (((xPosition <= x) & (x <= xPosition + width)) & ((yPosition <= y) & (y <= yPosition + height))) {
             gamePanel.GetGame().GetScore().SaveHighScore();
             System.exit(0);
@@ -21,15 +22,11 @@ public class ExitButton extends Buttons {
     }
 
     public void RenderButton(Graphics graphics) { // отрисовка кнопки
-        //graphics.setColor(Color.lightGray);
-        //graphics.fillRect(xPosition, yPosition, width, height);
-        graphics.drawImage(sprite, xPosition, yPosition, null);
-        //graphics.setColor(Color.BLACK);
-        //graphics.setFont(font); // установка шрифта
-        //graphics.drawString("Exit", xPosition + 80, yPosition + 40); // рисование надписи в кнопке
 
+        graphics.drawImage(sprite, xPosition, yPosition, null);
     }
     public ExitButton(int xPosition, int yPosition, GamePanel gamePanel) {
+
         super(xPosition, yPosition, gamePanel);
         this.xPosition = xPosition;
         this.yPosition = yPosition;

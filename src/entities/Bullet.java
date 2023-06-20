@@ -21,11 +21,11 @@ public class Bullet extends Entity {
         this.y = y;
     }
 
-
     public void Render(Graphics graphics) {
 
         graphics.drawImage(bulletSprite, (int) x,(int) y - 30, null);
     }
+
     public void MoveBullet() {
 
         float speed = 4f;

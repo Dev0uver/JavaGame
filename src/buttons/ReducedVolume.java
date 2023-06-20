@@ -22,6 +22,7 @@ public class ReducedVolume extends Buttons{
 
     @Override
     public void onHit(int x, int y) throws IOException {
+
         if (((xPosition <= x) & (x <= xPosition + width)) & ((yPosition <= y) & (y <= yPosition + height))) {
 
             GameWindow.pressed = true;

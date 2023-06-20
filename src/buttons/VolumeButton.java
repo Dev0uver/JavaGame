@@ -14,11 +14,13 @@ public class VolumeButton extends Buttons{
     public static int height;
     @Override
     public void RenderButton(Graphics graphics) {
+
         graphics.drawImage(sprite, xPosition, yPosition, null);
     }
 
     @Override
     public void onHit(int x, int y) throws IOException {
+
         if (((xPosition <= x) & (x <= xPosition + width / 5)) & ((yPosition <= y) & (y <= yPosition + height))) {
             gamePanel.GetGame().ReduceMusicValue();
             gamePanel.menu.Settings();

@@ -22,16 +22,21 @@ public class BackButton extends Buttons {
     public void onHit(int x, int y) throws IOException {
 
         if (((xPosition <= x) & (x <= xPosition + width)) & ((yPosition <= y) & (y <= yPosition + height))) {
-            if (gamePanel.previousFlag == 0) {
-                gamePanel.pauseFlag = true;
-            }
-            else {
-                gamePanel.retryFlag = true;
-            }
-            gamePanel.settingsFlag = false;
 
+            gamePanel.GetGame().SetState(gamePanel.GetGame().GetPrevState());
+            gamePanel.GetGame().SetPrevState(null);
             GameWindow.pressed = true;
-            gamePanel.paintComponent(gamePanel.getGraphics());
+            switch (gamePanel.GetGame().GetState()) {
+
+                case MENU -> {
+                    gamePanel.paintComponent(gamePanel.getGraphics());
+                    gamePanel.menu.MainMenu();
+                }
+                case GAMEOVER -> {
+                    gamePanel.paintComponent(gamePanel.getGraphics());
+                    gamePanel.menu.GameOver();
+                }
+            }
         }
     }
 

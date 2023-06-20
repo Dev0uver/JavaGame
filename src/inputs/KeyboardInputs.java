@@ -1,6 +1,7 @@
 package inputs;
 
 import main.GamePanel;
+import main.GameState;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -23,12 +24,15 @@ public class KeyboardInputs implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
 
-        if (gamePanel.flag) {
             switch (e.getKeyCode()) {
+
                 case KeyEvent.VK_A -> gamePanel.GetGame().GetPlayer().SetLeft(true);
                 case KeyEvent.VK_D -> gamePanel.GetGame().GetPlayer().SetRight(true);
                 case KeyEvent.VK_SPACE -> gamePanel.GetGame().GetPlayer().SetShooting(true);
-                case KeyEvent.VK_ESCAPE -> gamePanel.pauseFlag = true;
+                case KeyEvent.VK_ESCAPE -> {
+                    gamePanel.GetGame().GetGameTimer().Stop();
+                    gamePanel.GetGame().SetState(GameState.MENU);
+                }
                 case KeyEvent.VK_Q -> {
                     System.exit(0);
                     try {
@@ -39,7 +43,6 @@ public class KeyboardInputs implements KeyListener {
                 }
             }
         }
-    }
 
     @Override
     public void keyReleased(KeyEvent e) {

@@ -1,6 +1,8 @@
 package buttons;
 
 import main.GamePanel;
+import main.GameState;
+import main.GameTimer;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -13,7 +15,8 @@ public class PlayButton extends Buttons {
     public static int height;
 
     @Override
-    public void RenderButton(Graphics graphics) { // отрисовка кнопки
+    public void RenderButton(Graphics graphics) {
+        // отрисовка кнопки
         graphics.drawImage(sprite, xPosition, yPosition, null);
     }
 
@@ -22,10 +25,8 @@ public class PlayButton extends Buttons {
 
         if (((xPosition <=x) & (x <= xPosition + width)) & ((yPosition <= y) & (y <= yPosition + height))) {
 
-            gamePanel.pauseFlag = false; // снятие флага паузы
-            if (!gamePanel.flag) {
-                gamePanel.flag = true;
-            }
+            gamePanel.GetGame().SetState(GameState.PLAYING); // снятие флага паузы
+            gamePanel.GetGame().GetGameTimer().Start();
         }
     }
 

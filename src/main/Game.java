@@ -18,7 +18,7 @@ public class Game implements Runnable {
     private final GamePanel gamePanel;
     private final GameTimer gameTimer;
 
-    private final TimerBuffer timerBuffer;
+    private TimerBuffer timerBuffer;
 
     private Player player;
     private int playerLives = 3;
@@ -127,7 +127,7 @@ public class Game implements Runnable {
             if (score != null) {
                 score.RenderScore(graphics);
                 score.RenderHighScore(graphics);
-                score.RenderWave(graphics);// счетчик волн
+                score.RenderWave(graphics); // счетчик волн
             }
             graphics.drawString(timerBuffer.GetFullTime(), (int) GameWindow.size.getWidth() - 400, 70);
     }
@@ -199,6 +199,7 @@ public class Game implements Runnable {
         InitClasses();
         playerLives = 3;
         enemySpeed = 1f;
+        timerBuffer = new TimerBuffer();
     }
 
     public void LiveLoss() {

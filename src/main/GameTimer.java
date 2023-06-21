@@ -24,7 +24,6 @@ public class GameTimer extends TimerTask {
             timerBuffer.ChangeHours();
         }
         timerBuffer.SetSeconds(((new Date().getTime() - timerBuffer.GetStartTime()) / 1000));
-        System.out.println(timerBuffer.GetHours() + ":" + timerBuffer.GetMinutes() + ":" + timerBuffer.GetSeconds());
     }
 
     public void Start() {

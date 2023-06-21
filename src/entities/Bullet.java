@@ -32,6 +32,7 @@ public class Bullet extends Entity {
         y -= speed;
     }
 
+
     public float GetPosX() {
         return x;
     }

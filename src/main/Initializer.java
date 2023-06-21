@@ -4,6 +4,7 @@ package main;
 import buttons.*;
 import entities.Bullet;
 import entities.Enemy;
+import entities.EnemysBullet;
 import entities.Player;
 import javax.imageio.ImageIO;
 import java.io.IOException;
@@ -52,6 +53,14 @@ public class Initializer {
         try {
             if (inputStream != null) {
                 Bullet.bulletSprite = ImageIO.read(inputStream);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        inputStream = EnemysBullet.class.getResourceAsStream("/Assets/Sprites/Bullet.png");
+        try {
+            if (inputStream != null) {
+                EnemysBullet.enemyBulletSprite = ImageIO.read(inputStream);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

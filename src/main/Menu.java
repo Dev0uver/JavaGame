@@ -68,7 +68,7 @@ public class Menu {
 
         graphics.drawString(
                 "Volume level: " + gamePanel.GetGame().GetVolumePer() + "%",
-                gamePanel.buttonsList.get(0).xPosition + (int)(ReducedVolume.width * 1.5) ,
+                gamePanel.buttonsList.get(0).xPosition + (int)(ReducedVolume.width * 1.5),
                 gamePanel.buttonsList.get(0).yPosition + (int)(ReducedVolume.height * 0.75)
         );
 

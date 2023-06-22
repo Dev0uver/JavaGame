@@ -4,7 +4,7 @@ package entities;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class EnemysBullet extends Entity {
+public class EnemyBullet extends Entity {
 
     public static BufferedImage enemyBulletSprite;
     public static int height;
@@ -17,7 +17,7 @@ public class EnemysBullet extends Entity {
         y += speed;
     }
 
-    public EnemysBullet(float x, float y) {
+    public EnemyBullet(float x, float y) {
         super(x, y);
 
         width = enemyBulletSprite.getWidth();

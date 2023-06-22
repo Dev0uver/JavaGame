@@ -1,7 +1,6 @@
 package entities;
 
 
-import GUI.Score;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -54,7 +53,6 @@ public class Enemy extends Entity {
     public float GetPosY() {
         return y;
     }
-
     public void SetPosY(float y) {
         this.y = y;
     }

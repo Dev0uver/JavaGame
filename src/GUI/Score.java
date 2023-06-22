@@ -1,5 +1,6 @@
 package GUI;
 
+import main.GameSettings;
 import main.GameWindow;
 
 import java.awt.*;
@@ -14,13 +15,10 @@ import java.util.Scanner;
 public class Score {
 
     public long score = 0;
-    public int wave = 1; // счетчик волн
+    public int wave = 1;
     private static final Path relativePath = Paths.get("src/Assets/HighScore.txt");
     private final File scoreFile = new File(relativePath.toUri());
     private static long highScore;
-
-    private static final Font font = new Font("Courier", Font.BOLD, 30); // объявление шрифта
-    private final int xPosition = (int) GameWindow.size.getWidth() - 150;
 
     public void InitScore() throws FileNotFoundException {
 
@@ -47,24 +45,24 @@ public class Score {
 
     public void RenderScore(Graphics graphics) {
 
-        graphics.setFont(font);
+        graphics.setFont(GameSettings.GUIFont);
         graphics.setColor(Color.WHITE);
-        graphics.drawString("Score: " + score, xPosition - 50, 40);
+        graphics.drawString("Score: " + score, (int) ((int) (GameWindow.size.getWidth() * 0.9) - ("HighScore: ".length() * GameSettings.GUIFont.getSize() * 0.6) / 2), GameSettings.GUIFont.getSize());
     }
 
     // счетчик волн
     public void RenderWave(Graphics graphics) {
 
-        graphics.setFont(font);
+        graphics.setFont(GameSettings.GUIFont);
         graphics.setColor(Color.WHITE);
-        graphics.drawString("Wave: " + wave, xPosition - 250, 40);
+        graphics.drawString("Wave: " + wave, (int) ((int) (GameWindow.size.getWidth() * 0.8) - ("HighScore: ".length() * GameSettings.GUIFont.getSize() * 0.6) / 2), GameSettings.GUIFont.getSize());
     }
 
     public void RenderHighScore(Graphics graphics) {
 
-        graphics.setFont(font);
+        graphics.setFont(GameSettings.GUIFont);
         graphics.setColor(Color.WHITE);
-        graphics.drawString("HighScore: " + highScore, (int) (GameWindow.size.getWidth() / 2) - 100, 40);
+        graphics.drawString("HighScore: " + highScore, (int) ((int) (GameWindow.size.getWidth() / 2) - ("HighScore: ".length() * GameSettings.GUIFont.getSize() * 0.6) / 2), GameSettings.GUIFont.getSize());
     }
 
     public void SaveHighScore() throws IOException {

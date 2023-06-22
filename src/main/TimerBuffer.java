@@ -1,12 +1,16 @@
 package main;
 
 
+import java.awt.*;
+
 public class TimerBuffer {
 
     private long startTime;
     private long seconds;
     private long minutes = 0;
     private long hours = 0;
+
+    private final Font font = new Font("Courier", Font.BOLD, 30); // объявление шрифта
 
     public long GetStartTime() {
 
@@ -28,6 +32,13 @@ public class TimerBuffer {
 
         seconds = 0;
         minutes += 1;
+    }
+
+    public void Render(Graphics graphics) {
+
+        graphics.setFont(font);
+        graphics.setColor(Color.WHITE);
+        graphics.drawString(GetFullTime(), (int) ((int) (GameWindow.size.getWidth() * 0.8) - ("HighScore: ".length() * font.getSize() * 0.6) / 2), font.getSize() * 2);
     }
     public long GetMinutes() {
 

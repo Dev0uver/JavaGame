@@ -17,16 +17,17 @@ public class GameTimer extends TimerTask {
     @Override
     public void run() {
 
-        if (timerBuffer.GetSeconds() == 60) {
+        if (timerBuffer.GetSeconds() >= 60) {
             timerBuffer.ChangeMinutes();
         }
-        if (timerBuffer.GetMinutes() == 60) {
+        if (timerBuffer.GetMinutes() >= 60) {
             timerBuffer.ChangeHours();
         }
         timerBuffer.SetSeconds(((new Date().getTime() - timerBuffer.GetStartTime()) / 1000));
     }
 
     public void Start() {
+
         timerBuffer.ChangeStartTime(new Date().getTime() - timerBuffer.GetMilliSeconds());
         TimerTask timerTask = new GameTimer(timerBuffer);
         timer = new Timer();

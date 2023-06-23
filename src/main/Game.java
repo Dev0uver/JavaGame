@@ -121,7 +121,7 @@ public class Game implements Runnable {
 
             if (player != null) {
                 player.Render(graphics);
-                RenderLives(graphics);
+                gameSettings.RenderLives(graphics);
             }
             for (EnemyBullet enemyBullet : enemyBulletList) {
                 enemyBullet.Render(graphics);
@@ -141,22 +141,12 @@ public class Game implements Runnable {
                 score.RenderWave(graphics); // счетчик волн
             }
 
-            RenderHP(graphics);
+            gameSettings.RenderLives(graphics);
+            gameSettings.RenderHP(graphics);
             timerBuffer.Render(graphics);
     }
 
-    private void RenderLives(Graphics graphics) {
 
-        for (int i = 0; i < gameSettings.GetPlayerLives(); i++) {
-            graphics.drawImage(Player.playerSprite, (int) (i * Player.playerWidth * 1.2), 0, null);
-        }
-    }
-
-    private void RenderHP(Graphics graphics) {
-
-        Font font = new Font("Courier", Font.BOLD, 30);
-        graphics.drawString("HP: " + gameSettings.GetHP(), (int) (3 * Player.playerWidth * 1.2), font.getSize());
-    }
 
     private void InitClasses() {
 
@@ -292,7 +282,6 @@ public class Game implements Runnable {
         {
             NextWave();
         }
-
         // Перемещение вниз при достижении края
         if (down) {
             for (Enemy enemy : enemyList) {
@@ -303,7 +292,6 @@ public class Game implements Runnable {
         for (Enemy enemy : enemyList) {
             enemy.Move(gameSettings.GetEnemySpeed());
         }
-
     }
 
     private void CheckTopReach() {

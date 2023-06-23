@@ -1,6 +1,8 @@
 package main;
 
 
+import buttons.SettingsButton;
+
 import java.awt.*;
 
 public class TimerBuffer {
@@ -10,7 +12,12 @@ public class TimerBuffer {
     private long minutes = 0;
     private long hours = 0;
 
-    private final Font font = new Font("Courier", Font.BOLD, 30); // объявление шрифта
+    public void Render(Graphics graphics) {
+
+        graphics.setFont(GameSettings.GUIFont);
+        graphics.setColor(Color.WHITE);
+        graphics.drawString(GetFullTime(), (int) ((int) (GameWindow.size.getWidth() * 0.8) - ("HighScore: ".length() * GameSettings.GUIFont.getSize() * 0.6) / 2), GameSettings.GUIFont.getSize() * 2);
+    }
 
     public long GetStartTime() {
 
@@ -33,13 +40,6 @@ public class TimerBuffer {
         seconds = 0;
         minutes += 1;
     }
-
-    public void Render(Graphics graphics) {
-
-        graphics.setFont(font);
-        graphics.setColor(Color.WHITE);
-        graphics.drawString(GetFullTime(), (int) ((int) (GameWindow.size.getWidth() * 0.8) - ("HighScore: ".length() * font.getSize() * 0.6) / 2), font.getSize() * 2);
-    }
     public long GetMinutes() {
 
         return minutes;
@@ -57,7 +57,6 @@ public class TimerBuffer {
 
         return (((hours * 3600) + (minutes * 60) + seconds) * 1000);
     }
-
     public String GetFullTime() {
 
         String hours = String.valueOf(this.hours);

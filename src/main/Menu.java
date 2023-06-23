@@ -82,7 +82,6 @@ public class Menu {
         }
     }
 
-
     public Menu(GamePanel gamePanel) {
 
         this.gamePanel = gamePanel;

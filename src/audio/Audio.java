@@ -30,7 +30,7 @@ public class Audio{
     public File deathSound;
 
     //обработчик
-    private LineListener listener = new LineListener() {
+    private final LineListener listener = new LineListener() {
         @Override
         public void update(LineEvent event) {
             if (LineEvent.Type.STOP == event.getType()){

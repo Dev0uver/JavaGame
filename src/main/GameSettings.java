@@ -1,5 +1,7 @@
 package main;
 
+import entities.Player;
+
 import java.awt.*;
 
 public class GameSettings {
@@ -23,6 +25,22 @@ public class GameSettings {
 
         enemySpeed += enemySpeed * 0.02f;
         playerSpeed += playerSpeed * 0.01f;
+    }
+
+    public void RenderLives(Graphics graphics) {
+
+        graphics.setFont(GUIFont);
+        graphics.setColor(Color.white);
+        for (int i = 0; i < playerLives; i++) {
+            graphics.drawImage(Player.playerSprite, (int) (i * Player.playerWidth * 1.2), 0, null);
+        }
+    }
+
+    public void RenderHP(Graphics graphics) {
+
+        graphics.setFont(GUIFont);
+        graphics.setColor(Color.white);
+        graphics.drawString("HP: " + hp, (int) (3 * Player.playerWidth * 1.2), GUIFont.getSize());
     }
 
     public int GetPlayerLives() {

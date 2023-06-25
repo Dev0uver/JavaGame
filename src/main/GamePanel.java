@@ -37,11 +37,9 @@ public class GamePanel extends JPanel {
 
     // Объект и метод для рисования
     public void paintComponent(Graphics graphics) {
-
         // Метод очистки окна и отрисовки новых объектов
         super.paintComponent(graphics);
         RenderBackground(graphics);
-
         switch (game.GetState()) {
             case MENU -> menu.MainMenu();
             case GAMEOVER -> menu.GameOver();

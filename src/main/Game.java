@@ -21,18 +21,15 @@ public class Game implements Runnable {
     private final GameTimer gameTimer;
     private TimerBuffer timerBuffer;
     private GameSettings gameSettings;
-
+    private final Audio audio;
+    private Score score;
     private Player player;
-
     private long shotCheck;
 
-    private Score score;
 
     private final List<Enemy> enemyList = new ArrayList<>();
     private final List<Bullet> bulletList = new ArrayList<>();
     private final List<EnemyBullet> enemyBulletList = new ArrayList<>();
-
-    private final Audio audio;
 
     private GameState state = GameState.MENU;
     private GameState prevState = null;
@@ -44,24 +41,17 @@ public class Game implements Runnable {
         gamePanel.setFocusable(true); // Позволяет "захватить" экран
         gamePanel.requestFocus(); // Запрашивает захват экрана для ввода
         GameWindow gameWindow = new GameWindow(gamePanel);
-
         timerBuffer = new TimerBuffer();
         gameTimer = new GameTimer(timerBuffer);
         gameSettings = new GameSettings();
-        //menu  = new Menu(gamePanel);
         audio = new Audio();
-        //Initializer.Initialization();
 
-        gamePanel.RenderBackground(gamePanel.getGraphics()); // отрисовка фона до меню
-        //gamePanel.menu.InitButtons();
-        gamePanel.menu.MainMenu();
+        //  gamePanel.RenderBackground(gamePanel.getGraphics()); // отрисовка фона до меню
         InitClasses();
-
         audio.Soundtrack();
 
         // запуск потока игры
         StartGameLoop();
-        //Thread.sleep(Long.MAX_VALUE);
     }
 
     public int GetVolumePer() {
@@ -100,6 +90,7 @@ public class Game implements Runnable {
             for (EnemyBullet bullet : enemyBulletList) {
                 bullet.MoveEnemyBullet();
             }
+
             if (player.shooting) {
                 Shot();
             }
@@ -119,33 +110,29 @@ public class Game implements Runnable {
 
     public void Render(Graphics graphics) {
 
-            if (player != null) {
-                player.Render(graphics);
-                gameSettings.RenderLives(graphics);
-            }
-            for (EnemyBullet enemyBullet : enemyBulletList) {
-                enemyBullet.Render(graphics);
-            }
+        player.Render(graphics);
+        for (EnemyBullet enemyBullet : enemyBulletList) {
+            enemyBullet.Render(graphics);
+        }
 
-            for (Enemy enemy : enemyList) {
-                enemy.Render(graphics);
-            }
+        for (Enemy enemy : enemyList) {
+            enemy.Render(graphics);
+        }
 
-            for (Bullet bullet : bulletList) {
-                bullet.Render(graphics);
-            }
+        for (Bullet bullet : bulletList) {
+            bullet.Render(graphics);
+        }
 
-            if (score != null) {
-                score.RenderScore(graphics);
-                score.RenderHighScore(graphics);
-                score.RenderWave(graphics); // счетчик волн
-            }
+        if (score != null) {
+            score.RenderScore(graphics);
+            score.RenderHighScore(graphics);
+            score.RenderWave(graphics); // счетчик волн
+        }
 
-            gameSettings.RenderLives(graphics);
-            gameSettings.RenderHP(graphics);
-            timerBuffer.Render(graphics);
+        gameSettings.RenderLives(graphics);
+        gameSettings.RenderHP(graphics);
+        timerBuffer.Render(graphics);
     }
-
 
 
     private void InitClasses() {
@@ -199,7 +186,6 @@ public class Game implements Runnable {
 
             Random random = new Random();
             Enemy bullet = enemyList.get(random.nextInt(enemyList.size()));
-            //Enemy bul = enemyList.get(0);
             CreateEnemyBullets(bullet.GetPosX(), bullet.GetPosY());
             shotCheck = System.currentTimeMillis();
         }
@@ -223,6 +209,7 @@ public class Game implements Runnable {
 
         enemyList.clear();
         bulletList.clear();
+        enemyBulletList.clear();
         gameSettings = new GameSettings();
         InitClasses();
         timerBuffer = new TimerBuffer();
@@ -250,7 +237,7 @@ public class Game implements Runnable {
         enemyShot();
         boolean down = false;
         if(enemyList.size() != 0) { // проверка, закончились ли враги
-            for (int i = 0, enemyListSize = enemyList.size(); i < enemyListSize; i++) {
+            for (int i = enemyList.size() - 1; i > -1; i--) {
                 Enemy enemy = enemyList.get(i);
                 // Проверка достижения правого края
                 if (enemy.GetPosX() + Enemy.width >= GameWindow.size.getWidth()) {
@@ -298,7 +285,7 @@ public class Game implements Runnable {
 
         synchronized (bulletList) {
 
-            for (int i = 0; i < bulletList.size(); i++) {
+            for (int i = bulletList.size() - 1; i > -1; i--) {
 
                 if (bulletList.get(i).GetPosY() <= -Bullet.height) {
 
@@ -311,9 +298,7 @@ public class Game implements Runnable {
     private void CheckDownReach() {
 
         synchronized (enemyBulletList) {
-
-            for (int i = 0; i < enemyBulletList.size(); i++) {
-
+            for (int i = enemyBulletList.size() - 1; i > -1; i--) {
                 if (enemyBulletList.get(i).GetPosY() >= EnemyBullet.height + GameWindow.size.height) {
 
                     enemyBulletList.remove(i);
@@ -326,70 +311,75 @@ public class Game implements Runnable {
     // Коллизия
     private void CheckEnemyCollision() {
 
-        for (int i = 0; i < bulletList.size(); i++) {
+        if (bulletList.size() > 0) {
+            for (int i = bulletList.size() - 1; i > -1; i--) {
 
-            // позиция и размеры снаряда
-            float bulletX = bulletList.get(i).GetPosX();
-            float bulletY = bulletList.get(i).GetPosY();
+                // позиция и размеры снаряда
+                float bulletX = bulletList.get(i).GetPosX();
+                float bulletY = bulletList.get(i).GetPosY();
 
-            for (int j = 0; j < enemyList.size(); j++) {
-                // позиция и размеры пришельца
-                float enemyX = enemyList.get(j).GetPosX();
-                float enemyY = enemyList.get(j).GetPosY();
+                for (int j = enemyList.size() - 1; j > - 1; j--) {
+                    // позиция и размеры пришельца
+                    float enemyX = enemyList.get(j).GetPosX();
+                    float enemyY = enemyList.get(j).GetPosY();
 
-                // проверка столкновения снаряда и пришельца и их удаление в случае подтверждения
-                if ( bulletX + Bullet.width >= enemyX + gameSettings.GetEnemySpeed()
-                        && bulletX <= enemyX + Enemy.width - gameSettings.GetEnemySpeed()
-                        && bulletY >= enemyY
-                        && bulletY - Bullet.height <= enemyY + Enemy.height ) {
-                    score.score += score.wave;
-                    enemyList.remove(j);
-                    bulletList.remove(i);
-                    gameSettings.SpeedUp();
-                    audio.Death();
+                    // проверка столкновения снаряда и пришельца и их удаление в случае подтверждения
+                    if ( bulletX + Bullet.width >= enemyX
+                            && bulletX <= enemyX + Enemy.width
+                            && bulletY >= enemyY
+                            && bulletY - Bullet.height <= enemyY + Enemy.height ) {
+                        score.score += score.wave;
+                        enemyList.remove(j);
+                        bulletList.remove(i);
+                        gameSettings.SpeedUp();
+                        audio.Death();
+                    }
                 }
             }
         }
+
     }
 
-    private void CheckPlayerCollision () throws IOException {
+    private void CheckPlayerCollision() throws IOException {
 
-        for (int i = 0; i < enemyBulletList.size(); i++) {
+        if (enemyBulletList.size() > 0) {
+            for (int i = enemyBulletList.size() - 1; i > -1; i--) {
 
-            // позиция и размеры снаряда
-            float bulletX = enemyBulletList.get(i).GetPosX();
-            float bulletY = enemyBulletList.get(i).GetPosY();
-            // позиция и размеры пришельца
-            float PlayerX = player.GetPosX();
-            float PlayerY = player.GetPosY();
+                // позиция и размеры снаряда
+                float bulletX = enemyBulletList.get(i).GetPosX();
+                float bulletY = enemyBulletList.get(i).GetPosY();
+                // позиция и размеры пришельца
+                float PlayerX = player.GetPosX();
+                float PlayerY = player.GetPosY();
 
-                // проверка столкновения снаряда и пришельца и их удаление в случае подтверждения
-            if ( bulletX + EnemyBullet.width >= PlayerX + gameSettings.GetEnemySpeed()
-                    && bulletX <= PlayerX + Player.playerWidth
-                    && bulletY >= PlayerY
-                    && bulletY - EnemyBullet.height <= PlayerY + Player.playerHeight ) {
-                enemyBulletList.remove(i);
-                gameSettings.SpeedUp();
-                audio.Loss();
-                //audio.Death();
-                gameSettings.SetHP(gameSettings.GetHP() - 1);
-                if (gameSettings.GetHP() == 0) {
-                    if (gameSettings.GetPlayerLives() == 0) {
-                        score.SaveHighScore();
-                        state = GameState.GAMEOVER;
-                    }
-                    else {
-                        LiveLoss();
+
+                if ( bulletX + EnemyBullet.width >= PlayerX
+                        && bulletX <= PlayerX + Player.playerWidth
+                        && bulletY >= PlayerY
+                        && bulletY - EnemyBullet.height <= PlayerY + Player.playerHeight ) {
+                    enemyBulletList.remove(i);
+                    gameSettings.SpeedUp();
+                    audio.Loss();
+                    gameSettings.SetHP(gameSettings.GetHP() - 1);
+                    if (gameSettings.GetHP() == 0) {
+                        if (gameSettings.GetPlayerLives() == 0) {
+                            score.SaveHighScore();
+                            state = GameState.GAMEOVER;
+                        }
+                        else {
+                            LiveLoss();
+                        }
                     }
                 }
             }
         }
+
     }
 
 
     public void run() {
 
-        int fpsSet = 60;
+        int fpsSet = 120;
         int upsSet = 200;
         double timePerFrame = 1000000000.0 / fpsSet;
         double timePerUpdate = 1000000000.0 / upsSet;
@@ -439,7 +429,6 @@ public class Game implements Runnable {
                     }
                     default -> gamePanel.repaint();
                 }
-
                 frames++;
                 deltaFps--;
             }
@@ -447,7 +436,7 @@ public class Game implements Runnable {
             if (System.currentTimeMillis() - lastCheck >= 1000) {
 
                 lastCheck = System.currentTimeMillis();
-                //System.out.println("FPS: " + frames + " | " + "Updates: " + updates);
+                System.out.println("FPS: " + frames + " | " + "Updates: " + updates);
                 frames = 0;
                 updates = 0;
             }
@@ -485,8 +474,5 @@ public class Game implements Runnable {
     public GameTimer GetGameTimer() {
 
         return gameTimer;
-    }
-    public GameSettings GetGameSettings() {
-        return gameSettings;
     }
 }

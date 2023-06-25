@@ -2,7 +2,6 @@ package buttons;
 
 import main.GamePanel;
 import main.GameState;
-import main.GameTimer;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

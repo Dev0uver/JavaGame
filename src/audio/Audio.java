@@ -111,8 +111,6 @@ public class Audio{
 
     public void Death() {
 
-        Collections.shuffle(deathSounds);
-
         try {
             deathSound = new File("src/Assets/Audio/DeathSounds/" + deathSounds.get(0));
             deathClip = AudioSystem.getClip();

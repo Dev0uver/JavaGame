@@ -35,7 +35,12 @@ public class GameTimer extends TimerTask {
     }
 
     public void Stop() {
-
+        if (timerBuffer.GetSeconds() >= 60) {
+            timerBuffer.ChangeMinutes();
+        }
+        if (timerBuffer.GetMinutes() >= 60) {
+            timerBuffer.ChangeHours();
+        }
         timer.cancel();
         timerBuffer.ChangeStartTime(timerBuffer.GetMilliSeconds());
     }

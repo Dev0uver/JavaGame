@@ -1,9 +1,7 @@
 package main;
 
-
-import buttons.SettingsButton;
-
 import java.awt.*;
+import java.util.Date;
 
 public class TimerBuffer {
 
@@ -39,6 +37,7 @@ public class TimerBuffer {
 
         seconds = 0;
         minutes += 1;
+        startTime = new Date().getTime();
     }
     public long GetMinutes() {
 
@@ -48,10 +47,6 @@ public class TimerBuffer {
 
         minutes = 0;
         hours += 1;
-    }
-    public long GetHours() {
-
-        return hours;
     }
     public long GetMilliSeconds() {
 

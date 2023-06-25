@@ -13,21 +13,25 @@ public class Audio{
     private Clip musicClip;
     private Clip shotClip;
     private Clip deathClip;
-
+    private Clip lossClip;
     private float max;
     private float min;
     public FloatControl musicVolume = null;
     public FloatControl shotVolume = null;
     public FloatControl deathVolume = null;
 
+    public FloatControl lossVolume = null;
+
     public int musicVolumePer = 70;
     private String prevSound;
     private List<String> soundtracks = Arrays.asList(new File("src/Assets/Audio/Soundtrack").list());
     private List<String> shotSounds = Arrays.asList(new File("src/Assets/Audio/ShotSounds").list());
     private List<String> deathSounds = Arrays.asList(new File("src/Assets/Audio/DeathSounds").list());
+    private List<String> lossSounds = Arrays.asList(new File("src/Assets/Audio/LossSounds").list());
     public File soundtrack;
     public File shotSound;
     public File deathSound;
+    public File lossSound;
 
     //обработчик
     private final LineListener listener = new LineListener() {
@@ -39,10 +43,7 @@ public class Audio{
         }
     };
 
-    public Audio() {
 
-
-    }
 
     // Регулировка громкости музыки
     public void SetMusicVolume(){
@@ -73,6 +74,8 @@ public class Audio{
             SetMusicVolume();
 
             musicClip.start(); // запуск потока
+
+
 
 
         }
@@ -117,6 +120,25 @@ public class Audio{
             deathVolume = (FloatControl) deathClip.getControl(FloatControl.Type.MASTER_GAIN);
             deathVolume.setValue((max - min) * (musicVolumePer / 100f) + min);
             deathClip.start(); // запуск потока
+        }
+        catch (LineUnavailableException | IOException e) {
+            e.printStackTrace();
+        }
+        catch (UnsupportedAudioFileException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void Loss(){
+        Collections.shuffle(lossSounds);
+
+        try {
+            lossSound = new File("src/Assets/Audio/LossSounds/" + lossSounds.get(0));
+            lossClip = AudioSystem.getClip();
+            lossClip.open(AudioSystem.getAudioInputStream(lossSound));
+            lossVolume = (FloatControl) lossClip.getControl(FloatControl.Type.MASTER_GAIN);
+            lossVolume.setValue((max - min) * (musicVolumePer / 100f) + min);
+            lossClip.start(); // запуск потока
         }
         catch (LineUnavailableException | IOException e) {
             e.printStackTrace();

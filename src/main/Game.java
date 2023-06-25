@@ -370,7 +370,8 @@ public class Game implements Runnable {
                     && bulletY - EnemyBullet.height <= PlayerY + Player.playerHeight ) {
                 enemyBulletList.remove(i);
                 gameSettings.SpeedUp();
-                audio.Death();
+                audio.Loss();
+                //audio.Death();
                 gameSettings.SetHP(gameSettings.GetHP() - 1);
                 if (gameSettings.GetHP() == 0) {
                     if (gameSettings.GetPlayerLives() == 0) {

@@ -29,10 +29,18 @@ public class BackButton extends Buttons {
             switch (gamePanel.GetGame().GetState()) {
 
                 case MENU -> {
+                    gamePanel.buttonsList.clear();
+                    gamePanel.buttonsList.add(gamePanel.menu.play);
+                    gamePanel.buttonsList.add(gamePanel.menu.settings);
+                    gamePanel.buttonsList.add(gamePanel.menu.exit);
                     gamePanel.paintComponent(gamePanel.getGraphics());
                     gamePanel.menu.MainMenu();
                 }
                 case GAMEOVER -> {
+                    gamePanel.buttonsList.clear();
+                    gamePanel.buttonsList.add(gamePanel.menu.retry);
+                    gamePanel.buttonsList.add(gamePanel.menu.settings);
+                    gamePanel.buttonsList.add(gamePanel.menu.exit);
                     gamePanel.paintComponent(gamePanel.getGraphics());
                     gamePanel.menu.GameOver();
                 }

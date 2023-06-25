@@ -46,6 +46,11 @@ public class Game implements Runnable {
         gameSettings = new GameSettings();
         audio = new Audio();
 
+        gamePanel.buttonsList.clear();
+        gamePanel.buttonsList.add(gamePanel.menu.play);
+        gamePanel.buttonsList.add(gamePanel.menu.settings);
+        gamePanel.buttonsList.add(gamePanel.menu.exit);
+
         //  gamePanel.RenderBackground(gamePanel.getGraphics()); // отрисовка фона до меню
         InitClasses();
         audio.Soundtrack();
@@ -97,9 +102,8 @@ public class Game implements Runnable {
                 Shot();
             }
 
-            if (enemyList.size() > 0) {
-                MoveEnemy();
-            }
+
+            MoveEnemy();
 
             if (bulletList.size() > 0) {
                 for (Bullet bullet : bulletList) {
@@ -237,6 +241,7 @@ public class Game implements Runnable {
 
         bulletList.clear();
         enemyBulletList.clear();
+        enemyList.clear();
         gameSettings.ResetVariables();
         InitFleet();
         score.wave++;
@@ -245,8 +250,10 @@ public class Game implements Runnable {
     private void MoveEnemy() throws IOException {
         enemyShot();
         boolean down = false;
-        if(enemyList.size() != 0) { // проверка, закончились ли враги
+        if(enemyList.size() != 0) {
+            System.out.println("fddwdw");// проверка, закончились ли враги
             for (int i = enemyList.size() - 1; i > -1; i--) {
+                System.out.println(enemyList.size());
                 Enemy enemy = enemyList.get(i);
                 // Проверка достижения правого края
                 if (enemy.GetPosX() + Enemy.width >= GameWindow.size.getWidth()) {
@@ -276,6 +283,7 @@ public class Game implements Runnable {
         }
         else
         {
+            System.out.println("fdwefeefe");
             NextWave();
         }
         // Перемещение вниз при достижении края
@@ -321,13 +329,13 @@ public class Game implements Runnable {
     private void CheckEnemyCollision() {
 
         if (bulletList.size() > 0) {
-            for (int i = bulletList.size() - 1; i > -1; i--) {
+            for (int i = 0; i < bulletList.size(); i++) {
 
                 // позиция и размеры снаряда
                 float bulletX = bulletList.get(i).GetPosX();
                 float bulletY = bulletList.get(i).GetPosY();
 
-                for (int j = enemyList.size() - 1; j > - 1; j--) {
+                for (int j = 0; j < enemyList.size(); j++) {
                     // позиция и размеры пришельца
                     float enemyX = enemyList.get(j).GetPosX();
                     float enemyY = enemyList.get(j).GetPosY();
@@ -388,7 +396,7 @@ public class Game implements Runnable {
 
     public void run() {
 
-        int fpsSet = 120;
+        int fpsSet = 60;
         int upsSet = 200;
         double timePerFrame = 1000000000.0 / fpsSet;
         double timePerUpdate = 1000000000.0 / upsSet;
@@ -425,7 +433,7 @@ public class Game implements Runnable {
                 switch (state) {
 
                     case MENU -> {
-                        gamePanel.paintComponent(gamePanel.getGraphics());
+                        //gamePanel.paintComponent(gamePanel.getGraphics());
                         gamePanel.menu.MainMenu();
                     }
                     case SETTINGS -> {
@@ -484,4 +492,5 @@ public class Game implements Runnable {
 
         return gameTimer;
     }
+
 }

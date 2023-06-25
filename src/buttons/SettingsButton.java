@@ -7,7 +7,6 @@ import main.GameWindow;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Arrays;
 
 public class SettingsButton extends Buttons{
 
@@ -30,6 +29,10 @@ public class SettingsButton extends Buttons{
             gamePanel.GetGame().SetPrevState(gamePanel.GetGame().GetState());
             gamePanel.GetGame().SetState(GameState.SETTINGS);
             GameWindow.pressed = true;
+            gamePanel.buttonsList.clear();
+            gamePanel.buttonsList.add(gamePanel.menu.reduceVolume);
+            gamePanel.buttonsList.add(gamePanel.menu.increaseVolume);
+            gamePanel.buttonsList.add(gamePanel.menu.back);
             gamePanel.paintComponent(gamePanel.getGraphics());
             gamePanel.menu.Settings();
         }

@@ -31,11 +31,16 @@ public class KeyboardInputs implements KeyListener {
                 case KeyEvent.VK_SPACE -> gamePanel.GetGame().GetPlayer().SetShooting(true);
                 case KeyEvent.VK_ESCAPE -> {
                     if (gamePanel.GetGame().GetState() == GameState.PLAYING) {
-                        //gamePanel.GetGame().GetGameTimer().Stop();
+                        gamePanel.GetGame().GetGameTimer().Stop();
+                        gamePanel.buttonsList.clear();
+                        gamePanel.buttonsList.add(gamePanel.menu.play);
+                        gamePanel.buttonsList.add(gamePanel.menu.settings);
+                        gamePanel.buttonsList.add(gamePanel.menu.exit);
+                        gamePanel.RenderBackground(gamePanel.getGraphics());
                         gamePanel.GetGame().SetState(GameState.MENU);
                     }
                     else {
-                        //gamePanel.GetGame().GetGameTimer().Start();
+                        gamePanel.GetGame().GetGameTimer().Start();
                         gamePanel.GetGame().SetState(GameState.PLAYING);
                     }
 

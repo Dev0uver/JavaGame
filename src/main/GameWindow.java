@@ -20,7 +20,6 @@ public class GameWindow {
     // Создание игрового окна
     public GameWindow(GamePanel gamePanel) {
 
-
         JFrame frame = new JFrame("Space Invaders");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

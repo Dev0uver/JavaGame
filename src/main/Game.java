@@ -87,18 +87,24 @@ public class Game implements Runnable {
         if (state == GameState.PLAYING) {
             player.UpdatePos(gameSettings.GetPlayerSpeed());
 
-            for (EnemyBullet bullet : enemyBulletList) {
-                bullet.MoveEnemyBullet();
+            if (enemyBulletList.size() > 0) {
+                for (EnemyBullet bullet : enemyBulletList) {
+                    bullet.MoveEnemyBullet();
+                }
             }
 
             if (player.shooting) {
                 Shot();
             }
 
-            MoveEnemy();
+            if (enemyList.size() > 0) {
+                MoveEnemy();
+            }
 
-            for (Bullet bullet : bulletList) {
-                bullet.MoveBullet();
+            if (bulletList.size() > 0) {
+                for (Bullet bullet : bulletList) {
+                    bullet.MoveBullet();
+                }
             }
 
             CheckEnemyCollision();
@@ -115,12 +121,15 @@ public class Game implements Runnable {
             enemyBullet.Render(graphics);
         }
 
-        for (Enemy enemy : enemyList) {
-            enemy.Render(graphics);
+        if (enemyList.size() > 0) {
+            for (Enemy enemy : enemyList) {
+                enemy.Render(graphics);
+            }
         }
-
-        for (Bullet bullet : bulletList) {
-            bullet.Render(graphics);
+        if (bulletList.size() > 0) {
+            for (Bullet bullet : bulletList) {
+                bullet.Render(graphics);
+            }
         }
 
         if (score != null) {

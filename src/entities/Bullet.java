@@ -36,7 +36,6 @@ public class Bullet extends Entity {
     public float GetPosX() {
         return x;
     }
-
     public float GetPosY() {
         return y;
     }

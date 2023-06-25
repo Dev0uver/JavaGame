@@ -361,39 +361,37 @@ public class Game implements Runnable {
 
     private void CheckPlayerCollision() throws IOException {
 
-        if (enemyBulletList.size() > 0) {
-            for (int i = enemyBulletList.size() - 1; i > -1; i--) {
-                if (enemyBulletList.size() == 0) {
-                    break;
-                }
-                // позиция и размеры снаряда
-                float bulletX = enemyBulletList.get(i).GetPosX();
-                float bulletY = enemyBulletList.get(i).GetPosY();
-                // позиция и размеры пришельца
-                float PlayerX = player.GetPosX();
-                float PlayerY = player.GetPosY();
+        for (int i = enemyBulletList.size() - 1; i > -1; i--) {
+            if (enemyBulletList.size() == 0) {
+                break;
+            }
+            // позиция и размеры снаряда
+            float bulletX = enemyBulletList.get(i).GetPosX();
+            float bulletY = enemyBulletList.get(i).GetPosY();
+            // позиция и размеры пришельца
+            float PlayerX = player.GetPosX();
+            float PlayerY = player.GetPosY();
 
 
-                if ( bulletX + EnemyBullet.width >= PlayerX
-                        && bulletX <= PlayerX + Player.playerWidth
-                        && bulletY >= PlayerY
-                        && bulletY - EnemyBullet.height <= PlayerY + Player.playerHeight ) {
-                    enemyBulletList.remove(i);
-                    gameSettings.SpeedUp();
-                    audio.Loss();
-                    gameSettings.SetHP(gameSettings.GetHP() - 1);
-                    if (gameSettings.GetHP() == 0) {
-                        if (gameSettings.GetPlayerLives() == 0) {
-                            score.SaveHighScore();
-                            gamePanel.buttonsList.clear();
-                            gamePanel.buttonsList.add(gamePanel.menu.exit);
-                            gamePanel.buttonsList.add(gamePanel.menu.settings);
-                            gamePanel.buttonsList.add(gamePanel.menu.retry);
-                            state = GameState.GAMEOVER;
-                        }
-                        else {
-                            LiveLoss();
-                        }
+            if ( bulletX + EnemyBullet.width >= PlayerX
+                    && bulletX <= PlayerX + Player.playerWidth
+                    && bulletY >= PlayerY
+                    && bulletY - EnemyBullet.height <= PlayerY + Player.playerHeight ) {
+                enemyBulletList.remove(i);
+                gameSettings.SpeedUp();
+                audio.Loss();
+                gameSettings.SetHP(gameSettings.GetHP() - 1);
+                if (gameSettings.GetHP() == 0) {
+                    if (gameSettings.GetPlayerLives() == 0) {
+                        score.SaveHighScore();
+                        gamePanel.buttonsList.clear();
+                        gamePanel.buttonsList.add(gamePanel.menu.exit);
+                        gamePanel.buttonsList.add(gamePanel.menu.settings);
+                        gamePanel.buttonsList.add(gamePanel.menu.retry);
+                        state = GameState.GAMEOVER;
+                    }
+                    else {
+                        LiveLoss();
                     }
                 }
             }

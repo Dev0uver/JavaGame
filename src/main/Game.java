@@ -251,9 +251,8 @@ public class Game implements Runnable {
         enemyShot();
         boolean down = false;
         if(enemyList.size() != 0) {
-            System.out.println("fddwdw");// проверка, закончились ли враги
+            // проверка, закончились ли враги
             for (int i = enemyList.size() - 1; i > -1; i--) {
-                System.out.println(enemyList.size());
                 Enemy enemy = enemyList.get(i);
                 // Проверка достижения правого края
                 if (enemy.GetPosX() + Enemy.width >= GameWindow.size.getWidth()) {
@@ -273,6 +272,10 @@ public class Game implements Runnable {
                 if (enemy.GetPosY() >= player.GetPosY() - Player.playerSprite.getHeight()) {
                     if (gameSettings.GetPlayerLives() == 0) {
                         score.SaveHighScore();
+                        gamePanel.buttonsList.clear();
+                        gamePanel.buttonsList.add(gamePanel.menu.exit);
+                        gamePanel.buttonsList.add(gamePanel.menu.settings);
+                        gamePanel.buttonsList.add(gamePanel.menu.retry);
                         state = GameState.GAMEOVER;
                     }
                     else {
@@ -283,7 +286,6 @@ public class Game implements Runnable {
         }
         else
         {
-            System.out.println("fdwefeefe");
             NextWave();
         }
         // Перемещение вниз при достижении края
@@ -361,7 +363,9 @@ public class Game implements Runnable {
 
         if (enemyBulletList.size() > 0) {
             for (int i = enemyBulletList.size() - 1; i > -1; i--) {
-
+                if (enemyBulletList.size() == 0) {
+                    break;
+                }
                 // позиция и размеры снаряда
                 float bulletX = enemyBulletList.get(i).GetPosX();
                 float bulletY = enemyBulletList.get(i).GetPosY();
@@ -381,6 +385,10 @@ public class Game implements Runnable {
                     if (gameSettings.GetHP() == 0) {
                         if (gameSettings.GetPlayerLives() == 0) {
                             score.SaveHighScore();
+                            gamePanel.buttonsList.clear();
+                            gamePanel.buttonsList.add(gamePanel.menu.exit);
+                            gamePanel.buttonsList.add(gamePanel.menu.settings);
+                            gamePanel.buttonsList.add(gamePanel.menu.retry);
                             state = GameState.GAMEOVER;
                         }
                         else {
@@ -390,7 +398,6 @@ public class Game implements Runnable {
                 }
             }
         }
-
     }
 
 

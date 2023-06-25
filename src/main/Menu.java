@@ -38,10 +38,6 @@ public class Menu {
         graphics.setFont(font);
         graphics.setColor(Color.white);
         graphics.drawString("Game over", xPos - (int)("Game over".length() * font.getSize() * 0.6) / 2 , yPos - font.getSize() / 2);
-        gamePanel.buttonsList.clear();
-        gamePanel.buttonsList.add(exit);
-        gamePanel.buttonsList.add(settings);
-        gamePanel.buttonsList.add(retry);
         RenderButtons(graphics);
     }
 
